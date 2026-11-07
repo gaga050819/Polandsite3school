@@ -383,28 +383,85 @@
 
     var phoneInput = document.getElementById('phone');
     if (phoneInput) {
-      phoneInput.addEventListener('input', function () {
-        var x = phoneInput.value.replace(/\D/g, '');
-        if (x.startsWith('380')) {
-          x = x.substring(2);
-        } else if (x.startsWith('80') && x.length > 9) {
-          x = x.substring(1);
+      function formatPhone(val) {
+        var raw = val.replace(/\D/g, '');
+        if (raw.startsWith('38')) {
+          raw = raw.substring(2);
+        } else if (raw.startsWith('80') && raw.length > 9) {
+          raw = raw.substring(1);
         }
-        if (x.length > 10) x = x.substring(0, 10);
-        var formatted = '';
-        if (x.length > 0) {
-          formatted = '+38 (' + x.substring(0, 3);
+        if (raw.length > 10) {
+          raw = raw.substring(0, 10);
         }
-        if (x.length >= 4) {
-          formatted += ') ' + x.substring(3, 6);
+        if (raw.length === 0) {
+          return '';
         }
-        if (x.length >= 7) {
-          formatted += '-' + x.substring(6, 8);
+        var res = '+38 (';
+        if (raw.length <= 3) {
+          res += raw;
+        } else if (raw.length <= 6) {
+          res += raw.substring(0, 3) + ') ' + raw.substring(3);
+        } else if (raw.length <= 8) {
+          res += raw.substring(0, 3) + ') ' + raw.substring(3, 6) + '-' + raw.substring(6);
+        } else {
+          res += raw.substring(0, 3) + ') ' + raw.substring(3, 6) + '-' + raw.substring(6, 8) + '-' + raw.substring(8, 10);
         }
-        if (x.length >= 9) {
-          formatted += '-' + x.substring(8, 10);
+        return res;
+      }
+
+      var prevDigitsCount = 0;
+
+      phoneInput.addEventListener('input', function (e) {
+        var curVal = phoneInput.value;
+        var rawDigits = curVal.replace(/\D/g, '');
+        var effective = rawDigits;
+        if (effective.startsWith('38')) {
+          effective = effective.substring(2);
+        } else if (effective.startsWith('80') && effective.length > 9) {
+          effective = effective.substring(1);
         }
-        phoneInput.value = formatted;
+
+        var isDelete = (e.inputType && e.inputType.startsWith('delete'));
+        if (isDelete && effective.length === prevDigitsCount && effective.length > 0) {
+          effective = effective.substring(0, effective.length - 1);
+        }
+
+        if (effective.length === 0) {
+          phoneInput.value = '';
+          prevDigitsCount = 0;
+          return;
+        }
+
+        var nextVal = formatPhone(effective);
+        phoneInput.value = nextVal;
+        prevDigitsCount = effective.length;
+      });
+
+      phoneInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Backspace' && phoneInput.selectionStart === phoneInput.selectionEnd) {
+          var pos = phoneInput.selectionStart;
+          if (pos > 0) {
+            var ch = phoneInput.value.charAt(pos - 1);
+            if (/\D/.test(ch)) {
+              e.preventDefault();
+              var curRaw = phoneInput.value.replace(/\D/g, '');
+              if (curRaw.startsWith('38')) curRaw = curRaw.substring(2);
+              if (curRaw.length > 0) {
+                curRaw = curRaw.substring(0, curRaw.length - 1);
+              }
+              phoneInput.value = formatPhone(curRaw);
+              prevDigitsCount = curRaw.length;
+            }
+          }
+        }
+      });
+
+      phoneInput.addEventListener('blur', function () {
+        var raw = phoneInput.value.replace(/\D/g, '');
+        if (raw.length <= 2) {
+          phoneInput.value = '';
+          prevDigitsCount = 0;
+        }
       });
     }
 
