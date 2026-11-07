@@ -452,9 +452,14 @@
           submitBtn.textContent = 'Надсилання...';
         }
 
+        var safePhone = phoneVal;
+        if (safePhone && safePhone.charAt(0) === '+') {
+          safePhone = "'" + safePhone;
+        }
+
         var payload = {
           name: nameVal,
-          phone: phoneVal,
+          phone: safePhone,
           email: emailVal,
           message: messageVal,
           date: new Date().toLocaleString('uk-UA')
