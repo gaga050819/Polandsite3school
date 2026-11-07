@@ -525,7 +525,14 @@
         function onDone(success) {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Надіслати повідомлення';
+            if (success) {
+              submitBtn.textContent = 'Успішно надіслано';
+              setTimeout(function () {
+                submitBtn.textContent = 'Надіслати повідомлення';
+              }, 4000);
+            } else {
+              submitBtn.textContent = 'Надіслати повідомлення';
+            }
           }
           if (formStatus) {
             formStatus.style.display = 'block';
@@ -533,11 +540,11 @@
               formStatus.style.background = '#e8f5e9';
               formStatus.style.color = '#1b5e20';
               formStatus.style.border = '1px solid #a5d6a7';
-              formStatus.textContent = 'Дякуємо! Ваше повідомлення успішно надіслано та збережено в Google Таблицю.';
+              formStatus.textContent = 'Успішно надіслано';
               contactForm.reset();
               setTimeout(function () {
                 formStatus.style.display = 'none';
-              }, 7000);
+              }, 6000);
             } else {
               formStatus.style.background = '#ffebee';
               formStatus.style.color = '#b71c1c';
