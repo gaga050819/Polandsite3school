@@ -33,16 +33,28 @@
       <a href="fotogalereya.html">Фотогалерея</a>
       <a href="prajs-list.html">Курси</a>
       <a href="ekskursiji-wycieczki.html">Екскурсії</a>
-      <a href="uroczystosci.html">Uroczystości</a>
+      <a href="uroczystosci.html">Свята</a>
       <a href="kontakti.html">Контакти</a>
     </nav>
-    <button class="nav-toggle" id="toggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="overlay">
+  <div class="lang-switch" role="group" aria-label="Wybór języka / Вибір мови" data-active="ua">
+    <button type="button" class="lang-btn" data-lang="ua">UA</button>
+    <button type="button" class="lang-btn" data-lang="pl">PL</button>
+    <span class="lang-slider"></span>
+  </div>
+  <button class="nav-toggle" id="toggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="overlay">
       <i></i><i></i><i></i>
     </button>
   </header>
 
   <div class="overlay" id="overlay" aria-hidden="true">
-    <ul>
+  <div class="overlay-lang">
+    <div class="lang-switch" role="group" aria-label="Wybór języka / Вибір мови" data-active="ua">
+      <button type="button" class="lang-btn" data-lang="ua">UA</button>
+      <button type="button" class="lang-btn" data-lang="pl">PL</button>
+      <span class="lang-slider"></span>
+    </div>
+  </div>
+  <ul>
       <li><a href="index.html">Головна / Główna</a></li>
       <li><a class="active" href="pro-mene.html">Про нас / O nas</a></li>
       <li><a href="rozklad-navchannya.html">Розклад занять</a></li>
@@ -50,7 +62,7 @@
       <li><a href="fotogalereya.html">Фотогалерея / Galeria zdjęć</a></li>
       <li><a href="prajs-list.html">Курси / Kursy</a></li>
       <li><a href="ekskursiji-wycieczki.html">Екскурсії / Wycieczki</a></li>
-      <li><a href="uroczystosci.html">Uroczystości</a></li>
+      <li><a href="uroczystosci.html">Свята</a></li>
       <li><a href="kontakti.html">Контакти / Kontakt</a></li>
     </ul>
     <div class="overlay-contacts">
