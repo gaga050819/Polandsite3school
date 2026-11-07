@@ -303,7 +303,7 @@
 
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
-    var GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz_REPLACE_WITH_YOUR_DEPLOYED_URL/exec';
+    var GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwDFjStXNR35k6scG1DvG8Qe2XnhWd4w8cuTFxVMRmKMS9mQ_as-nw0ApDaBYMio36l/exec';
     var emailInput = document.getElementById('email');
     var emailError = document.getElementById('emailError');
     var formStatus = document.getElementById('formStatus');
@@ -490,7 +490,7 @@
             method: 'POST',
             mode: 'no-cors',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'text/plain;charset=utf-8'
             },
             body: JSON.stringify(payload)
           })
