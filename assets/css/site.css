@@ -220,7 +220,7 @@ body.menu-open .overlay li:nth-child(9) a{transition-delay:.47s}
 .course-features{list-style:none;display:grid;gap:10px;margin-top:10px}
 .course-features li{display:flex;align-items:flex-start;gap:10px;font-size:.94rem;color:var(--ink-soft)}
 .course-features li svg{width:18px;height:18px;color:var(--red);flex-shrink:0;margin-top:3px}
-.course-footer{padding:20px 28px;background:rgba(251,249,246,.7);border-top:1px solid var(--line-light);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.course-footer{padding:20px 28px;background:var(--paper);border-top:1px solid var(--line-light);display:flex;align-items:center;justify-content:space-between;gap:14px}
 
 .table-wrap{background:var(--white);border-radius:var(--radius);overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);box-shadow:var(--shadow);margin-top:28px}
 .styled-table{width:100%;min-width:540px;border-collapse:collapse;text-align:left}
