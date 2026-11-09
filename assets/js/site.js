@@ -303,7 +303,7 @@
 
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
-    var GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwDFjStXNR35k6scG1DvG8Qe2XnhWd4w8cuTFxVMRmKMS9mQ_as-nw0ApDaBYMio36l/exec';
+    var GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz3TjDNwSnQUOC1P6RIgvYcvPHlRuMI-cQa-jxH-B0Y2KrpejdhuN89EM3RP0XKYMnWmg/exec';
     var emailInput = document.getElementById('email');
     var emailError = document.getElementById('emailError');
     var formStatus = document.getElementById('formStatus');
