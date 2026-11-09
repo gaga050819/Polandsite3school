@@ -510,9 +510,6 @@
         }
 
         var safePhone = phoneVal;
-        if (safePhone && safePhone.charAt(0) === '+') {
-          safePhone = "'" + safePhone;
-        }
 
         var payload = {
           name: nameVal,
@@ -678,5 +675,20 @@
   }
 
   initLanguage();
+
+  function initDarkTheme() {
+    var saved = 'light';
+    try { saved = localStorage.getItem('site_theme') || 'light'; } catch(e) {}
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    var btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        try { localStorage.setItem('site_theme', isDark ? 'light' : 'dark'); } catch(e) {}
+      });
+    }
+  }
+  initDarkTheme();
 
 })();

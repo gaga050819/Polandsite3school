@@ -17,6 +17,17 @@
   --radius:16px;
 }
 
+[data-theme="dark"]{
+  --ink:#e8eaf0;
+  --ink-soft:#9ba3b4;
+  --paper:#0f1117;
+  --white:#1a1d26;
+  --surface:#1a1d26;
+  --line:rgba(255,255,255,.08);
+  --line-light:rgba(255,255,255,.04);
+  --shadow:0 24px 48px -18px rgba(0,0,0,.45);
+  --shadow-lg:0 32px 64px -20px rgba(0,0,0,.65);
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:'Manrope',system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;overflow-x:hidden}
@@ -56,6 +67,19 @@ a{color:inherit;text-decoration:none}
 .lang-switch[data-active="pl"] .lang-btn[data-lang="ua"]{opacity:.6}
 .overlay-lang{display:flex;justify-content:flex-end;margin-bottom:16px}
 .overlay-lang .lang-switch{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:var(--white)}
+
+.theme-toggle{width:38px;height:38px;border:0;background:transparent;color:inherit;cursor:pointer;display:grid;place-items:center;border-radius:50%;transition:background .25s,color .25s;flex-shrink:0;padding:0}
+.theme-toggle:hover{background:rgba(23,26,33,.08)}
+.theme-toggle svg{width:20px;height:20px;pointer-events:none}
+.theme-toggle .icon-moon{display:none}
+[data-theme="dark"] .theme-toggle .icon-sun{display:none}
+[data-theme="dark"] .theme-toggle .icon-moon{display:block}
+[data-theme="dark"] .theme-toggle:hover{background:rgba(255,255,255,.08)}
+[data-theme="dark"] .header.solid{background:rgba(15,17,23,.95)}
+[data-theme="dark"] .header.static-page{background:rgba(15,17,23,.95)}
+[data-theme="dark"] .header.solid .nav a,[data-theme="dark"] .header.static-page .nav a{color:var(--ink)}
+[data-theme="dark"] .overlay{background:#0f1117}
+[data-theme="dark"] .lang-switch{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
 
 .nav-toggle{display:none;width:48px;height:48px;border:0;background:transparent;color:inherit;cursor:pointer;position:relative;z-index:130}
 .nav-toggle i{position:absolute;left:12px;right:12px;height:2px;background:currentColor;border-radius:2px;transition:transform .4s var(--ease),opacity .2s,top .4s var(--ease)}
