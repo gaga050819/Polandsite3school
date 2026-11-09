@@ -680,14 +680,15 @@
     var saved = 'light';
     try { saved = localStorage.getItem('site_theme') || 'light'; } catch(e) {}
     if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-    var btn = document.getElementById('themeToggle');
-    if (btn) {
-      btn.addEventListener('click', function() {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        try { localStorage.setItem('site_theme', isDark ? 'light' : 'dark'); } catch(e) {}
-      });
+    function toggleTheme() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      try { localStorage.setItem('site_theme', isDark ? 'light' : 'dark'); } catch(e) {}
     }
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.addEventListener('click', toggleTheme);
+    var btn2 = document.getElementById('themeToggleOverlay');
+    if (btn2) btn2.addEventListener('click', toggleTheme);
   }
   initDarkTheme();
 
