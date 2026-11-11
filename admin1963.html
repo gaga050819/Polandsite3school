@@ -238,6 +238,8 @@
     'polska.school@gmail.com'
   ];
 
+  var DEFAULT_CLIENT_ID = '749327851839-me3jil7t4ecdfgae838k20ljmukcatad.apps.googleusercontent.com';
+
   function getEmails() {
     try {
       var raw = localStorage.getItem('school_admin_emails');
@@ -254,10 +256,10 @@
 
   function getClientId() {
     try {
-      return (localStorage.getItem('school_google_client_id') || '').trim();
-    } catch(e) {
-      return '';
-    }
+      var saved = (localStorage.getItem('school_google_client_id') || '').trim();
+      if (saved) return saved;
+    } catch(e) {}
+    return DEFAULT_CLIENT_ID;
   }
 
   function saveClientId(id) {
