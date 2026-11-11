@@ -319,6 +319,23 @@ textarea.form-control{resize:vertical;min-height:120px}
 .strip p{margin-top:12px;opacity:.78;max-width:54ch;font-size:1.05rem;color:#ffffff}
 [data-theme="dark"] .strip{background:#07090f}
 
+.faq-section{padding-top:clamp(48px,7vw,80px);padding-bottom:clamp(48px,7vw,80px)}
+.faq-list{max-width:860px;margin:0 auto;display:grid;gap:14px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.faq-item.open{border-color:rgba(200,16,46,.4);box-shadow:var(--shadow-lg)}
+.faq-question{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;background:transparent;border:0;outline:none;font-family:inherit;font-size:1.05rem;font-weight:700;color:var(--ink);text-align:left;cursor:pointer;transition:color .25s var(--ease);user-select:none}
+.faq-question:hover{color:var(--red)}
+.faq-arrow{width:20px;height:20px;flex-shrink:0;transition:transform .3s var(--ease);color:var(--red)}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .35s var(--ease),padding .35s var(--ease);padding:0 24px}
+.faq-item.open .faq-answer{padding:0 24px 22px 24px}
+.faq-answer p{color:var(--ink-soft);font-size:.98rem;line-height:1.65}
+
+.back-to-top{position:fixed;bottom:clamp(20px,4vw,32px);right:clamp(20px,4vw,32px);width:46px;height:46px;min-height:0;border-radius:50%;background:var(--red);color:#ffffff;border:0;outline:none;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 16px rgba(200,16,46,.4);z-index:90;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s var(--ease),transform .3s var(--ease),visibility .3s,background .25s;touch-action:manipulation}
+.back-to-top.show{opacity:1;visibility:visible;transform:none}
+.back-to-top:hover,.back-to-top:active{background:var(--red-deep);transform:translateY(-3px);box-shadow:0 6px 20px rgba(200,16,46,.55)}
+.back-to-top svg{width:22px;height:22px;pointer-events:none}
+
 .footer{background:var(--paper);border-top:1px solid var(--line)}
 .footer-inner{max-width:1240px;margin:0 auto;padding:40px clamp(20px,5vw,56px) calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:20px 48px;justify-content:space-between;align-items:center;color:var(--ink-soft)}
 .footer a{color:var(--ink);font-weight:600;transition:color .25s}

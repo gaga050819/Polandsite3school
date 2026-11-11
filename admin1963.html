@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Панель керування :: Польська суботня школа ім. св. королеви Ядвіги</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+<link rel="shortcut icon" href="assets/icons/favicon.ico">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+.admin-wrap{min-height:100svh;display:flex;flex-direction:column;background:var(--paper)}
+.admin-main{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:calc(var(--header) + 32px) clamp(16px,4vw,32px) 48px}
+.admin-auth-card{max-width:440px;margin:40px auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(28px,5vw,40px);box-shadow:var(--shadow-lg);text-align:center}
+.admin-auth-icon{width:68px;height:68px;border-radius:50%;margin:0 auto 16px;background:rgba(200,16,46,.1);color:var(--red);display:grid;place-items:center}
+.admin-auth-icon svg{width:32px;height:32px}
+.admin-auth-card h1{font-family:'Lora',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:8px}
+.admin-auth-card p{color:var(--ink-soft);font-size:.92rem;margin-bottom:24px}
+.admin-input-group{text-align:left;margin-bottom:18px}
+.admin-input-group label{display:block;font-size:.88rem;font-weight:700;margin-bottom:6px;color:var(--ink)}
+.admin-input{width:100%;padding:13px 16px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:16px;color:var(--ink);background:var(--paper);outline:none;transition:border-color .25s,box-shadow .25s}
+.admin-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.18);background:var(--surface)}
+[data-theme="dark"] .admin-input{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--ink)}
+.admin-btn{width:100%;justify-content:center;margin-top:6px}
+.admin-alert{padding:12px 14px;border-radius:10px;font-size:.9rem;font-weight:600;margin-bottom:16px;display:none}
+.admin-alert.error{display:block;background:rgba(200,16,46,.12);color:var(--red);border:1px solid rgba(200,16,46,.3)}
+.admin-alert.success{display:block;background:rgba(24,134,75,.12);color:#18864b;border:1px solid rgba(24,134,75,.3)}
+.admin-dash{display:none}
+.admin-dash.active{display:block}
+.dash-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.dash-title h2{font-family:'Lora',serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--ink)}
+.dash-title p{color:var(--ink-soft);font-size:.92rem}
+.dash-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(24,134,75,.12);color:#18864b;font-size:.82rem;font-weight:700;margin-top:6px}
+.dash-badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#18864b}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:28px}
+.dash-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.dash-card-icon{width:46px;height:46px;border-radius:12px;background:rgba(200,16,46,.08);color:var(--red);display:grid;place-items:center;margin-bottom:14px}
+.dash-card-icon svg{width:22px;height:22px}
+.dash-card-val{font-family:'Lora',serif;font-size:1.8rem;font-weight:700;color:var(--ink);line-height:1}
+.dash-card-lbl{font-size:.88rem;color:var(--ink-soft);margin-top:4px;font-weight:600}
+.admin-panel-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,4vw,32px);box-shadow:var(--shadow);margin-bottom:24px}
+.admin-panel-card h3{font-family:'Lora',serif;font-size:1.24rem;font-weight:700;color:var(--ink);margin-bottom:8px}
+.admin-panel-card p{color:var(--ink-soft);font-size:.92rem;margin-bottom:20px}
+.emails-list{list-style:none;display:grid;gap:10px;margin-bottom:20px}
+.email-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+[data-theme="dark"] .email-row{background:rgba(255,255,255,.03)}
+.email-name{font-weight:600;font-size:.94rem;color:var(--ink);display:flex;align-items:center;gap:8px;word-break:break-all}
+.email-del-btn{border:0;background:transparent;color:var(--red);cursor:pointer;padding:6px;border-radius:6px;transition:background .2s}
+.email-del-btn:hover{background:rgba(200,16,46,.1)}
+.email-add-form{display:flex;gap:10px;flex-wrap:wrap}
+.email-add-input{flex:1 1 240px;padding:12px 16px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:.94rem;color:var(--ink);background:var(--paper)}
+[data-theme="dark"] .email-add-input{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--ink)}
+.email-add-btn{padding:12px 24px;border-radius:10px;border:0;background:var(--red);color:#ffffff;font-weight:700;font-size:.92rem;cursor:pointer;transition:background .2s}
+.email-add-btn:hover{background:var(--red-deep)}
+.links-row{display:flex;gap:14px;flex-wrap:wrap}
+.sheet-link-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:12px;background:#18864b;color:#ffffff;font-weight:700;font-size:.96rem;transition:background .2s,transform .2s}
+.sheet-link-btn:hover{background:#136d3d;transform:translateY(-2px);color:#ffffff}
+.sheet-link-btn svg{width:20px;height:20px}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="admin-wrap">
+  <header class="header static-page" id="header">
+    <a class="brand" href="index.html">
+      <img src="assets/icons/school-emblem.jpg" alt="Логотип школи">
+      <div class="brand-text">
+        <span class="brand-title">Польська Суботня Школа</span>
+        <span class="brand-sub">Панель керування</span>
+      </div>
+    </a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="theme-toggle" id="themeToggle" aria-label="Перемкнути тему">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button type="button" class="btn sm ghost" id="logoutBtn" style="display:none;color:var(--ink);border-color:var(--line)">Вийти</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-auth-card" id="authCard">
+      <div class="admin-auth-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h1>Вхід до адмін-панелі</h1>
+      <p>Доступ дозволено лише для зареєстрованих адрес електронної пошти адміністрації школи.</p>
+      
+      <div class="admin-alert" id="authAlert"></div>
+
+      <form id="authForm">
+        <div class="admin-input-group">
+          <label for="adminEmail">Ваша email-адреса:</label>
+          <input type="email" id="adminEmail" class="admin-input" placeholder="example@gmail.com" required autocomplete="email">
+        </div>
+        <div class="admin-input-group">
+          <label for="adminPin">Код безпеки (PIN):</label>
+          <input type="password" id="adminPin" class="admin-input" placeholder="Введіть 1963" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn admin-btn">Увійти в панель</button>
+      </form>
+    </div>
+
+    <div class="admin-dash" id="adminDash">
+      <div class="dash-head">
+        <div class="dash-title">
+          <h2>Вітаємо в панелі керування!</h2>
+          <p>Вхід виконано як: <strong id="currentAdminEmail" style="color:var(--red)"></strong></p>
+          <span class="dash-badge">Адміністратор школи</span>
+        </div>
+        <div class="links-row">
+          <a href="index.html" class="btn sm ghost" style="color:var(--ink);border-color:var(--line)">На сайт</a>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-card">
+          <div class="dash-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="dash-card-val">10</div>
+          <div class="dash-card-lbl">Активних сторінок сайту</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="dash-card-val">102</div>
+          <div class="dash-card-lbl">Світлин у фотогалереї</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon" style="color:#18864b;background:rgba(24,134,75,.1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="dash-card-val" style="color:#18864b">Онлайн</div>
+          <div class="dash-card-lbl">Хостинг GitHub Pages</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="dash-card-val">UA / PL</div>
+          <div class="dash-card-lbl">Двомовний перекладач</div>
+        </div>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>Заявки на навчання (Google Таблиця)</h3>
+        <p>Усі онлайн-заявки з сайту школи записуються безпосередньо у вашу Google Таблицю в режимі реального часу.</p>
+        <div class="links-row">
+          <a href="https://docs.google.com/spreadsheets/d/1X5031-G4qU0N7P-fM6d4zSgQW1f6rK0hI2b_wV9f1g/edit" target="_blank" rel="noopener noreferrer" class="sheet-link-btn" id="openSheetBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Відкрити Google Таблицю із заявками
+          </a>
+          <button type="button" class="btn sm" id="testFormBtn">Надіслати тестову заявку</button>
+        </div>
+        <div class="admin-alert" id="testAlert" style="margin-top:14px"></div>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>Керування доступом до адмін-панелі</h3>
+        <p>Список поштових скриньок, власники яких мають право входити до цієї панелі. Ви можете додавати пошти вчителів чи адміністрації.</p>
+        
+        <ul class="emails-list" id="emailsList"></ul>
+
+        <form class="email-add-form" id="addEmailForm">
+          <input type="email" id="newEmailInput" class="email-add-input" placeholder="Введіть нову пошту для доступу..." required>
+          <button type="submit" class="email-add-btn">+ Додати пошту</button>
+        </form>
+      </div>
+
+      <div class="admin-panel-card">
+        <h3>Контакти школи для перевірки</h3>
+        <p>Поточні контактні дані, що відображаються на сайті:</p>
+        <ul style="list-style:none;display:grid;gap:8px;color:var(--ink-soft);font-size:.92rem">
+          <li><strong>Адреси:</strong> м. Дрогобич, вул. Завалля 12 та вул. Трускавецька 9</li>
+          <li><strong>Телефони:</strong> +38 096 953 9065, +38 093 498 5678</li>
+          <li><strong>Email:</strong> polska.school@gmail.com</li>
+          <li><strong>Директор:</strong> Хлопек Адам Броніславович</li>
+          <li><strong>Віце-директор:</strong> Качмар Ірина Іванівна</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/js/site.js"></script>
+<script>
+(function() {
+  var DEFAULT_EMAILS = [
+    'gaga050819@gmail.com',
+    'polska.school@gmail.com'
+  ];
+
+  function getEmails() {
+    try {
+      var raw = localStorage.getItem('school_admin_emails');
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return DEFAULT_EMAILS.slice();
+  }
+
+  function saveEmails(arr) {
+    try {
+      localStorage.setItem('school_admin_emails', JSON.stringify(arr));
+    } catch(e) {}
+  }
+
+  var authCard = document.getElementById('authCard');
+  var adminDash = document.getElementById('adminDash');
+  var authForm = document.getElementById('authForm');
+  var authAlert = document.getElementById('authAlert');
+  var logoutBtn = document.getElementById('logoutBtn');
+  var currentAdminEmail = document.getElementById('currentAdminEmail');
+  var emailsList = document.getElementById('emailsList');
+  var addEmailForm = document.getElementById('addEmailForm');
+  var newEmailInput = document.getElementById('newEmailInput');
+  var testFormBtn = document.getElementById('testFormBtn');
+  var testAlert = document.getElementById('testAlert');
+
+  function renderEmails() {
+    var list = getEmails();
+    emailsList.innerHTML = '';
+    list.forEach(function(em, idx) {
+      var li = document.createElement('li');
+      li.className = 'email-row';
+      var left = document.createElement('span');
+      left.className = 'email-name';
+      left.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--red)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>' + em;
+      li.appendChild(left);
+      if (list.length > 1) {
+        var delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'email-del-btn';
+        delBtn.innerHTML = 'Видалити';
+        delBtn.addEventListener('click', function() {
+          var updated = list.filter(function(_, i) { return i !== idx; });
+          saveEmails(updated);
+          renderEmails();
+        });
+        li.appendChild(delBtn);
+      }
+      emailsList.appendChild(li);
+    });
+  }
+
+  function showDashboard(email) {
+    authCard.style.display = 'none';
+    adminDash.classList.add('active');
+    logoutBtn.style.display = 'inline-flex';
+    currentAdminEmail.textContent = email;
+    renderEmails();
+    try {
+      sessionStorage.setItem('admin_logged_in', email);
+    } catch(e) {}
+  }
+
+  function showAuth() {
+    authCard.style.display = 'block';
+    adminDash.classList.remove('active');
+    logoutBtn.style.display = 'none';
+    try {
+      sessionStorage.removeItem('admin_logged_in');
+    } catch(e) {}
+  }
+
+  var savedSession = null;
+  try {
+    savedSession = sessionStorage.getItem('admin_logged_in');
+  } catch(e) {}
+
+  if (savedSession) {
+    showDashboard(savedSession);
+  }
+
+  authForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = (document.getElementById('adminEmail').value || '').trim().toLowerCase();
+    var pin = (document.getElementById('adminPin').value || '').trim();
+    var list = getEmails().map(function(s) { return s.trim().toLowerCase(); });
+
+    if (list.indexOf(email) === -1) {
+      authAlert.className = 'admin-alert error';
+      authAlert.textContent = 'Помилка доступу: пошту ' + email + ' не знайдено у списку дозволених адміністраторів.';
+      return;
+    }
+
+    if (pin !== '1963') {
+      authAlert.className = 'admin-alert error';
+      authAlert.textContent = 'Неправильний код безпеки (PIN).';
+      return;
+    }
+
+    authAlert.style.display = 'none';
+    showDashboard(email);
+  });
+
+  logoutBtn.addEventListener('click', function() {
+    showAuth();
+  });
+
+  addEmailForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var newEm = (newEmailInput.value || '').trim().toLowerCase();
+    if (!newEm) return;
+    var list = getEmails();
+    if (list.map(function(s) { return s.toLowerCase(); }).indexOf(newEm) !== -1) {
+      alert('Ця пошта вже є у списку!');
+      return;
+    }
+    list.push(newEm);
+    saveEmails(list);
+    renderEmails();
+    newEmailInput.value = '';
+  });
+
+  testFormBtn.addEventListener('click', function() {
+    testAlert.className = 'admin-alert';
+    testAlert.style.display = 'block';
+    testAlert.textContent = 'Надсилаю тестову заявку до Google Таблиці...';
+
+    var scriptUrl = 'https://script.google.com/macros/s/AKfycbzj_tN-NKOqg_MaFOQvPOKmjKtR1GMg1EDvjwXiu_YCtn8m3BTFABIOuHGK2ip-a_eJlw/exec';
+    var payload = {
+      name: 'Тест з Адмін-панелі',
+      phone: '+380969539065',
+      email: 'admin.test@school.pl',
+      message: 'Тестова заявка для перевірки з адмін-меню',
+      date: new Date().toLocaleString('uk-UA')
+    };
+
+    fetch(scriptUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function() {
+      testAlert.className = 'admin-alert success';
+      testAlert.textContent = 'Тестову заявку успішно надіслано в Google Таблицю!';
+    }).catch(function(err) {
+      testAlert.className = 'admin-alert error';
+      testAlert.textContent = 'Помилка надсилання: ' + err.message;
+    });
+  });
+})();
+</script>
+</body>
+</html>
