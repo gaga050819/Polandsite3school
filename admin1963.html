@@ -16,9 +16,7 @@
 @keyframes iconShake{0%,100%{transform:scale(1) rotate(0)}20%{transform:scale(1.15) rotate(-14deg)}40%{transform:scale(1.15) rotate(14deg)}60%{transform:scale(1.1) rotate(-8deg)}80%{transform:scale(1.05) rotate(6deg)}}
 @keyframes iconSuccess{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.25)}100%{transform:scale(1);opacity:1}}
 @keyframes alertBounce{0%{opacity:0;transform:translateY(-12px) scale(.95)}60%{transform:translateY(4px) scale(1.02)}100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,.3)}50%{box-shadow:0 0 0 16px rgba(200,16,46,0)}}
 @keyframes dashFade{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:translateY(0)}}
-@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
 .admin-wrap{min-height:100svh;display:flex;flex-direction:column;background:var(--paper);position:relative;overflow-x:hidden}
 .admin-wrap::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;background:radial-gradient(circle at 50% 25%,rgba(200,16,46,.08) 0%,transparent 65%),radial-gradient(circle at 80% 80%,rgba(24,134,75,.05) 0%,transparent 55%);z-index:0}
@@ -26,7 +24,7 @@
 
 .admin-main{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:calc(var(--header) + 36px) clamp(16px,4vw,32px) 48px;position:relative;z-index:1}
 
-.admin-auth-card{max-width:490px;margin:32px auto;background:rgba(255,255,255,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(220,225,235,.8);border-radius:24px;padding:clamp(32px,5vw,44px);box-shadow:0 24px 60px rgba(16,24,40,.09),0 6px 18px rgba(16,24,40,.04);text-align:center;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .4s ease,box-shadow .4s ease;animation:cardEntrance .65s cubic-bezier(.16,1,.3,1) both}
+.admin-auth-card{max-width:480px;margin:36px auto;background:rgba(255,255,255,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(220,225,235,.8);border-radius:24px;padding:clamp(36px,5vw,48px) clamp(24px,5vw,40px);box-shadow:0 24px 60px rgba(16,24,40,.09),0 6px 18px rgba(16,24,40,.04);text-align:center;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .4s ease,box-shadow .4s ease;animation:cardEntrance .65s cubic-bezier(.16,1,.3,1) both}
 [data-theme="dark"] .admin-auth-card{background:rgba(24,27,37,.88);border-color:rgba(255,255,255,.09);box-shadow:0 24px 60px rgba(0,0,0,.45)}
 .admin-auth-card.shake{animation:cardShake .6s cubic-bezier(.36,.07,.19,.97) both;border-color:rgba(200,16,46,.6);box-shadow:0 0 35px rgba(200,16,46,.25)}
 .admin-auth-card.fade-out{opacity:0;transform:scale(.92) translateY(-20px);pointer-events:none}
@@ -37,32 +35,15 @@
 .admin-auth-icon.success{animation:iconSuccess .55s cubic-bezier(.16,1,.3,1) both;background:linear-gradient(135deg,rgba(24,134,75,.25),rgba(24,134,75,.1));border-color:rgba(24,134,75,.6);color:#18864b;box-shadow:0 0 30px rgba(24,134,75,.45)}
 
 .admin-auth-card h1{font-family:'Lora',serif;font-size:1.65rem;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
-.admin-auth-card p{color:var(--ink-soft);font-size:.94rem;margin-bottom:22px;line-height:1.55}
+.admin-auth-card p{color:var(--ink-soft);font-size:.94rem;margin-bottom:24px;line-height:1.55}
 
 .admin-alert{padding:14px 16px;border-radius:14px;font-size:.92rem;font-weight:600;margin-bottom:20px;display:none;text-align:left;position:relative;line-height:1.5}
 .admin-alert.error{display:flex;align-items:flex-start;gap:12px;background:rgba(220,38,38,.1);color:#dc2626;border:1px solid rgba(220,38,38,.3);border-left:5px solid #dc2626;animation:alertBounce .45s cubic-bezier(.16,1,.3,1) both}
 .admin-alert.success{display:flex;align-items:flex-start;gap:12px;background:rgba(24,134,75,.1);color:#18864b;border:1px solid rgba(24,134,75,.3);border-left:5px solid #18864b;animation:alertBounce .45s cubic-bezier(.16,1,.3,1) both}
 .admin-alert svg{width:22px;height:22px;flex-shrink:0;margin-top:2px}
 
-.google-box{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:24px 0 20px;min-height:56px;transition:transform .2s ease}
+.google-box{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:16px 0 8px;min-height:56px;transition:transform .2s ease}
 .google-box:hover{transform:translateY(-2px)}
-
-.setup-box{margin-top:22px;padding:18px;background:var(--paper);border:1px dashed var(--line);border-radius:14px;text-align:left;transition:all .3s ease}
-[data-theme="dark"] .setup-box{background:rgba(255,255,255,.03)}
-.setup-box label{display:block;font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:8px}
-.setup-form{display:flex;gap:10px;flex-wrap:wrap}
-
-.admin-input-group{text-align:left;margin-bottom:16px}
-.admin-input-group label{display:block;font-size:.88rem;font-weight:700;margin-bottom:6px;color:var(--ink)}
-.admin-input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);font-family:inherit;font-size:16px;color:var(--ink);background:var(--paper);outline:none;transition:border-color .25s,box-shadow .25s,background .25s}
-.admin-input:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(200,16,46,.18);background:var(--surface)}
-[data-theme="dark"] .admin-input{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--ink)}
-.admin-btn{width:100%;justify-content:center;margin-top:8px;padding:14px 24px;border-radius:12px;font-size:1rem}
-
-.auth-switch-links{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.link-btn{background:none;border:none;color:var(--ink-soft);font-size:.84rem;cursor:pointer;text-decoration:none;padding:6px 8px;border-radius:8px;transition:color .2s,background .2s}
-.link-btn:hover{color:var(--ink);background:rgba(0,0,0,.04)}
-[data-theme="dark"] .link-btn:hover{background:rgba(255,255,255,.06)}
 
 .admin-dash{display:none}
 .admin-dash.active{display:block;animation:dashFade .65s cubic-bezier(.16,1,.3,1) both}
@@ -141,40 +122,12 @@
         <svg id="lockIconSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
       <h1 id="authTitle">Вхід до адмін-панелі</h1>
-      <p id="authDesc">Авторизація через офіційний обліковий запис Google. Вхід дозволено виключно для зареєстрованих поштових адрес адміністраторів школи.</p>
+      <p id="authDesc">Безпечна авторизація через Google. Вхід дозволено виключно для зареєстрованих поштових адрес адміністраторів школи.</p>
       
       <div class="admin-alert" id="authAlert"></div>
 
       <div class="google-box" id="googleBox">
         <div id="googleBtnContainer"></div>
-      </div>
-
-      <div class="setup-box" id="setupBox" style="display:none">
-        <label for="clientIdInput">Google OAuth Client ID:</label>
-        <div class="setup-form">
-          <input type="text" id="clientIdInput" class="admin-input" placeholder="749...apps.googleusercontent.com" style="font-size:.85rem;padding:10px 14px">
-          <button type="button" class="btn sm" id="saveClientIdBtn" style="white-space:nowrap">Зберегти</button>
-        </div>
-        <div style="font-size:.82rem;color:var(--ink-soft);margin-top:10px;line-height:1.45">
-          Вкажіть Client ID з Google Cloud Console для роботи кнопки входу.
-        </div>
-      </div>
-
-      <form id="backupForm" style="display:none;margin-top:20px;text-align:left">
-        <div class="admin-input-group">
-          <label for="adminEmail">Email адміністратора:</label>
-          <input type="email" id="adminEmail" class="admin-input" placeholder="gaga050819@gmail.com" autocomplete="email">
-        </div>
-        <div class="admin-input-group">
-          <label for="adminPin">Код безпеки (PIN):</label>
-          <input type="password" id="adminPin" class="admin-input" placeholder="Введіть 1963" autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn admin-btn">Увійти за PIN-кодом</button>
-      </form>
-
-      <div class="auth-switch-links">
-        <button type="button" class="link-btn" id="toggleSetupBtn">Налаштувати Client ID</button>
-        <button type="button" class="link-btn" id="toggleBackupBtn">Резервний вхід за кодом</button>
       </div>
     </div>
 
@@ -250,16 +203,6 @@
       </div>
 
       <div class="admin-panel-card">
-        <h3>Налаштування Google Авторизації</h3>
-        <p>Поточний Google Client ID, прив'язаний до вашого Google Cloud проекту:</p>
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-          <input type="text" id="dashClientIdInput" class="admin-input" style="flex:1 1 280px;font-size:.88rem" placeholder="Не налаштовано">
-          <button type="button" class="btn sm" id="dashSaveClientIdBtn">Оновити Client ID</button>
-        </div>
-        <div id="dashClientIdAlert" class="admin-alert" style="margin-top:14px"></div>
-      </div>
-
-      <div class="admin-panel-card">
         <h3>Контакти школи для перевірки</h3>
         <p>Поточні контактні дані, що відображаються на сайті:</p>
         <ul style="list-style:none;display:grid;gap:10px;color:var(--ink-soft);font-size:.94rem">
@@ -282,7 +225,7 @@
     'polska.school@gmail.com'
   ];
 
-  var DEFAULT_CLIENT_ID = '749327851839-me3jil7t4ecdfgae838k20ljmukcatad.apps.googleusercontent.com';
+  var CLIENT_ID = '749327851839-me3jil7t4ecdfgae838k20ljmukcatad.apps.googleusercontent.com';
 
   function getEmails() {
     try {
@@ -295,20 +238,6 @@
   function saveEmails(arr) {
     try {
       localStorage.setItem('school_admin_emails', JSON.stringify(arr));
-    } catch(e) {}
-  }
-
-  function getClientId() {
-    try {
-      var saved = (localStorage.getItem('school_google_client_id') || '').trim();
-      if (saved) return saved;
-    } catch(e) {}
-    return DEFAULT_CLIENT_ID;
-  }
-
-  function saveClientId(id) {
-    try {
-      localStorage.setItem('school_google_client_id', (id || '').trim());
     } catch(e) {}
   }
 
@@ -328,15 +257,6 @@
   var testFormBtn = document.getElementById('testFormBtn');
   var testAlert = document.getElementById('testAlert');
   var googleBtnContainer = document.getElementById('googleBtnContainer');
-  var setupBox = document.getElementById('setupBox');
-  var clientIdInput = document.getElementById('clientIdInput');
-  var saveClientIdBtn = document.getElementById('saveClientIdBtn');
-  var toggleSetupBtn = document.getElementById('toggleSetupBtn');
-  var toggleBackupBtn = document.getElementById('toggleBackupBtn');
-  var backupForm = document.getElementById('backupForm');
-  var dashClientIdInput = document.getElementById('dashClientIdInput');
-  var dashSaveClientIdBtn = document.getElementById('dashSaveClientIdBtn');
-  var dashClientIdAlert = document.getElementById('dashClientIdAlert');
   var confettiCanvas = document.getElementById('confettiCanvas');
 
   function launchConfetti() {
@@ -463,14 +383,8 @@
     if (userData.picture) {
       currentAvatar.src = userData.picture;
     }
-    if (userData.authType === 'google') {
-      currentBadge.textContent = 'Підтверджено Google ✓';
-      currentBadge.style.color = '#18864b';
-    } else {
-      currentBadge.textContent = 'Вхід за резервним кодом';
-      currentBadge.style.color = 'var(--ink-soft)';
-    }
-    dashClientIdInput.value = getClientId();
+    currentBadge.textContent = 'Підтверджено Google ✓';
+    currentBadge.style.color = '#18864b';
     renderEmails();
     try {
       sessionStorage.setItem('admin_session', JSON.stringify(userData));
@@ -514,8 +428,7 @@
       triggerSuccessTransition({
         email: email,
         name: payload.name || email,
-        picture: payload.picture || 'assets/icons/school-emblem.jpg',
-        authType: 'google'
+        picture: payload.picture || 'assets/icons/school-emblem.jpg'
       });
     } catch(err) {
       triggerErrorState('Помилка розпізнавання Google-авторизації: ' + err.message);
@@ -523,18 +436,10 @@
   }
 
   function initGoogleBtn() {
-    var cid = getClientId();
     googleBtnContainer.innerHTML = '';
-
-    if (!cid) {
-      googleBtnContainer.innerHTML = '<div style="background:rgba(200,16,46,.08);padding:14px 18px;border-radius:12px;border:1px solid rgba(200,16,46,.25);color:var(--ink);font-size:.9rem;line-height:1.45"><strong style="color:var(--red)">Офіційний вхід через Google:</strong><br>Вкажіть ваш Google OAuth Client ID нижче або скористайтеся резервним входом.</div>';
-      setupBox.style.display = 'block';
-      return;
-    }
-
     if (window.google && window.google.accounts && window.google.accounts.id) {
       window.google.accounts.id.initialize({
-        client_id: cid,
+        client_id: CLIENT_ID,
         callback: handleCredentialResponse,
         auto_select: false
       });
@@ -550,66 +455,6 @@
       setTimeout(initGoogleBtn, 250);
     }
   }
-
-  saveClientIdBtn.addEventListener('click', function() {
-    var val = (clientIdInput.value || '').trim();
-    if (!val) {
-      alert('Будь ласка, введіть Client ID');
-      return;
-    }
-    saveClientId(val);
-    initGoogleBtn();
-    setupBox.style.display = 'none';
-  });
-
-  dashSaveClientIdBtn.addEventListener('click', function() {
-    var val = (dashClientIdInput.value || '').trim();
-    saveClientId(val);
-    dashClientIdAlert.className = 'admin-alert success';
-    dashClientIdAlert.style.display = 'flex';
-    dashClientIdAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Google Client ID успішно збережено!</div>';
-    setTimeout(function() { dashClientIdAlert.style.display = 'none'; }, 4000);
-  });
-
-  toggleSetupBtn.addEventListener('click', function() {
-    var isHidden = (setupBox.style.display === 'none');
-    setupBox.style.display = isHidden ? 'block' : 'none';
-    if (isHidden) {
-      clientIdInput.value = getClientId();
-      clientIdInput.focus();
-    }
-  });
-
-  toggleBackupBtn.addEventListener('click', function() {
-    var isHidden = (backupForm.style.display === 'none');
-    backupForm.style.display = isHidden ? 'block' : 'none';
-    toggleBackupBtn.textContent = isHidden ? 'Приховати резервний вхід' : 'Резервний вхід за кодом';
-  });
-
-  backupForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var email = (document.getElementById('adminEmail').value || '').trim().toLowerCase();
-    var pin = (document.getElementById('adminPin').value || '').trim();
-    var list = getEmails().map(function(s) { return s.trim().toLowerCase(); });
-
-    if (list.indexOf(email) === -1) {
-      triggerErrorState('Пошту ' + email + ' не знайдено у списку дозволених адміністраторів.');
-      return;
-    }
-
-    if (pin !== '1963') {
-      triggerErrorState('Неправильний код безпеки (PIN).');
-      return;
-    }
-
-    authAlert.style.display = 'none';
-    triggerSuccessTransition({
-      email: email,
-      name: email.split('@')[0],
-      picture: 'assets/icons/school-emblem.jpg',
-      authType: 'pin'
-    });
-  });
 
   logoutBtn.addEventListener('click', function() {
     showAuth();
