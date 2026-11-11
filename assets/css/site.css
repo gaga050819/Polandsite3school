@@ -1,19 +1,25 @@
-/* Preserve the current site styles and add focused fixes for the language switch and dark mobile menu. */
+/* Preserve existing site styles and refine language-switch hit targets and theme-aware contrast. */
 @import url('https://cdn.jsdelivr.net/gh/gaga050819/Polandsite3school@04541653d5b5083175cba691c6f000c9347de832/assets/css/site.css');
 
-/* Give UA and PL separate, generous tap targets so users can select either directly. */
+/* Distinct, accurately sized UA/PL targets; slider exactly matches one target. */
 .lang-switch {
+  --lang-option-width: 44px;
+  --lang-option-height: 40px;
+  --lang-gap: 2px;
+  position: relative;
+  gap: var(--lang-gap);
   padding: 4px;
-  gap: 2px;
   touch-action: manipulation;
 }
 
 .lang-switch .lang-btn {
+  position: relative;
   z-index: 3;
-  width: 44px;
-  min-width: 44px;
-  height: 40px;
-  min-height: 40px;
+  flex: 0 0 var(--lang-option-width);
+  width: var(--lang-option-width);
+  min-width: var(--lang-option-width);
+  height: var(--lang-option-height);
+  min-height: var(--lang-option-height);
   border-radius: 999px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -22,29 +28,34 @@
 .lang-switch .lang-slider {
   top: 4px;
   left: 4px;
-  width: 44px;
-  height: 40px;
+  width: var(--lang-option-width);
+  height: var(--lang-option-height);
   pointer-events: none;
 }
 
 .lang-switch[data-active="pl"] .lang-slider {
-  transform: translateX(46px);
+  transform: translateX(calc(var(--lang-option-width) + var(--lang-gap)));
 }
 
-/* Override the dark-theme --white surface token: menu copy must remain near-white. */
-html[data-theme="dark"] .overlay,
-html[data-theme="dark"] .overlay a,
+/* The dark menu background is dark, so its general text is light. */
+html[data-theme="dark"] .overlay {
+  color: #f5f6fa;
+  background: #0f1117;
+}
+
+html[data-theme="dark"] .overlay > ul a,
 html[data-theme="dark"] .overlay .overlay-contacts,
 html[data-theme="dark"] .overlay .overlay-contacts a,
 html[data-theme="dark"] .overlay .overlay-contacts strong {
   color: #f5f6fa !important;
 }
 
-html[data-theme="dark"] .overlay a.active,
-html[data-theme="dark"] .overlay a:hover {
+html[data-theme="dark"] .overlay > ul a.active,
+html[data-theme="dark"] .overlay > ul a:hover {
   color: #ff8296 !important;
 }
 
+/* Theme and language controls use their own surfaces: set foreground to contrast with each surface. */
 html[data-theme="dark"] .overlay .theme-toggle-overlay {
   color: #f5f6fa !important;
   background: #292d38;
@@ -61,36 +72,46 @@ html[data-theme="dark"] .overlay-lang .lang-switch .lang-btn {
   color: #f5f6fa;
 }
 
+/* Active language sits on the bright red slider, so use dark text there. */
 html[data-theme="dark"] .overlay-lang .lang-switch[data-active="ua"] .lang-btn[data-lang="ua"],
 html[data-theme="dark"] .overlay-lang .lang-switch[data-active="pl"] .lang-btn[data-lang="pl"] {
-  color: #171a21;
+  color: #171a21 !important;
 }
 
-/* Keep the larger language targets usable on narrow phone headers without scaling them down. */
+/* In the header, distinguish active text from inactive text based on the actual header background. */
+html[data-theme="dark"] .header.solid .lang-switch,
+html[data-theme="dark"] .header.static-page .lang-switch {
+  background: #252a34;
+  border-color: #687386;
+  color: #f5f6fa;
+}
+
+html[data-theme="dark"] .header.solid .lang-switch .lang-btn,
+html[data-theme="dark"] .header.static-page .lang-switch .lang-btn {
+  color: #f5f6fa;
+}
+
+html[data-theme="dark"] .header.solid .lang-switch[data-active="ua"] .lang-btn[data-lang="ua"],
+html[data-theme="dark"] .header.solid .lang-switch[data-active="pl"] .lang-btn[data-lang="pl"],
+html[data-theme="dark"] .header.static-page .lang-switch[data-active="ua"] .lang-btn[data-lang="ua"],
+html[data-theme="dark"] .header.static-page .lang-switch[data-active="pl"] .lang-btn[data-lang="pl"] {
+  color: #171a21 !important;
+}
+
+/* Keep language controls tappable and within narrow phone headers. */
 @media (max-width: 480px) {
   .header .lang-switch {
+    --lang-option-width: 40px;
+    --lang-option-height: 36px;
+    --lang-gap: 0px;
     transform: none;
     margin: 0;
-    gap: 0;
     padding: 3px;
-  }
-
-  .header .lang-switch .lang-btn {
-    width: 40px;
-    min-width: 40px;
-    height: 36px;
-    min-height: 36px;
   }
 
   .header .lang-switch .lang-slider {
     top: 3px;
     left: 3px;
-    width: 40px;
-    height: 36px;
-  }
-
-  .header .lang-switch[data-active="pl"] .lang-slider {
-    transform: translateX(40px);
   }
 }
 
