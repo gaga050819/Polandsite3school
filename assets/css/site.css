@@ -77,3 +77,136 @@
     flex-shrink: 0;
   }
 }
+
+/* Fit all header controls on narrow phones instead of letting the menu button overflow. */
+@media (max-width: 480px) {
+  .header {
+    padding-right: 8px;
+    padding-left: 8px;
+    gap: 4px;
+  }
+
+  .header .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .header .brand img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .header .brand-text {
+    min-width: 0;
+  }
+
+  .header .brand-title {
+    max-width: clamp(72px, 26vw, 122px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .76rem;
+  }
+
+  .header .brand-sub {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .58rem;
+  }
+
+  .header .theme-toggle {
+    width: 32px;
+    height: 36px;
+  }
+
+  .header .lang-switch {
+    transform: scale(.78);
+    transform-origin: right center;
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+
+  .header .nav-toggle {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .header .nav-toggle i {
+    left: 10px;
+    right: 10px;
+  }
+
+  .header .nav-toggle i:nth-child(1) { top: 13px; }
+  .header .nav-toggle i:nth-child(2) { top: 19px; }
+  .header .nav-toggle i:nth-child(3) { top: 25px; }
+
+  body.menu-open .header .nav-toggle i:nth-child(1),
+  body.menu-open .header .nav-toggle i:nth-child(3) {
+    top: 19px;
+  }
+}
+
+@media (max-width: 360px) {
+  .header .brand-sub {
+    display: none;
+  }
+
+  .header .brand-title {
+    max-width: clamp(68px, 24vw, 88px);
+    font-size: .72rem;
+  }
+
+  .header .brand img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .header .lang-switch {
+    transform: scale(.72);
+    margin-left: -9px;
+    margin-right: -9px;
+  }
+}
+
+/* Use the available height on phones in landscape or with a short viewport. */
+@media (max-width: 860px) and (max-height: 700px) {
+  .overlay {
+    padding-top: calc(var(--header) + 10px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .overlay-lang {
+    margin-bottom: 8px;
+  }
+
+  .overlay ul {
+    gap: 0;
+  }
+
+  .overlay a {
+    font-size: clamp(1.05rem, 3.2vh, 1.45rem);
+    padding: 2px 0;
+  }
+
+  .overlay .overlay-contacts {
+    margin-top: 12px;
+    padding-top: 10px;
+    gap: 8px 18px;
+    font-size: .82rem;
+  }
+}
+
+@media (max-width: 860px) and (max-height: 500px) {
+  .overlay .theme-toggle-overlay {
+    width: 36px;
+    height: 36px;
+  }
+
+  .overlay .overlay-contacts {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+}
