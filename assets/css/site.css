@@ -210,3 +210,45 @@
     padding-top: 8px;
   }
 }
+
+/* Dark-mode menu controls need explicit foreground colors: --white is a dark surface token in this theme. */
+[data-theme="dark"] .overlay {
+  color: #f5f6fa;
+}
+
+[data-theme="dark"] .overlay > ul a,
+[data-theme="dark"] .overlay .overlay-contacts,
+[data-theme="dark"] .overlay .overlay-contacts a {
+  color: #f5f6fa;
+}
+
+[data-theme="dark"] .overlay > ul a.active,
+[data-theme="dark"] .overlay > ul a:hover {
+  color: #ff8296;
+}
+
+[data-theme="dark"] .overlay .theme-toggle-overlay {
+  color: #f5f6fa;
+  background: #292d38;
+  border: 1px solid #596171;
+}
+
+[data-theme="dark"] .overlay .theme-toggle-overlay:hover,
+[data-theme="dark"] .overlay .theme-toggle-overlay:focus-visible {
+  background: #3a4150;
+}
+
+[data-theme="dark"] .overlay-lang .lang-switch {
+  color: #f5f6fa;
+  background: #252a34;
+  border-color: #626b7a;
+}
+
+[data-theme="dark"] .overlay-lang .lang-btn {
+  color: #f5f6fa;
+}
+
+[data-theme="dark"] .overlay-lang .lang-switch[data-active="ua"] .lang-btn[data-lang="ua"],
+[data-theme="dark"] .overlay-lang .lang-switch[data-active="pl"] .lang-btn[data-lang="pl"] {
+  color: #171a21;
+}
