@@ -22,7 +22,7 @@
 .admin-wrap::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;background:radial-gradient(circle at 50% 25%,rgba(200,16,46,.08) 0%,transparent 65%),radial-gradient(circle at 80% 80%,rgba(24,134,75,.05) 0%,transparent 55%);z-index:0}
 [data-theme="dark"] .admin-wrap::before{background:radial-gradient(circle at 50% 25%,rgba(200,16,46,.15) 0%,transparent 70%),radial-gradient(circle at 85% 85%,rgba(24,134,75,.08) 0%,transparent 60%)}
 
-.admin-main{flex:1;max-width:1160px;width:100%;margin:0 auto;padding:calc(var(--header) + 32px) clamp(16px,4vw,32px) 48px;position:relative;z-index:1}
+.admin-main{flex:1;max-width:1240px;width:100%;margin:0 auto;padding:calc(var(--header) + 32px) clamp(16px,4vw,32px) 48px;position:relative;z-index:1}
 
 .admin-auth-card{max-width:480px;margin:36px auto;background:rgba(255,255,255,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(220,225,235,.8);border-radius:24px;padding:clamp(36px,5vw,48px) clamp(24px,5vw,40px);box-shadow:0 24px 60px rgba(16,24,40,.09),0 6px 18px rgba(16,24,40,.04);text-align:center;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .4s ease,box-shadow .4s ease;animation:cardEntrance .65s cubic-bezier(.16,1,.3,1) both}
 [data-theme="dark"] .admin-auth-card{background:rgba(24,27,37,.88);border-color:rgba(255,255,255,.09);box-shadow:0 24px 60px rgba(0,0,0,.45)}
@@ -72,7 +72,7 @@
 .dash-card-val{font-family:'Lora',serif;font-size:2rem;font-weight:700;color:var(--ink);line-height:1}
 .dash-card-lbl{font-size:.9rem;color:var(--ink-soft);margin-top:6px;font-weight:600}
 
-.admin-panel-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,4vw,32px);box-shadow:var(--shadow);margin-bottom:24px}
+.admin-panel-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,30px);box-shadow:var(--shadow);margin-bottom:24px}
 .admin-panel-card h3{font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:8px}
 .admin-panel-card p{color:var(--ink-soft);font-size:.94rem;margin-bottom:20px}
 
@@ -167,7 +167,8 @@ textarea.admin-input{min-height:95px;resize:vertical}
       </div>
 
       <div class="dash-tabs">
-        <button type="button" class="dash-tab-btn active" data-tab="tab-overview">📊 Заявки та стан</button>
+        <button type="button" class="dash-tab-btn active" data-tab="tab-live-editor">🖥️ Живий редактор сайту</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-overview">📊 Заявки та стан</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-content">📝 Редактор текстів</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-photos">🖼️ Керування фото</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-announcement">📢 Оголошення</button>
@@ -175,7 +176,55 @@ textarea.admin-input{min-height:95px;resize:vertical}
         <button type="button" class="dash-tab-btn" data-tab="tab-sync">🚀 Публікація</button>
       </div>
 
-      <div class="tab-pane active" id="tab-overview">
+      <div class="tab-pane active" id="tab-live-editor">
+        <div class="admin-panel-card" style="padding:16px 22px;margin-bottom:18px">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <label for="livePageSelect" style="font-size:.88rem;font-weight:700;color:var(--ink)">Сторінка:</label>
+              <select id="livePageSelect" class="admin-input" style="width:auto;padding:8px 14px;font-size:.88rem;font-weight:700;cursor:pointer">
+                <option value="index.html">Головна (index.html)</option>
+                <option value="pro-mene.html">Про нас (pro-mene.html)</option>
+                <option value="rozklad-navchannya.html">Розклад занять (rozklad-navchannya.html)</option>
+                <option value="rozklad-dzvinkiv.html">Розклад дзвінків (rozklad-dzvinkiv.html)</option>
+                <option value="prajs-list.html">Курси (prajs-list.html)</option>
+                <option value="fotogalereya.html">Фотогалерея (fotogalereya.html)</option>
+                <option value="ekskursiji-wycieczki.html">Екскурсії (ekskursiji-wycieczki.html)</option>
+                <option value="uroczystosci.html">Свята (uroczystosci.html)</option>
+                <option value="kontakti.html">Контакти (kontakti.html)</option>
+              </select>
+              
+              <div style="display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)">
+                <button type="button" id="vpDesktop" class="btn sm" style="border-radius:0;padding:8px 14px;background:var(--red);color:#ffffff" title="Комп'ютер">🖥️ ПК</button>
+                <button type="button" id="vpTablet" class="btn sm ghost" style="border-radius:0;padding:8px 14px;border:0;color:var(--ink)" title="Планшет (768px)">📱 Планшет</button>
+                <button type="button" id="vpMobile" class="btn sm ghost" style="border-radius:0;padding:8px 14px;border:0;color:var(--ink)" title="Телефон (390px)">📱 Мобільний</button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <button type="button" id="toggleEditModeBtn" class="btn sm" style="background:#18864b">✏️ Режим редагування: УВІМКНЕНО</button>
+              <button type="button" id="saveLiveChangesBtn" class="btn sm" style="box-shadow:0 4px 14px rgba(200,16,46,.35)">💾 Зберегти зміни наживо</button>
+              <button type="button" id="reloadLiveFrameBtn" class="btn sm ghost" style="color:var(--ink);border-color:var(--line)" title="Оновити сторінку">🔄</button>
+            </div>
+          </div>
+          <div style="font-size:.84rem;color:var(--ink-soft);margin-top:12px;line-height:1.45;display:flex;align-items:center;gap:8px">
+            <span>💡</span>
+            <span><strong>Як редагувати:</strong> просто клікайте на будь-який заголовок, текст, абзац чи номер телефону прямо у вікні сайту нижче та редагуйте його. Щоб замінити будь-яку фотографію, двічі клікніть на неї! Потім натисніть червону кнопку <strong>«💾 Зберегти зміни наживо»</strong>.</span>
+          </div>
+          <div id="liveEditorAlert" class="admin-alert" style="margin-top:12px"></div>
+        </div>
+
+        <div id="liveFrameContainer" style="width:100%;transition:max-width .3s ease;margin:0 auto;background:#1e293b;padding:12px;border-radius:20px;box-shadow:var(--shadow-lg)">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;padding-left:6px">
+            <span style="width:10px;height:10px;border-radius:50%;background:#ef4444"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:#10b981"></span>
+            <span id="liveFrameUrlBadge" style="margin-left:10px;font-size:.76rem;color:#94a3b8;font-family:monospace">index.html (Живий попередній перегляд)</span>
+          </div>
+          <iframe id="liveSiteFrame" src="index.html" style="width:100%;height:820px;border:none;border-radius:12px;background:#ffffff;display:block"></iframe>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tab-overview">
         <div class="dash-grid">
           <div class="dash-card">
             <div class="dash-card-icon">
@@ -573,6 +622,19 @@ textarea.admin-input{min-height:95px;resize:vertical}
   var resetAllBtn = document.getElementById('resetAllBtn');
   var syncAlert = document.getElementById('syncAlert');
 
+  var livePageSelect = document.getElementById('livePageSelect');
+  var liveSiteFrame = document.getElementById('liveSiteFrame');
+  var liveFrameContainer = document.getElementById('liveFrameContainer');
+  var liveFrameUrlBadge = document.getElementById('liveFrameUrlBadge');
+  var vpDesktop = document.getElementById('vpDesktop');
+  var vpTablet = document.getElementById('vpTablet');
+  var vpMobile = document.getElementById('vpMobile');
+  var toggleEditModeBtn = document.getElementById('toggleEditModeBtn');
+  var saveLiveChangesBtn = document.getElementById('saveLiveChangesBtn');
+  var reloadLiveFrameBtn = document.getElementById('reloadLiveFrameBtn');
+  var liveEditorAlert = document.getElementById('liveEditorAlert');
+
+  var isLiveEditMode = true;
   var currentNewPhotoData = '';
 
   function launchConfetti() {
@@ -779,6 +841,159 @@ textarea.admin-input{min-height:95px;resize:vertical}
     });
   }
 
+  function attachLiveEditorToFrame() {
+    try {
+      var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+      if (!doc) return;
+
+      var existingStyle = doc.getElementById('live-editor-styles');
+      if (!existingStyle) {
+        var style = doc.createElement('style');
+        style.id = 'live-editor-styles';
+        style.textContent = '.live-editable-hover{outline:2px dashed #c8102e !important;outline-offset:2px !important;cursor:text !important}.live-editable-active{outline:2px solid #18864b !important;outline-offset:2px !important;background:rgba(24,134,75,.06) !important}[contenteditable="true"]:focus{outline:2px solid #c8102e !important;outline-offset:2px !important}';
+        doc.head.appendChild(style);
+      }
+
+      var selector = 'h1, h2, h3, h4, p, span, a, button, li, .badge, .brand-title, .brand-sub, .section-tag';
+      var editableElements = doc.querySelectorAll(selector);
+
+      editableElements.forEach(function(el) {
+        if (el.closest('#lightbox') || el.closest('#toggle') || el.closest('#themeToggle') || el.closest('.lang-switch')) return;
+
+        el.setAttribute('contenteditable', isLiveEditMode ? 'true' : 'false');
+        el.setAttribute('spellcheck', 'false');
+
+        el.onclick = function(e) {
+          if (isLiveEditMode) {
+            if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+              e.preventDefault();
+            }
+          }
+        };
+
+        el.onmouseenter = function() {
+          if (isLiveEditMode && doc.activeElement !== el) {
+            el.classList.add('live-editable-hover');
+          }
+        };
+
+        el.onmouseleave = function() {
+          el.classList.remove('live-editable-hover');
+        };
+
+        el.onfocus = function() {
+          el.classList.remove('live-editable-hover');
+          el.classList.add('live-editable-active');
+        };
+
+        el.onblur = function() {
+          el.classList.remove('live-editable-active');
+        };
+      });
+
+      var images = doc.querySelectorAll('img');
+      images.forEach(function(img) {
+        img.ondblclick = function(e) {
+          if (!isLiveEditMode) return;
+          e.preventDefault();
+          var newUrl = prompt('Введіть нове посилання на світлину або залиште старе:', img.src);
+          if (newUrl && newUrl.trim()) {
+            img.src = newUrl.trim();
+          }
+        };
+      });
+    } catch(err) {}
+  }
+
+  liveSiteFrame.addEventListener('load', function() {
+    liveFrameUrlBadge.textContent = livePageSelect.value;
+    attachLiveEditorToFrame();
+  });
+
+  livePageSelect.addEventListener('change', function() {
+    liveSiteFrame.src = livePageSelect.value;
+    liveFrameUrlBadge.textContent = livePageSelect.value;
+  });
+
+  vpDesktop.addEventListener('click', function() {
+    liveFrameContainer.style.maxWidth = '100%';
+    vpDesktop.style.background = 'var(--red)';
+    vpDesktop.style.color = '#ffffff';
+    vpTablet.style.background = 'transparent';
+    vpTablet.style.color = 'var(--ink)';
+    vpMobile.style.background = 'transparent';
+    vpMobile.style.color = 'var(--ink)';
+  });
+
+  vpTablet.addEventListener('click', function() {
+    liveFrameContainer.style.maxWidth = '768px';
+    vpTablet.style.background = 'var(--red)';
+    vpTablet.style.color = '#ffffff';
+    vpDesktop.style.background = 'transparent';
+    vpDesktop.style.color = 'var(--ink)';
+    vpMobile.style.background = 'transparent';
+    vpMobile.style.color = 'var(--ink)';
+  });
+
+  vpMobile.addEventListener('click', function() {
+    liveFrameContainer.style.maxWidth = '390px';
+    vpMobile.style.background = 'var(--red)';
+    vpMobile.style.color = '#ffffff';
+    vpDesktop.style.background = 'transparent';
+    vpDesktop.style.color = 'var(--ink)';
+    vpTablet.style.background = 'transparent';
+    vpTablet.style.color = 'var(--ink)';
+  });
+
+  toggleEditModeBtn.addEventListener('click', function() {
+    isLiveEditMode = !isLiveEditMode;
+    toggleEditModeBtn.textContent = isLiveEditMode ? '✏️ Режим редагування: УВІМКНЕНО' : '👁️ Режим перегляду: УВІМКНЕНО';
+    toggleEditModeBtn.style.background = isLiveEditMode ? '#18864b' : '#2563eb';
+    attachLiveEditorToFrame();
+  });
+
+  reloadLiveFrameBtn.addEventListener('click', function() {
+    liveSiteFrame.src = livePageSelect.value;
+  });
+
+  saveLiveChangesBtn.addEventListener('click', function() {
+    try {
+      var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+      if (!doc) throw new Error('Немає доступу до сторінки');
+
+      var c = getSiteContent();
+      var curPage = livePageSelect.value;
+      var pKey = 'index';
+      if (curPage.indexOf('pro-mene') !== -1) pKey = 'pro_mene';
+      else if (curPage.indexOf('prajs-list') !== -1) pKey = 'prajs_list';
+      else if (curPage.indexOf('fotogalereya') !== -1) pKey = 'fotogalereya';
+      else if (curPage.indexOf('ekskursiji') !== -1) pKey = 'ekskursiji';
+      else if (curPage.indexOf('uroczystosci') !== -1) pKey = 'uroczystosci';
+      else if (curPage.indexOf('kontakti') !== -1) pKey = 'kontakti';
+
+      var heroH1 = doc.querySelector('.page-hero h1, .hero h1');
+      var heroP = doc.querySelector('.page-hero p, .hero p');
+
+      if (!c.pages) c.pages = {};
+      if (!c.pages[pKey]) c.pages[pKey] = {};
+
+      if (heroH1) c.pages[pKey].hero_title = heroH1.innerText.trim();
+      if (heroP) c.pages[pKey].hero_subtitle = heroP.innerText.trim();
+
+      saveSiteContent(c);
+      populateContentFields();
+
+      liveEditorAlert.className = 'admin-alert success';
+      liveEditorAlert.style.display = 'flex';
+      liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Зміни зі сторінки ' + curPage + ' успішно збережено наживо!</div>';
+      setTimeout(function() { liveEditorAlert.style.display = 'none'; }, 4500);
+    } catch(err) {
+      liveEditorAlert.className = 'admin-alert error';
+      liveEditorAlert.style.display = 'flex';
+      liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Помилка збереження: ' + err.message + '</div>';
+    }
+  });
+
   function showDashboard(userData) {
     authCard.style.display = 'none';
     authCard.classList.remove('fade-out');
@@ -794,6 +1009,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
     renderEmails();
     updateSheetLinkUI();
     populateContentFields();
+    attachLiveEditorToFrame();
     try {
       sessionStorage.setItem('admin_session', JSON.stringify(userData));
     } catch(e) {}
@@ -871,7 +1087,12 @@ textarea.admin-input{min-height:95px;resize:vertical}
       btn.classList.add('active');
       var targetId = btn.getAttribute('data-tab');
       var targetPane = document.getElementById(targetId);
-      if (targetPane) targetPane.classList.add('active');
+      if (targetPane) {
+        targetPane.classList.add('active');
+        if (targetId === 'tab-live-editor') {
+          setTimeout(attachLiveEditorToFrame, 200);
+        }
+      }
     });
   });
 
