@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png?v=2">
 <link rel="shortcut icon" href="assets/icons/favicon.ico?v=2">
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css?v=3">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
@@ -401,15 +401,15 @@
   </div>
 </div>
 
-<div class="news-modal" id="newsModal">
+<div class="news-modal" id="newsModal" style="display:none">
   <div class="news-modal-content">
     <button class="news-modal-close" id="newsModalClose" aria-label="Закрити">&times;</button>
-    <img id="newsModalImg" class="news-modal-img" src="" alt="Світлина новини">
+    <img id="newsModalImg" class="news-modal-img" src="" alt="Світлина новини" style="display:none">
     <div class="news-modal-body">
       <div class="news-modal-meta">
         <span class="news-badge" id="newsModalBadge" style="position:static"></span>
         <span class="news-date" id="newsModalDate">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           <span id="newsModalDateText"></span>
         </span>
       </div>
@@ -432,6 +432,6 @@
   </div>
 </footer>
 
-<script src="assets/js/site.js"></script>
+<script src="assets/js/site.js?v=3"></script>
 </body>
 </html>

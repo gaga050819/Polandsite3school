@@ -33,7 +33,7 @@
     } catch(e) {}
 
     if (savedHtml) {
-      if (filename === 'index.html' && savedHtml.indexOf('id="reviews"') === -1) {
+      if (filename === 'index.html' && (savedHtml.indexOf('id="reviews"') === -1 || savedHtml.indexOf('id="news"') === -1)) {
         try {
           localStorage.removeItem('school_page_main_index.html');
         } catch(e) {}
@@ -1023,15 +1023,17 @@
     }
 
     var path = window.location.pathname.toLowerCase();
-    var pageKey = 'index';
+    var pageKey = '';
     if (path.indexOf('pro-mene') !== -1) pageKey = 'pro_mene';
     else if (path.indexOf('prajs-list') !== -1) pageKey = 'prajs_list';
     else if (path.indexOf('fotogalereya') !== -1) pageKey = 'fotogalereya';
     else if (path.indexOf('ekskursiji') !== -1) pageKey = 'ekskursiji';
     else if (path.indexOf('uroczystosci') !== -1) pageKey = 'uroczystosci';
     else if (path.indexOf('kontakti') !== -1) pageKey = 'kontakti';
+    else if (path.indexOf('novyny') !== -1) pageKey = 'novyny';
+    else if (path.indexOf('index') !== -1 || path.endsWith('/') || path.endsWith('\\') || path === '') pageKey = 'index';
 
-    if (data.pages && data.pages[pageKey]) {
+    if (pageKey && data.pages && data.pages[pageKey]) {
       var filename = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
       if (filename.indexOf('.html') === -1) filename = filename ? (filename + '.html') : 'index.html';
       var hasSavedPage = false;
@@ -1440,6 +1442,15 @@
         photo: 'assets/img/img_3_IMG_7648.jpeg',
         excerpt: 'Ще 12 випускників спецкурсу польської мови нашої школи успішно пройшли співбесіду в Генеральному Консульстві Республіки Польща.',
         text: 'Щиро вітаємо наших старанних учнів із блискучим проходженням офіційної співбесіди на Карту Поляка!\n\nЗавдяки тримісячній інтенсивній підготовці з історії, традицій, географії та культури Польщі, всі кандидати впевнено відповіли на запитання консула та отримали позитивні рішення.\n\nПишаємося вашими здобутками та бажаємо подальших успіхів у навчанні та кар\'єрі!'
+      },
+      {
+        id: 'news-4',
+        title: 'Триває набір учнів на новий навчальний семестр у польській школі',
+        category: 'Оголошення',
+        date: '10 листопада 2026',
+        photo: 'assets/img/img_49_viber_image.jpg',
+        excerpt: 'Запрошуємо дітей та дорослих на курси польської мови різного рівня: від початкового (A1) до підготовки на Карту Поляка (B2/C1).',
+        text: 'Польська суботня школа імені святої королеви Ядвіги у м. Дрогобичі оголошує набір учнів у нові навчальні групи!\n\nПропонуємо:\n• Заняття для дітей від 6 років та підлітків;\n• Інтенсивні розмовні клуби для дорослих;\n• Підготовчі курси до складання іспиту на Карту Поляка;\n• Вивчення традицій, свят та історії Польщі.\n\nЗаняття проходять щосуботи у дружній та творчій атмосфері. Для запису заповніть форму на сайті або зателефонуйте: 096 9539 065.'
       }
     ];
 
@@ -1463,13 +1474,18 @@
       return saved.concat(baseList);
     }
 
-    var isHomepage = (window.location.pathname.indexOf('novyny') === -1);
+    var filterContainer = document.getElementById('newsFilter');
+    var isHomepage = !filterContainer;
     var currentFilter = 'all';
 
     function renderNews() {
       var list = getAllNews();
       if (!isHomepage && currentFilter !== 'all') {
-        list = list.filter(function(n) { return (n.category || '').toLowerCase() === currentFilter.toLowerCase(); });
+        list = list.filter(function(n) {
+          var c = (n.category || '').toLowerCase().trim();
+          var f = currentFilter.toLowerCase().trim();
+          return c === f || c.indexOf(f) !== -1 || f.indexOf(c) !== -1;
+        });
       }
 
       if (isHomepage && list.length > 3) {
@@ -1530,11 +1546,19 @@
 
     function openNewsModal(item) {
       if (!modal) return;
-      if (modalImg) modalImg.src = item.photo || 'assets/img/img_45_IMG_6320.jpeg';
+      if (modalImg) {
+        if (item.photo) {
+          modalImg.src = item.photo;
+          modalImg.style.display = 'block';
+        } else {
+          modalImg.style.display = 'none';
+        }
+      }
       if (modalBadge) modalBadge.textContent = item.category || 'Подія';
       if (modalDateText) modalDateText.textContent = item.date || '';
       if (modalTitle) modalTitle.textContent = item.title || '';
       if (modalText) modalText.textContent = item.text || item.excerpt || '';
+      modal.style.display = 'flex';
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
       if (document.documentElement.lang === 'pl') applyLanguage('pl');
@@ -1543,6 +1567,7 @@
     function closeNewsModal() {
       if (!modal) return;
       modal.classList.remove('active');
+      modal.style.display = 'none';
       document.body.style.overflow = '';
     }
 
@@ -1554,11 +1579,16 @@
         if (e.target === modal) closeNewsModal();
       });
     }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+        closeNewsModal();
+      }
+    });
 
-    var filterContainer = document.getElementById('newsFilter');
     if (filterContainer) {
       filterContainer.querySelectorAll('.filter-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
           filterContainer.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
           currentFilter = btn.getAttribute('data-filter') || 'all';
