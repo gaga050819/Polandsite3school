@@ -170,7 +170,6 @@ textarea.admin-input{min-height:95px;resize:vertical}
         <button type="button" class="dash-tab-btn" data-tab="tab-overview"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Заявки та стан</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-reviews"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Відгуки <span id="adminPendingBadge" style="display:none;background:#f59e0b;color:#fff;padding:2px 7px;border-radius:10px;font-size:.72rem;font-weight:700;margin-left:4px">0</span></button>
         <button type="button" class="dash-tab-btn" data-tab="tab-admins"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Адміністратори</button>
-        <button type="button" class="dash-tab-btn" data-tab="tab-sync"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Публікація</button>
       </div>
 
       <div class="tab-pane active" id="tab-live-editor">
@@ -325,26 +324,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
         </div>
       </div>
 
-      <div class="tab-pane" id="tab-sync">
-        <div class="admin-panel-card">
-          <h3>Публікація змін та синхронізація з GitHub</h3>
-          <p>Всі ваші правки (тексти, фотографії, оголошення) зберігаються миттєво в системі сайту. Щоб опублікувати їх у вихідний репозиторій GitHub для всіх користувачів в один клік, скористайтеся формою нижче:</p>
 
-          <div class="sheet-box">
-            <div class="admin-input-group">
-              <label for="githubPatInput">GitHub Personal Access Token (опціонально для прямої публікації):</label>
-              <input type="password" id="githubPatInput" class="admin-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-              <div style="font-size:.82rem;color:var(--ink-soft);margin-top:6px">Токен зберігається лише у вашому браузері і дозволяє безпечно записувати файл контенту безпосередньо в репозиторій.</div>
-            </div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap">
-              <button type="button" class="btn" id="publishToGithubBtn" style="display:inline-flex;align-items:center;gap:7px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Опублікувати на GitHub</button>
-              <button type="button" class="btn sm ghost" id="downloadBackupBtn" style="color:var(--ink);border-color:var(--line)">Завантажити файл контенту (JSON)</button>
-              <button type="button" class="btn sm ghost" id="resetAllBtn" style="color:var(--red);border-color:var(--line)">Скинути до стандартних</button>
-            </div>
-            <div id="syncAlert" class="admin-alert" style="margin-top:16px"></div>
-          </div>
-        </div>
-      </div>
 
       <div class="tab-pane" id="tab-reviews">
         <div class="admin-panel-card">
@@ -1521,89 +1501,39 @@ textarea.admin-input{min-height:95px;resize:vertical}
     setTimeout(function() { emailAlert.style.display = 'none'; }, 3500);
   });
 
-  publishToGithubBtn.addEventListener('click', function() {
-    var pat = (githubPatInput.value || '').trim();
-    if (!pat) {
-      alert('Будь ласка, введіть ваш GitHub Personal Access Token (PAT) для прямої публікації в репозиторій.');
-      return;
-    }
-    syncAlert.className = 'admin-alert';
-    syncAlert.style.display = 'flex';
-    syncAlert.innerHTML = '<div>Підключаюся до GitHub API та публікую зміни...</div>';
+  if (publishToGithubBtn) {
+    publishToGithubBtn.addEventListener('click', function() {
+      var pat = (githubPatInput ? githubPatInput.value : '').trim();
+      if (!pat) return;
+    });
+  }
 
-    var c = getSiteContent();
-    var contentStr = JSON.stringify(c, null, 2);
-    var contentBase64 = btoa(unescape(encodeURIComponent(contentStr)));
+  if (downloadBackupBtn) {
+    downloadBackupBtn.addEventListener('click', function() {
+      var c = getSiteContent();
+      var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(c, null, 2));
+      var a = document.createElement('a');
+      a.setAttribute('href', dataStr);
+      a.setAttribute('download', 'site-content.json');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  }
 
-    var url = 'https://api.github.com/repos/gaga050819/Polandsite3school/contents/assets/data/site-content.json';
-
-    fetch(url, {
-      headers: {
-        'Authorization': 'token ' + pat,
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    }).then(function(res) {
-      if (res.ok) {
-        return res.json().then(function(data) { return data.sha; });
-      }
-      return null;
-    }).then(function(sha) {
-      var bodyData = {
-        message: 'Оновлення вмісту сайту з адмін-панелі',
-        content: contentBase64,
-        branch: 'main'
-      };
-      if (sha) bodyData.sha = sha;
-
-      return fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'token ' + pat,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bodyData)
+  if (resetAllBtn) {
+    resetAllBtn.addEventListener('click', function() {
+      if (!confirm('Скинути всі тексти, фотографії та налаштування сайту до початкового стану?')) return;
+      localStorage.removeItem('school_site_content');
+      Object.keys(localStorage).forEach(function(k) {
+        if (k.indexOf('school_page_main_') === 0 || k === 'school_page_footer') {
+          localStorage.removeItem(k);
+        }
       });
-    }).then(function(putRes) {
-      if (putRes.ok) {
-        syncAlert.className = 'admin-alert success';
-        syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Зміни успішно завантажено на GitHub! За 30 секунд вони будуть активні для всіх відвідувачів.</div>';
-      } else {
-        return putRes.json().then(function(err) {
-          throw new Error(err.message || 'Помилка GitHub API');
-        });
-      }
-    }).catch(function(err) {
-      syncAlert.className = 'admin-alert error';
-      syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Помилка публікації: ' + err.message + '</div>';
+      populateContentFields();
+      liveSiteFrame.src = livePageSelect.value;
     });
-  });
-
-  downloadBackupBtn.addEventListener('click', function() {
-    var c = getSiteContent();
-    var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(c, null, 2));
-    var a = document.createElement('a');
-    a.setAttribute('href', dataStr);
-    a.setAttribute('download', 'site-content.json');
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  });
-
-  resetAllBtn.addEventListener('click', function() {
-    if (!confirm('Скинути всі тексти, фотографії та налаштування сайту до початкового стану?')) return;
-    localStorage.removeItem('school_site_content');
-    Object.keys(localStorage).forEach(function(k) {
-      if (k.indexOf('school_page_main_') === 0 || k === 'school_page_footer') {
-        localStorage.removeItem(k);
-      }
-    });
-    populateContentFields();
-    liveSiteFrame.src = livePageSelect.value;
-    syncAlert.className = 'admin-alert success';
-    syncAlert.style.display = 'flex';
-    syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Всі налаштування успішно скинуто!</div>';
-  });
+  }
 
   testFormBtn.addEventListener('click', function() {
     testAlert.className = 'admin-alert';
