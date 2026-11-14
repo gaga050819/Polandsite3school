@@ -673,6 +673,94 @@
     TRANSLATIONS[fqKey] = FAQ_TRANS[fqKey];
   }
 
+  var REVIEWS_TRANS = {
+    "Відгуки": "Opinie",
+    "Відгуки та результати": "Opinie i sukcesy",
+    "Що кажуть наші учні та батьки": "Co mówią nasi uczniowie i rodzice",
+    "Справжні історії успіху: отримання Карти Поляка, вступ до престижних університетів Польщі та радість дітей від занять.": "Prawdziwe historie sukcesu: uzyskanie Karty Polaka, studia na prestiżowych uczelniach w Polsce oraz radość dzieci z nauki.",
+    "Залишити відгук": "Napisz opinię",
+    "Всі відгуки": "Wszystkie opinie",
+    "Вступ до ВНЗ": "Studia w Polsce",
+    "Батьки учнів": "Rodzice uczniów",
+    "Курси для дорослих": "Kursy dla dorosłych",
+    "Почніть шлях до вивчення польської мови": "Rozpocznij drogę do nauki języka polskiego",
+    "Почніть шлях до вивчення": "Rozpocznij drogę do nauki",
+    "Отримав(ла) Карту Поляка": "Otrzymał(a) Kartę Polaka",
+    "Вступ до ВНЗ Польщі": "Podjęcie studiów w Polsce",
+    "Батьки учня / учениці": "Rodzice ucznia / uczennicy",
+    "Учень суботньої школи": "Uczeń szkoły sobotniej",
+    "Ваш відгук *": "Twoja opinia *",
+    "Розкажіть про ваш досвід навчання, вчителів чи результат...": "Opowiedz o swoim doświadczeniu w nauce, nauczycielach lub wynikach...",
+    "Я не робот": "Nie jestem robotem",
+    "Захист": "Ochrona",
+    "Надіслати відгук на модерацію": "Prześlij opinię do moderacji",
+    "Ще немає опублікованих відгуків. Будьте першим, хто поділиться враженнями!": "Nie ma jeszcze opublikowanych opinii. Bądź pierwszą osobą, która podzieli się wrażeniami!",
+    "Ще немає опублікованих відгуків. Будьте першим, хто поділиться своїми враженнями!": "Nie ma jeszcze opublikowanych opinii. Bądź pierwszą osobą, która podzieli się wrażeniami!",
+    "Поки що немає відгуків": "Brak opinii",
+    "Будьте першим, хто поділиться своїм досвідом навчання у школі!": "Bądź pierwszą osobą, która podzieli się swoim doświadczeniem z nauki w szkole!",
+    "Підтверджений відгук": "Potwierdzona opinia",
+    "Випускник школи": "Absolwent szkoły",
+    "Поділіться вашими враженнями про навчання у Польській суботній школі": "Podziel się swoimi wrażeniami o nauce w Polskiej Szkole Sobotniej",
+    "Категорія відгуку:": "Kategoria opinii:",
+    "Увійдіть через Google, щоб залишити відгук": "Zaloguj się przez Google, aby dodać opinię",
+    "Ви ввійшли як:": "Zalogowano jako:",
+    "Вийти": "Wyloguj się",
+    "Опублікувати відгук": "Opublikuj opinię",
+    "Перевірка пройдена": "Weryfikacja zakończona sukcesem",
+    "Потрібно пройти перевірку \"Я не робот\"": "Musisz przejść weryfikację \"Nie jestem robotem\"",
+    "Будь ласка, напишіть текст відгуку": "Proszę wpisać treść opinii",
+    "Дякуємо! Ваш відгук надіслано на модерацію. Після перевірки адміністратором він з'явиться на сайті.": "Dziękujemy! Twoja opinia została przesłana do moderacji. Po weryfikacji przez administratora pojawi się na stronie.",
+    "Помилка при збереженні відгуку": "Błąd podczas zapisywania opinii"
+  };
+  for (var rk in REVIEWS_TRANS) {
+    TRANSLATIONS[rk] = REVIEWS_TRANS[rk];
+  }
+
+  var dynamicTransCache = {};
+  try {
+    var rawDyn = localStorage.getItem('school_dyn_trans_pl');
+    if (rawDyn) dynamicTransCache = JSON.parse(rawDyn) || {};
+  } catch(e) {}
+
+  var pendingDynRequests = {};
+  function fetchDynamicTranslation(phrase, callback) {
+    var clean = phrase.trim();
+    if (!clean) return;
+    if (dynamicTransCache[clean]) {
+      callback(dynamicTransCache[clean]);
+      return;
+    }
+    if (pendingDynRequests[clean]) {
+      pendingDynRequests[clean].push(callback);
+      return;
+    }
+    pendingDynRequests[clean] = [callback];
+    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=uk&tl=pl&dt=t&q=' + encodeURIComponent(clean);
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var res = '';
+        if (data && data[0]) {
+          for (var i = 0; i < data[0].length; i++) {
+            if (data[0][i] && data[0][i][0]) res += data[0][i][0];
+          }
+        }
+        res = res.trim();
+        if (res) {
+          dynamicTransCache[clean] = res;
+          try {
+            localStorage.setItem('school_dyn_trans_pl', JSON.stringify(dynamicTransCache));
+          } catch(e) {}
+        }
+        var cbs = pendingDynRequests[clean] || [];
+        delete pendingDynRequests[clean];
+        cbs.forEach(function(cb) { cb(res || clean); });
+      })
+      .catch(function() {
+        delete pendingDynRequests[clean];
+      });
+  }
+
   function applyLanguage(lang) {
     var isPl = (lang === 'pl');
     document.documentElement.lang = isPl ? 'pl' : 'uk';
@@ -698,10 +786,20 @@
         var norm = trimmed.replace(/\s+/g, ' ');
         if (TRANSLATIONS[norm]) {
           node.nodeValue = orig.replace(trimmed, TRANSLATIONS[norm]);
+        } else if (dynamicTransCache[norm]) {
+          node.nodeValue = orig.replace(trimmed, dynamicTransCache[norm]);
         } else if (/^Світлина\s+\d+/.test(trimmed)) {
           node.nodeValue = orig.replace('Світлина', 'Zdjęcie');
         } else if (/^Урок\s+\d+/.test(trimmed)) {
           node.nodeValue = orig.replace('Урок', 'Lekcja');
+        } else if (/[а-яіїєґ]/i.test(norm) && norm.length > 1) {
+          (function(targetNode, origText, phrase) {
+            fetchDynamicTranslation(phrase, function(translated) {
+              if (document.documentElement.lang === 'pl' && targetNode.parentElement) {
+                targetNode.nodeValue = origText.replace(phrase, translated);
+              }
+            });
+          })(node, orig, norm);
         }
       } else {
         node.nodeValue = orig;
@@ -720,6 +818,16 @@
         var normPl = origPl.trim().replace(/\s+/g, ' ');
         if (TRANSLATIONS[normPl]) {
           inp.placeholder = TRANSLATIONS[normPl];
+        } else if (dynamicTransCache[normPl]) {
+          inp.placeholder = dynamicTransCache[normPl];
+        } else if (/[а-яіїєґ]/i.test(normPl) && normPl.length > 1) {
+          (function(targetInp, phrase) {
+            fetchDynamicTranslation(phrase, function(translated) {
+              if (document.documentElement.lang === 'pl') {
+                targetInp.placeholder = translated;
+              }
+            });
+          })(inp, normPl);
         }
       } else {
         inp.placeholder = origPl;
@@ -733,6 +841,14 @@
       var normTitle = document._origTitle.trim().replace(/\s+/g, ' ');
       if (TRANSLATIONS[normTitle]) {
         document.title = TRANSLATIONS[normTitle];
+      } else if (dynamicTransCache[normTitle]) {
+        document.title = dynamicTransCache[normTitle];
+      } else if (/[а-яіїєґ]/i.test(normTitle) && normTitle.length > 1) {
+        fetchDynamicTranslation(normTitle, function(translated) {
+          if (document.documentElement.lang === 'pl') {
+            document.title = translated;
+          }
+        });
       }
     } else {
       document.title = document._origTitle;
@@ -746,7 +862,11 @@
   function initLanguage() {
     var savedLang = 'ua';
     try {
-      savedLang = localStorage.getItem('site_lang') || 'ua';
+      if (window.self !== window.top) {
+        savedLang = 'ua';
+      } else {
+        savedLang = localStorage.getItem('site_lang') || 'ua';
+      }
     } catch (e) {}
 
     document.addEventListener('click', function (e) {
@@ -1017,6 +1137,7 @@
 
       if (list.length === 0) {
         grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;background:var(--surface);border-radius:18px;border:1px dashed var(--line);color:var(--ink-soft)"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin:0 auto 12px;opacity:.5;display:block"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Поки що немає відгуків</div><div style="font-size:.9rem">Будьте першим, хто поділиться своїм досвідом навчання у школі!</div></div>';
+        if (document.documentElement.lang === 'pl') applyLanguage('pl');
         return;
       }
 
@@ -1050,6 +1171,7 @@
       });
 
       grid.innerHTML = html;
+      if (document.documentElement.lang === 'pl') applyLanguage('pl');
     }
 
     renderReviews();
