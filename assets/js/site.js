@@ -5,6 +5,48 @@
   var overlay = document.getElementById('overlay');
   var progress = document.getElementById('progress');
 
+  function applySavedPageContent() {
+    var path = window.location.pathname;
+    var filename = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+    if (filename.indexOf('.html') === -1) {
+      filename = filename ? (filename + '.html') : 'index.html';
+    }
+    var savedHtml = null;
+    var savedFooter = null;
+    try {
+      savedHtml = localStorage.getItem('school_page_main_' + filename);
+      savedFooter = localStorage.getItem('school_page_footer');
+      if (!savedHtml || !savedFooter) {
+        var rawContent = localStorage.getItem('school_site_content');
+        if (rawContent) {
+          var parsed = JSON.parse(rawContent);
+          if (parsed) {
+            if (!savedHtml && parsed.page_html && parsed.page_html[filename]) {
+              savedHtml = parsed.page_html[filename];
+            }
+            if (!savedFooter && parsed.page_footer) {
+              savedFooter = parsed.page_footer;
+            }
+          }
+        }
+      }
+    } catch(e) {}
+
+    if (savedHtml) {
+      var mainEl = document.querySelector('main');
+      if (mainEl) {
+        mainEl.innerHTML = savedHtml;
+      }
+    }
+    if (savedFooter) {
+      var footerEl = document.querySelector('footer');
+      if (footerEl) {
+        footerEl.innerHTML = savedFooter;
+      }
+    }
+  }
+  applySavedPageContent();
+
   function setMenu(open) {
     body.classList.toggle('menu-open', open);
     if (toggle) {
@@ -807,11 +849,23 @@
     else if (path.indexOf('kontakti') !== -1) pageKey = 'kontakti';
 
     if (data.pages && data.pages[pageKey]) {
-      var pData = data.pages[pageKey];
-      var heroH1 = document.querySelector('.page-hero h1, .hero h1');
-      var heroP = document.querySelector('.page-hero p, .hero p');
-      if (heroH1 && pData.hero_title) heroH1.textContent = pData.hero_title;
-      if (heroP && pData.hero_subtitle) heroP.textContent = pData.hero_subtitle;
+      var filename = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+      if (filename.indexOf('.html') === -1) filename = filename ? (filename + '.html') : 'index.html';
+      var hasSavedPage = false;
+      try {
+        hasSavedPage = !!localStorage.getItem('school_page_main_' + filename);
+        if (!hasSavedPage && localRaw) {
+          var pLocal = JSON.parse(localRaw);
+          if (pLocal && pLocal.page_html && pLocal.page_html[filename]) hasSavedPage = true;
+        }
+      } catch(e) {}
+      if (!hasSavedPage) {
+        var pData = data.pages[pageKey];
+        var heroH1 = document.querySelector('.page-hero h1, .hero h1');
+        var heroP = document.querySelector('.page-hero p, .hero p');
+        if (heroH1 && pData.hero_title) heroH1.textContent = pData.hero_title;
+        if (heroP && pData.hero_subtitle) heroP.textContent = pData.hero_subtitle;
+      }
     }
 
     if (path.indexOf('fotogalereya') !== -1 && data.gallery) {
@@ -862,6 +916,23 @@
       fetch('assets/data/site-content.json')
         .then(function(res) { return res.json(); })
         .then(function(data) {
+          if (data && data.page_html) {
+            var path = window.location.pathname;
+            var filename = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+            if (filename.indexOf('.html') === -1) filename = filename ? (filename + '.html') : 'index.html';
+            if (data.page_html[filename]) {
+              var mainEl = document.querySelector('main');
+              if (mainEl && !localStorage.getItem('school_page_main_' + filename)) {
+                mainEl.innerHTML = data.page_html[filename];
+              }
+            }
+          }
+          if (data && data.page_footer) {
+            var footerEl = document.querySelector('footer');
+            if (footerEl && !localStorage.getItem('school_page_footer')) {
+              footerEl.innerHTML = data.page_footer;
+            }
+          }
           applyDynamicContent(data);
         })
         .catch(function() {});

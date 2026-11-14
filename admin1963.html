@@ -200,15 +200,18 @@ textarea.admin-input{min-height:95px;resize:vertical}
               </div>
             </div>
 
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
               <button type="button" id="toggleEditModeBtn" class="btn sm" style="background:#18864b">✏️ Режим редагування: УВІМКНЕНО</button>
               <button type="button" id="saveLiveChangesBtn" class="btn sm" style="box-shadow:0 4px 14px rgba(200,16,46,.35)">💾 Зберегти зміни наживо</button>
+              <button type="button" id="addBlockBtn" class="btn sm ghost" style="color:var(--ink);border-color:var(--line)" title="Додати новий блок, заголовок або фото">➕ Додати блок</button>
+              <button type="button" id="deleteActiveElementBtn" class="btn sm ghost" style="color:var(--red);border-color:var(--line)" title="Видалити вибраний елемент чи блок">🗑️ Видалити вибране</button>
+              <button type="button" id="resetLivePageBtn" class="btn sm ghost" style="color:var(--red);border-color:var(--line)" title="Скинути до оригіналу">↩️ Скинути сторінку</button>
               <button type="button" id="reloadLiveFrameBtn" class="btn sm ghost" style="color:var(--ink);border-color:var(--line)" title="Оновити сторінку">🔄</button>
             </div>
           </div>
           <div style="font-size:.84rem;color:var(--ink-soft);margin-top:12px;line-height:1.45;display:flex;align-items:center;gap:8px">
             <span>💡</span>
-            <span><strong>Як редагувати:</strong> просто клікайте на будь-який заголовок, текст, абзац чи номер телефону прямо у вікні сайту нижче та редагуйте його. Щоб замінити будь-яку фотографію, двічі клікніть на неї! Потім натисніть червону кнопку <strong>«💾 Зберегти зміни наживо»</strong>.</span>
+            <span><strong>Як редагувати:</strong> клікайте на будь-який текст, заголовок чи блок на сайті нижче. Щоб замінити або видалити фотографію, двічі клікніть на неї. Використовуйте кнопки <strong>«➕ Додати блок»</strong> або <strong>«🗑️ Видалити вибране»</strong>. Наприкінці натисніть <strong>«💾 Зберегти зміни наживо»</strong>.</span>
           </div>
           <div id="liveEditorAlert" class="admin-alert" style="margin-top:12px"></div>
         </div>
@@ -461,6 +464,58 @@ textarea.admin-input{min-height:95px;resize:vertical}
   </main>
 </div>
 
+<div id="livePhotoModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--paper);border:1px solid var(--line);border-radius:20px;max-width:480px;width:100%;box-shadow:var(--shadow-lg);padding:24px;position:relative">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h3 style="margin:0;font-size:1.15rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px">🖼️ Редагування світлини</h3>
+      <button type="button" id="closePhotoModalBtn" style="background:none;border:none;font-size:1.5rem;line-height:1;cursor:pointer;color:var(--ink-soft)">&times;</button>
+    </div>
+    
+    <div style="text-align:center;margin-bottom:16px;background:var(--paper-soft);padding:10px;border-radius:12px;border:1px dashed var(--line)">
+      <img id="livePhotoModalPreview" src="" alt="Попередній перегляд" style="max-height:160px;max-width:100%;object-fit:contain;border-radius:8px;display:inline-block">
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label style="display:block;font-size:.82rem;font-weight:700;margin-bottom:6px;color:var(--ink)">📁 Завантажити нове фото з комп'ютера:</label>
+      <input type="file" id="livePhotoFileInput" accept="image/*" class="admin-input" style="padding:6px 10px;font-size:.84rem">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:.82rem;font-weight:700;margin-bottom:6px;color:var(--ink)">🔗 Або вкажіть посилання на фото (URL):</label>
+      <input type="url" id="livePhotoUrlInput" class="admin-input" placeholder="https://example.com/photo.jpg">
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap">
+      <button type="button" id="deleteTargetPhotoBtn" class="btn sm ghost" style="color:var(--red);border-color:var(--line)">🗑️ Видалити фото</button>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="cancelPhotoModalBtn" class="btn sm ghost" style="color:var(--ink)">Скасувати</button>
+        <button type="button" id="applyPhotoModalBtn" class="btn sm">Застосувати</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="liveAddBlockModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--paper);border:1px solid var(--line);border-radius:20px;max-width:440px;width:100%;box-shadow:var(--shadow-lg);padding:24px;position:relative">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h3 style="margin:0;font-size:1.15rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px">➕ Додати новий елемент</h3>
+      <button type="button" id="closeAddBlockModalBtn" style="background:none;border:none;font-size:1.5rem;line-height:1;cursor:pointer;color:var(--ink-soft)">&times;</button>
+    </div>
+    <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:16px">Оберіть тип нового елемента (він буде доданий після вибраного блоку або в кінці сторінки):</p>
+    
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button type="button" id="addHeadingBtn" class="btn sm ghost" style="justify-content:flex-start;padding:12px 16px;border-color:var(--line);color:var(--ink)">📌 Новий заголовок (H2)</button>
+      <button type="button" id="addParagraphBtn" class="btn sm ghost" style="justify-content:flex-start;padding:12px 16px;border-color:var(--line);color:var(--ink)">📝 Новий абзац тексту (P)</button>
+      <button type="button" id="addPhotoCardBtn" class="btn sm ghost" style="justify-content:flex-start;padding:12px 16px;border-color:var(--line);color:var(--ink)">🖼️ Нову картку з фото та підписом</button>
+      <button type="button" id="addListItemBtn" class="btn sm ghost" style="justify-content:flex-start;padding:12px 16px;border-color:var(--line);color:var(--ink)">📋 Новий пункт списку (LI)</button>
+    </div>
+
+    <div style="margin-top:18px;text-align:right">
+      <button type="button" id="cancelAddBlockModalBtn" class="btn sm ghost" style="color:var(--ink)">Закрити</button>
+    </div>
+  </div>
+</div>
+
 <script src="assets/js/site.js"></script>
 <script>
 (function() {
@@ -633,9 +688,31 @@ textarea.admin-input{min-height:95px;resize:vertical}
   var saveLiveChangesBtn = document.getElementById('saveLiveChangesBtn');
   var reloadLiveFrameBtn = document.getElementById('reloadLiveFrameBtn');
   var liveEditorAlert = document.getElementById('liveEditorAlert');
+  var addBlockBtn = document.getElementById('addBlockBtn');
+  var deleteActiveElementBtn = document.getElementById('deleteActiveElementBtn');
+  var resetLivePageBtn = document.getElementById('resetLivePageBtn');
+
+  var livePhotoModal = document.getElementById('livePhotoModal');
+  var closePhotoModalBtn = document.getElementById('closePhotoModalBtn');
+  var cancelPhotoModalBtn = document.getElementById('cancelPhotoModalBtn');
+  var applyPhotoModalBtn = document.getElementById('applyPhotoModalBtn');
+  var deleteTargetPhotoBtn = document.getElementById('deleteTargetPhotoBtn');
+  var livePhotoModalPreview = document.getElementById('livePhotoModalPreview');
+  var livePhotoFileInput = document.getElementById('livePhotoFileInput');
+  var livePhotoUrlInput = document.getElementById('livePhotoUrlInput');
+
+  var liveAddBlockModal = document.getElementById('liveAddBlockModal');
+  var closeAddBlockModalBtn = document.getElementById('closeAddBlockModalBtn');
+  var cancelAddBlockModalBtn = document.getElementById('cancelAddBlockModalBtn');
+  var addHeadingBtn = document.getElementById('addHeadingBtn');
+  var addParagraphBtn = document.getElementById('addParagraphBtn');
+  var addPhotoCardBtn = document.getElementById('addPhotoCardBtn');
+  var addListItemBtn = document.getElementById('addListItemBtn');
 
   var isLiveEditMode = true;
   var currentNewPhotoData = '';
+  var targetImageForModal = null;
+  var lastActiveElement = null;
 
   function launchConfetti() {
     if (!confettiCanvas) return;
@@ -841,6 +918,30 @@ textarea.admin-input{min-height:95px;resize:vertical}
     });
   }
 
+  function compressImageFile(file, maxWidth, quality, callback) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var w = img.width;
+        var h = img.height;
+        if (w > maxWidth) {
+          h = Math.round((h * maxWidth) / w);
+          w = maxWidth;
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        var dataUrl = canvas.toDataURL('image/jpeg', quality || 0.82);
+        callback(dataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   function attachLiveEditorToFrame() {
     try {
       var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
@@ -850,11 +951,11 @@ textarea.admin-input{min-height:95px;resize:vertical}
       if (!existingStyle) {
         var style = doc.createElement('style');
         style.id = 'live-editor-styles';
-        style.textContent = '.live-editable-hover{outline:2px dashed #c8102e !important;outline-offset:2px !important;cursor:text !important}.live-editable-active{outline:2px solid #18864b !important;outline-offset:2px !important;background:rgba(24,134,75,.06) !important}[contenteditable="true"]:focus{outline:2px solid #c8102e !important;outline-offset:2px !important}';
+        style.textContent = '.live-editable-hover{outline:2px dashed #c8102e !important;outline-offset:2px !important;cursor:text !important}.live-editable-active{outline:2px solid #18864b !important;outline-offset:2px !important;background:rgba(24,134,75,.06) !important}[contenteditable="true"]:focus{outline:2px solid #c8102e !important;outline-offset:2px !important}img.live-editable-img-hover{outline:3px dashed #c8102e !important;cursor:pointer !important}';
         doc.head.appendChild(style);
       }
 
-      var selector = 'h1, h2, h3, h4, p, span, a, button, li, .badge, .brand-title, .brand-sub, .section-tag';
+      var selector = 'h1, h2, h3, h4, h5, h6, p, span, a, button, li, .badge, .brand-title, .brand-sub, .section-tag, .contact-item, td, th';
       var editableElements = doc.querySelectorAll(selector);
 
       editableElements.forEach(function(el) {
@@ -865,6 +966,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
 
         el.onclick = function(e) {
           if (isLiveEditMode) {
+            lastActiveElement = el;
             if (el.tagName === 'A' || el.tagName === 'BUTTON') {
               e.preventDefault();
             }
@@ -882,6 +984,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
         };
 
         el.onfocus = function() {
+          lastActiveElement = el;
           el.classList.remove('live-editable-hover');
           el.classList.add('live-editable-active');
         };
@@ -893,17 +996,168 @@ textarea.admin-input{min-height:95px;resize:vertical}
 
       var images = doc.querySelectorAll('img');
       images.forEach(function(img) {
+        img.onmouseenter = function() {
+          if (isLiveEditMode) img.classList.add('live-editable-img-hover');
+        };
+        img.onmouseleave = function() {
+          img.classList.remove('live-editable-img-hover');
+        };
+        img.onclick = function(e) {
+          if (isLiveEditMode) {
+            e.preventDefault();
+            lastActiveElement = img;
+          }
+        };
         img.ondblclick = function(e) {
           if (!isLiveEditMode) return;
           e.preventDefault();
-          var newUrl = prompt('Введіть нове посилання на світлину або залиште старе:', img.src);
-          if (newUrl && newUrl.trim()) {
-            img.src = newUrl.trim();
-          }
+          lastActiveElement = img;
+          targetImageForModal = img;
+          livePhotoModalPreview.src = img.src;
+          livePhotoUrlInput.value = img.src.indexOf('data:') === 0 ? '' : img.src;
+          livePhotoFileInput.value = '';
+          livePhotoModal.style.display = 'flex';
         };
       });
     } catch(err) {}
   }
+
+  closePhotoModalBtn.addEventListener('click', function() {
+    livePhotoModal.style.display = 'none';
+  });
+  cancelPhotoModalBtn.addEventListener('click', function() {
+    livePhotoModal.style.display = 'none';
+  });
+  livePhotoFileInput.addEventListener('change', function(e) {
+    var file = e.target.files && e.target.files[0];
+    if (file) {
+      compressImageFile(file, 1200, 0.82, function(dataUrl) {
+        livePhotoModalPreview.src = dataUrl;
+        livePhotoUrlInput.value = '';
+      });
+    }
+  });
+  livePhotoUrlInput.addEventListener('input', function() {
+    var val = livePhotoUrlInput.value.trim();
+    if (val) livePhotoModalPreview.src = val;
+  });
+  applyPhotoModalBtn.addEventListener('click', function() {
+    if (targetImageForModal && livePhotoModalPreview.src) {
+      targetImageForModal.src = livePhotoModalPreview.src;
+    }
+    livePhotoModal.style.display = 'none';
+  });
+  deleteTargetPhotoBtn.addEventListener('click', function() {
+    if (!targetImageForModal) return;
+    if (confirm('Видалити цю світлину зі сторінки?')) {
+      var card = targetImageForModal.closest('.gallery-card, .photo-card, figure');
+      if (card && confirm('Видалити також картку/рамку цієї світлини?')) {
+        card.remove();
+      } else {
+        targetImageForModal.remove();
+      }
+      targetImageForModal = null;
+      lastActiveElement = null;
+      livePhotoModal.style.display = 'none';
+    }
+  });
+
+  addBlockBtn.addEventListener('click', function() {
+    liveAddBlockModal.style.display = 'flex';
+  });
+  closeAddBlockModalBtn.addEventListener('click', function() {
+    liveAddBlockModal.style.display = 'none';
+  });
+  cancelAddBlockModalBtn.addEventListener('click', function() {
+    liveAddBlockModal.style.display = 'none';
+  });
+
+  function insertNodeIntoLivePage(newEl) {
+    try {
+      var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+      if (!doc) return;
+      var mainEl = doc.querySelector('main');
+      if (!mainEl) return;
+      if (lastActiveElement && lastActiveElement.parentNode) {
+        lastActiveElement.parentNode.insertBefore(newEl, lastActiveElement.nextSibling);
+      } else {
+        mainEl.appendChild(newEl);
+      }
+      attachLiveEditorToFrame();
+      liveAddBlockModal.style.display = 'none';
+      if (newEl.scrollIntoView) {
+        newEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (newEl.focus) newEl.focus();
+    } catch(e) {}
+  }
+
+  addHeadingBtn.addEventListener('click', function() {
+    var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+    if (!doc) return;
+    var h2 = doc.createElement('h2');
+    h2.className = 'section-title reveal in';
+    h2.textContent = 'Новий заголовок розділу';
+    insertNodeIntoLivePage(h2);
+  });
+
+  addParagraphBtn.addEventListener('click', function() {
+    var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+    if (!doc) return;
+    var p = doc.createElement('p');
+    p.className = 'lead reveal in';
+    p.textContent = 'Новий абзац тексту. Клікніть, щоб редагувати цей текст.';
+    insertNodeIntoLivePage(p);
+  });
+
+  addPhotoCardBtn.addEventListener('click', function() {
+    var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+    if (!doc) return;
+    var card = doc.createElement('div');
+    card.className = 'gallery-card reveal in';
+    card.style.margin = '20px 0';
+    card.innerHTML = '<img src="assets/img/1.jpg" alt="Нове фото" style="border-radius:12px;max-width:100%"><p style="margin-top:8px;font-weight:600">Підпис до нового фото (двічі клікніть на фото для заміни)</p>';
+    insertNodeIntoLivePage(card);
+  });
+
+  addListItemBtn.addEventListener('click', function() {
+    var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+    if (!doc) return;
+    var li = doc.createElement('li');
+    li.textContent = 'Новий пункт списку. Клікніть для редагування.';
+    if (lastActiveElement && (lastActiveElement.tagName === 'LI' || lastActiveElement.tagName === 'UL' || lastActiveElement.tagName === 'OL')) {
+      if (lastActiveElement.tagName === 'LI') {
+        lastActiveElement.parentNode.insertBefore(li, lastActiveElement.nextSibling);
+      } else {
+        lastActiveElement.appendChild(li);
+      }
+      attachLiveEditorToFrame();
+      liveAddBlockModal.style.display = 'none';
+      li.focus();
+    } else {
+      var ul = doc.createElement('ul');
+      ul.className = 'reveal in';
+      ul.appendChild(li);
+      insertNodeIntoLivePage(ul);
+    }
+  });
+
+  deleteActiveElementBtn.addEventListener('click', function() {
+    try {
+      var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
+      if (!doc) return;
+      var mainEl = doc.querySelector('main');
+      if (!lastActiveElement || lastActiveElement === doc.body || lastActiveElement === mainEl || lastActiveElement === doc.documentElement) {
+        alert('Будь ласка, спочатку клікніть на той текст, фото або блок у вікні сайту, який ви бажаєте видалити.');
+        return;
+      }
+      if (confirm('Ви дійсно бажаєте видалити вибраний елемент зі сторінки?')) {
+        var el = lastActiveElement;
+        lastActiveElement = null;
+        el.remove();
+      }
+    } catch(e) {}
+  });
 
   liveSiteFrame.addEventListener('load', function() {
     liveFrameUrlBadge.textContent = livePageSelect.value;
@@ -961,8 +1215,68 @@ textarea.admin-input{min-height:95px;resize:vertical}
       var doc = liveSiteFrame.contentDocument || liveSiteFrame.contentWindow.document;
       if (!doc) throw new Error('Немає доступу до сторінки');
 
-      var c = getSiteContent();
+      var mainEl = doc.querySelector('main');
+      if (!mainEl) throw new Error('Елемент main не знайдено на сторінці');
+
+      var clone = mainEl.cloneNode(true);
+
+      clone.querySelectorAll('[contenteditable]').forEach(function(el) {
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('spellcheck');
+        el.classList.remove('live-editable-hover', 'live-editable-active');
+        if (!el.getAttribute('class') || !el.getAttribute('class').trim()) {
+          el.removeAttribute('class');
+        }
+      });
+
+      clone.querySelectorAll('img.live-editable-img-hover').forEach(function(img) {
+        img.classList.remove('live-editable-img-hover');
+        if (!img.getAttribute('class') || !img.getAttribute('class').trim()) {
+          img.removeAttribute('class');
+        }
+      });
+
+      clone.querySelectorAll('.live-editor-ui, #live-editor-styles').forEach(function(el) {
+        el.remove();
+      });
+
+      clone.querySelectorAll('#dots').forEach(function(el) {
+        el.innerHTML = '';
+      });
+
+      clone.querySelectorAll('.reveal.in, .frame.in').forEach(function(el) {
+        el.classList.remove('in');
+      });
+
+      var cleanHtml = clone.innerHTML;
       var curPage = livePageSelect.value;
+      var filename = curPage.substring(curPage.lastIndexOf('/') + 1) || 'index.html';
+
+      localStorage.setItem('school_page_main_' + filename, cleanHtml);
+
+      var c = getSiteContent();
+      if (!c.page_html) c.page_html = {};
+      c.page_html[filename] = cleanHtml;
+
+      var footerEl = doc.querySelector('footer');
+      if (footerEl) {
+        var fClone = footerEl.cloneNode(true);
+        fClone.querySelectorAll('[contenteditable]').forEach(function(el) {
+          el.removeAttribute('contenteditable');
+          el.removeAttribute('spellcheck');
+          el.classList.remove('live-editable-hover', 'live-editable-active');
+          if (!el.getAttribute('class') || !el.getAttribute('class').trim()) {
+            el.removeAttribute('class');
+          }
+        });
+        fClone.querySelectorAll('.live-editor-ui').forEach(function(el) { el.remove(); });
+        var fClean = fClone.innerHTML;
+        localStorage.setItem('school_page_footer', fClean);
+        c.page_footer = fClean;
+      }
+
+      var heroH1 = doc.querySelector('.page-hero h1, .hero h1');
+      var heroP = doc.querySelector('.page-hero p, .hero p');
       var pKey = 'index';
       if (curPage.indexOf('pro-mene') !== -1) pKey = 'pro_mene';
       else if (curPage.indexOf('prajs-list') !== -1) pKey = 'prajs_list';
@@ -970,9 +1284,6 @@ textarea.admin-input{min-height:95px;resize:vertical}
       else if (curPage.indexOf('ekskursiji') !== -1) pKey = 'ekskursiji';
       else if (curPage.indexOf('uroczystosci') !== -1) pKey = 'uroczystosci';
       else if (curPage.indexOf('kontakti') !== -1) pKey = 'kontakti';
-
-      var heroH1 = doc.querySelector('.page-hero h1, .hero h1');
-      var heroP = doc.querySelector('.page-hero p, .hero p');
 
       if (!c.pages) c.pages = {};
       if (!c.pages[pKey]) c.pages[pKey] = {};
@@ -985,13 +1296,32 @@ textarea.admin-input{min-height:95px;resize:vertical}
 
       liveEditorAlert.className = 'admin-alert success';
       liveEditorAlert.style.display = 'flex';
-      liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Зміни зі сторінки ' + curPage + ' успішно збережено наживо!</div>';
+      liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Всі зміни на сторінці ' + filename + ' успішно збережено наживо!</div>';
+      launchConfetti();
       setTimeout(function() { liveEditorAlert.style.display = 'none'; }, 4500);
     } catch(err) {
       liveEditorAlert.className = 'admin-alert error';
       liveEditorAlert.style.display = 'flex';
-      liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Помилка збереження: ' + err.message + '</div>';
+      liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg><div>Помилка збереження: ' + err.message + '</div>';
     }
+  });
+
+  resetLivePageBtn.addEventListener('click', function() {
+    var curPage = livePageSelect.value;
+    var filename = curPage.substring(curPage.lastIndexOf('/') + 1) || 'index.html';
+    if (!confirm('Скинути всі внесені зміни на сторінці ' + filename + ' до оригінального початкового вигляду?')) return;
+    
+    localStorage.removeItem('school_page_main_' + filename);
+    var c = getSiteContent();
+    if (c.page_html && c.page_html[filename]) {
+      delete c.page_html[filename];
+      saveSiteContent(c);
+    }
+    liveSiteFrame.src = livePageSelect.value;
+    liveEditorAlert.className = 'admin-alert success';
+    liveEditorAlert.style.display = 'flex';
+    liveEditorAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Сторінку ' + filename + ' успішно скинуто до оригіналу!</div>';
+    setTimeout(function() { liveEditorAlert.style.display = 'none'; }, 4000);
   });
 
   function showDashboard(userData) {
@@ -1299,7 +1629,13 @@ textarea.admin-input{min-height:95px;resize:vertical}
   resetAllBtn.addEventListener('click', function() {
     if (!confirm('Скинути всі тексти, фотографії та налаштування сайту до початкового стану?')) return;
     localStorage.removeItem('school_site_content');
+    Object.keys(localStorage).forEach(function(k) {
+      if (k.indexOf('school_page_main_') === 0 || k === 'school_page_footer') {
+        localStorage.removeItem(k);
+      }
+    });
     populateContentFields();
+    liveSiteFrame.src = livePageSelect.value;
     syncAlert.className = 'admin-alert success';
     syncAlert.style.display = 'flex';
     syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Всі налаштування успішно скинуто!</div>';
