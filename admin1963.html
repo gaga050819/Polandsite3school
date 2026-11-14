@@ -168,6 +168,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
       <div class="dash-tabs">
         <button type="button" class="dash-tab-btn active" data-tab="tab-live-editor"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>Живий редактор сайту</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-overview"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Заявки та стан</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-news"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Новини</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-reviews"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Відгуки <span id="adminPendingBadge" style="display:none;background:#f59e0b;color:#fff;padding:2px 7px;border-radius:10px;font-size:.72rem;font-weight:700;margin-left:4px">0</span></button>
         <button type="button" class="dash-tab-btn" data-tab="tab-admins"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Адміністратори</button>
       </div>
@@ -186,6 +187,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
                 <option value="fotogalereya.html">Фотогалерея (fotogalereya.html)</option>
                 <option value="ekskursiji-wycieczki.html">Екскурсії (ekskursiji-wycieczki.html)</option>
                 <option value="uroczystosci.html">Свята (uroczystosci.html)</option>
+                <option value="novyny.html">Новини (novyny.html)</option>
                 <option value="kontakti.html">Контакти (kontakti.html)</option>
               </select>
               
@@ -325,6 +327,87 @@ textarea.admin-input{min-height:95px;resize:vertical}
       </div>
 
 
+
+      <div class="tab-pane" id="tab-news">
+        <div class="admin-panel-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+            <div>
+              <h3 style="margin:0 0 6px 0;display:flex;align-items:center;gap:8px">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                Додати нову подію чи новину
+              </h3>
+              <p style="margin:0;color:var(--ink-soft);font-size:.9rem">Опублікована новина з'явиться на головній сторінці сайту та в розділі «Новини».</p>
+            </div>
+          </div>
+
+          <form id="adminAddNewsForm">
+            <div class="form-grid">
+              <div class="admin-input-group">
+                <label for="newsTitleInput">Заголовок новини / події *</label>
+                <input type="text" id="newsTitleInput" class="admin-input" placeholder="Наприклад: Святкування Дня Святого Миколая у школі" required>
+              </div>
+              <div class="admin-input-group">
+                <label for="newsCategorySelect">Категорія / Тег *</label>
+                <select id="newsCategorySelect" class="admin-input" style="cursor:pointer">
+                  <option value="Свято">Свято (Uroczystość)</option>
+                  <option value="Екскурсія">Екскурсія (Wycieczka)</option>
+                  <option value="Успіхи">Успіхи учнів (Sukcesy)</option>
+                  <option value="Оголошення">Оголошення (Ogłoszenie)</option>
+                  <option value="Подія">Шкільна подія (Wydarzenie)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid" style="margin-top:14px">
+              <div class="admin-input-group">
+                <label for="newsDateInput">Дата публікації *</label>
+                <input type="text" id="newsDateInput" class="admin-input" placeholder="Наприклад: 14 листопада 2026" required>
+              </div>
+              <div class="admin-input-group">
+                <label for="newsPhotoUrlInput">Пряме посилання на фото (URL):</label>
+                <input type="url" id="newsPhotoUrlInput" class="admin-input" placeholder="https://... або assets/img/...">
+              </div>
+            </div>
+
+            <div class="admin-input-group" style="margin-top:14px">
+              <label>Світлина новини (з комп'ютера чи телефона):</label>
+              <div class="upload-dropzone" id="newsPhotoDropzone" style="padding:22px;border:2px dashed var(--line);border-radius:12px;text-align:center;cursor:pointer;background:var(--paper)">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto 6px;color:var(--red)"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <div style="font-weight:700;font-size:.95rem;color:var(--ink)">Натисніть для вибору фотографії з пристрою</div>
+                <div style="font-size:.8rem;color:var(--ink-soft)">JPG, PNG, WEBP (фото зберігається в пам'яті сайту)</div>
+                <input type="file" id="newsPhotoFileInput" accept="image/*" style="display:none">
+              </div>
+            </div>
+
+            <div id="newsPhotoPreviewBox" style="display:none;margin-top:14px;text-align:center">
+              <img id="newsPhotoPreviewImg" src="" alt="Попередній перегляд" style="max-height:200px;border-radius:12px;box-shadow:var(--shadow)">
+            </div>
+
+            <div class="admin-input-group" style="margin-top:14px">
+              <label for="newsTextInput">Повний текст новини *</label>
+              <textarea id="newsTextInput" class="admin-input" placeholder="Опишіть, як проходив захід, які емоції отримали діти, що цікавого відбулося..." style="min-height:130px" required></textarea>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;margin-top:18px">
+              <button type="submit" class="btn" id="submitNewsBtn" style="display:inline-flex;align-items:center;gap:7px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                + Опублікувати новину на сайті
+              </button>
+              <button type="button" class="btn sm ghost" id="cancelNewsEditBtn" style="display:none;color:var(--ink);border-color:var(--line)">Скасувати редагування</button>
+            </div>
+
+            <div id="newsAlert" class="admin-alert" style="margin-top:16px"></div>
+          </form>
+        </div>
+
+        <div class="admin-panel-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <h3 style="margin:0">Опубліковані новини та заходи</h3>
+            <span id="adminNewsCount" style="font-size:.85rem;color:var(--ink-soft);font-weight:700">0 новин</span>
+          </div>
+          <div id="adminNewsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px"></div>
+        </div>
+      </div>
 
       <div class="tab-pane" id="tab-reviews">
         <div class="admin-panel-card">
@@ -1581,6 +1664,277 @@ textarea.admin-input{min-height:95px;resize:vertical}
     initGoogleBtn();
   }
   initAdminReviews();
+  initAdminNews();
+
+  function initAdminNews() {
+    var form = document.getElementById('adminAddNewsForm');
+    var titleInput = document.getElementById('newsTitleInput');
+    var categorySelect = document.getElementById('newsCategorySelect');
+    var dateInput = document.getElementById('newsDateInput');
+    var photoUrlInput = document.getElementById('newsPhotoUrlInput');
+    var photoDropzone = document.getElementById('newsPhotoDropzone');
+    var photoFileInput = document.getElementById('newsPhotoFileInput');
+    var previewBox = document.getElementById('newsPhotoPreviewBox');
+    var previewImg = document.getElementById('newsPhotoPreviewImg');
+    var textInput = document.getElementById('newsTextInput');
+    var submitBtn = document.getElementById('submitNewsBtn');
+    var cancelEditBtn = document.getElementById('cancelNewsEditBtn');
+    var alertBox = document.getElementById('newsAlert');
+    var gridEl = document.getElementById('adminNewsGrid');
+    var countEl = document.getElementById('adminNewsCount');
+    if (!form || !gridEl) return;
+
+    var DEFAULT_ADMIN_NEWS = [
+      {
+        id: 'news-1',
+        title: 'Урочиста академія до Дня Незалежності Польщі у Дрогобичі',
+        category: 'Свято',
+        date: '11 листопада 2026',
+        photo: 'assets/img/img_45_IMG_6320.jpeg',
+        excerpt: 'Учні нашої школи підготували патріотичний святковий концерт, декламували вірші класиків та спільно виконали гімни України та Польщі.',
+        text: 'У суботній школі ім. Св. Королеви Ядвіги відбулася щорічна урочиста академія з нагоди Дня Незалежності Польщі (Święto Niepodległości).\n\nНаймолодші вихованці виконали патріотичні пісні, учні середніх класів підготували зворушливі виступи з польської поезії, а старшокласники провели інтерактивну історичну вікторину про події 1918 року та відродження польської державності.\n\nДякуємо всім батькам, викладачам та гостям свята за теплу атмосферу та спільне збереження культурної спадщини!'
+      },
+      {
+        id: 'news-2',
+        title: 'Освітня подорож учнів до Кракова: Вавель та Ягеллонський університет',
+        category: 'Екскурсія',
+        date: '28 жовтня 2026',
+        photo: 'assets/img/img_54_viber_image2-4.jpg',
+        excerpt: 'Наші учні вирушили у триденну пізнавальну подорож до королівського Кракова, де відвідали усипальницю покровительки нашої школи — королеви Ядвіги.',
+        text: 'Незабутня поїздка до королівського Кракова об\'єднала понад 40 учнів нашої суботньої школи!\n\nПід час екскурсії діти відвідали Королівський замок на Вавелі та вклонилися саркофагу святої королеви Ядвіги — небесної покровительки нашого навчального закладу. Також школярі побували в найстаріших аудиторіях Ягеллонського університету (Collegium Maius) та на власні очі побачили історичний центр міста.\n\nПодорож стала чудовою можливістю для учнів попрактикувати живу польську мову з носіями та дізнатися більше про багатовікову спільну історію.'
+      },
+      {
+        id: 'news-3',
+        title: 'Успішне складання співбесіди та отримання Карти Поляка нашими випускниками',
+        category: 'Успіхи',
+        date: '15 жовтня 2026',
+        photo: 'assets/img/img_3_IMG_7648.jpeg',
+        excerpt: 'Ще 12 випускників спецкурсу польської мови нашої школи успішно пройшли співбесіду в Генеральному Консульстві Республіки Польща.',
+        text: 'Щиро вітаємо наших старанних учнів із блискучим проходженням офіційної співбесіди на Карту Поляка!\n\nЗавдяки тримісячній інтенсивній підготовці з історії, традицій, географії та культури Польщі, всі кандидати впевнено відповіли на запитання консула та отримали позитивні рішення.\n\nПишаємося вашими здобутками та бажаємо подальших успіхів у навчанні та кар\'єрі!'
+      }
+    ];
+
+    var currentPhotoData = '';
+    var editingNewsId = null;
+
+    function getTodayFormatted() {
+      var d = new Date();
+      var months = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    }
+    dateInput.value = getTodayFormatted();
+
+    function getStoredNews() {
+      try {
+        var raw = localStorage.getItem('school_news_list');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [];
+    }
+
+    function getDeletedNewsIds() {
+      try {
+        var raw = localStorage.getItem('school_deleted_news');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [];
+    }
+
+    function saveCustomNews(arr) {
+      localStorage.setItem('school_news_list', JSON.stringify(arr));
+    }
+
+    function saveDeletedNewsIds(arr) {
+      localStorage.setItem('school_deleted_news', JSON.stringify(arr));
+    }
+
+    function getFullAdminNewsList() {
+      var custom = getStoredNews();
+      var del = getDeletedNewsIds();
+      var base = DEFAULT_ADMIN_NEWS.filter(function(item) {
+        return del.indexOf(item.id) === -1 && !custom.some(function(c) { return c.id === item.id; });
+      });
+      return custom.concat(base);
+    }
+
+    if (photoDropzone && photoFileInput) {
+      photoDropzone.addEventListener('click', function() {
+        photoFileInput.click();
+      });
+      photoFileInput.addEventListener('change', function(e) {
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+          currentPhotoData = evt.target.result;
+          previewImg.src = currentPhotoData;
+          previewBox.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (photoUrlInput) {
+      photoUrlInput.addEventListener('input', function() {
+        var u = photoUrlInput.value.trim();
+        if (u) {
+          currentPhotoData = u;
+          previewImg.src = u;
+          previewBox.style.display = 'block';
+        }
+      });
+    }
+
+    function resetNewsForm() {
+      form.reset();
+      editingNewsId = null;
+      currentPhotoData = '';
+      previewImg.src = '';
+      previewBox.style.display = 'none';
+      dateInput.value = getTodayFormatted();
+      submitBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> + Опублікувати новину на сайті';
+      if (cancelEditBtn) cancelEditBtn.style.display = 'none';
+    }
+
+    if (cancelEditBtn) {
+      cancelEditBtn.addEventListener('click', resetNewsForm);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var title = titleInput.value.trim();
+      var category = categorySelect.value;
+      var date = dateInput.value.trim();
+      var text = textInput.value.trim();
+      var photo = currentPhotoData || photoUrlInput.value.trim() || 'assets/img/img_45_IMG_6320.jpeg';
+
+      if (!title || !text) {
+        alert('Будь ласка, заповніть заголовок та текст новини.');
+        return;
+      }
+
+      var customList = getStoredNews();
+
+      if (editingNewsId) {
+        var found = false;
+        for (var i = 0; i < customList.length; i++) {
+          if (customList[i].id === editingNewsId) {
+            customList[i].title = title;
+            customList[i].category = category;
+            customList[i].date = date;
+            customList[i].photo = photo;
+            customList[i].text = text;
+            customList[i].excerpt = text.substring(0, 140) + '...';
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          customList.unshift({
+            id: editingNewsId,
+            title: title,
+            category: category,
+            date: date,
+            photo: photo,
+            text: text,
+            excerpt: text.substring(0, 140) + '...'
+          });
+        }
+      } else {
+        var newItem = {
+          id: 'news-' + Date.now(),
+          title: title,
+          category: category,
+          date: date,
+          photo: photo,
+          text: text,
+          excerpt: text.substring(0, 140) + '...'
+        };
+        customList.unshift(newItem);
+      }
+
+      saveCustomNews(customList);
+      resetNewsForm();
+      renderAdminNewsList();
+
+      alertBox.className = 'admin-alert success';
+      alertBox.style.display = 'flex';
+      alertBox.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Новину успішно збережено та опубліковано на сайті!</div>';
+      setTimeout(function() { alertBox.style.display = 'none'; }, 4000);
+    });
+
+    function renderAdminNewsList() {
+      var all = getFullAdminNewsList();
+      if (countEl) countEl.textContent = all.length + ' новин';
+
+      if (all.length === 0) {
+        gridEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px 16px;color:var(--ink-soft);border:1px dashed var(--line);border-radius:12px">Немає жодної новини. Додайте першу через форму вище.</div>';
+        return;
+      }
+
+      var html = '';
+      all.forEach(function(item) {
+        var thumb = item.photo || 'assets/img/img_45_IMG_6320.jpeg';
+        html += '<div class="admin-photo-card" style="display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)">' +
+          '<div style="position:relative;height:160px;overflow:hidden;background:#e2e8f0">' +
+            '<img src="' + thumb + '" alt="' + item.title + '" style="width:100%;height:100%;object-fit:cover">' +
+            '<span style="position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:999px">' + (item.category || 'Подія') + '</span>' +
+          '</div>' +
+          '<div style="padding:14px;display:flex;flex-direction:column;flex:1;gap:6px">' +
+            '<div style="font-size:.78rem;color:var(--ink-soft);font-weight:600">' + (item.date || '') + '</div>' +
+            '<div style="font-size:.95rem;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:6px">' + item.title + '</div>' +
+            '<div style="margin-top:auto;display:flex;gap:8px;padding-top:10px">' +
+              '<button type="button" class="btn sm ghost edit-news-btn" data-id="' + item.id + '" style="flex:1;color:var(--ink);border-color:var(--line)">Редагувати</button>' +
+              '<button type="button" class="btn sm ghost del-news-btn" data-id="' + item.id + '" style="color:var(--red);border-color:var(--line)">Видалити</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
+
+      gridEl.innerHTML = html;
+
+      gridEl.querySelectorAll('.edit-news-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = btn.getAttribute('data-id');
+          var item = all.find(function(n) { return n.id === id; });
+          if (!item) return;
+          editingNewsId = item.id;
+          titleInput.value = item.title || '';
+          categorySelect.value = item.category || 'Подія';
+          dateInput.value = item.date || getTodayFormatted();
+          currentPhotoData = item.photo || '';
+          if (currentPhotoData) {
+            previewImg.src = currentPhotoData;
+            previewBox.style.display = 'block';
+          }
+          textInput.value = item.text || item.excerpt || '';
+          submitBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Зберегти зміни новини';
+          if (cancelEditBtn) cancelEditBtn.style.display = 'inline-block';
+          form.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      gridEl.querySelectorAll('.del-news-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = btn.getAttribute('data-id');
+          if (!confirm('Ви дійсно бажаєте видалити цю новину з сайту?')) return;
+          var customList = getStoredNews();
+          var filtered = customList.filter(function(n) { return n.id !== id; });
+          saveCustomNews(filtered);
+
+          var delIds = getDeletedNewsIds();
+          if (delIds.indexOf(id) === -1) {
+            delIds.push(id);
+            saveDeletedNewsIds(delIds);
+          }
+          renderAdminNewsList();
+        });
+      });
+    }
+
+    renderAdminNewsList();
+  }
+
 
   function initAdminReviews() {
     var listEl = document.getElementById('adminReviewsList');

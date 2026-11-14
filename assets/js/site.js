@@ -716,6 +716,36 @@
     TRANSLATIONS[rk] = REVIEWS_TRANS[rk];
   }
 
+  var NEWS_TRANS = {
+    "Новини": "Aktualności",
+    "Новини та події школи": "Aktualności i wydarzenia szkolne",
+    "Новини та шкільні події": "Aktualności i wydarzenia szkolne",
+    "Останні новини та заходи школи": "Najnowsze wiadomości i wydarzenia szkolne",
+    "Свіжі фотозвіти, урочисті заходи, пізнавальні поїздки та досягнення учнів Польської суботньої школи.": "Najnowsze fotorelacje, uroczystości, wycieczki edukacyjne i sukcesy uczniów Polskiej Szkoły Sobotniej.",
+    "Свіжі фотозвіти, урочисті заходи, пізнавальні екскурсії та досягнення наших учнів у Дрогобичі.": "Najnowsze fotorelacje, uroczystości, wycieczki edukacyjne i sukcesy naszych uczniów w Drohobyczu.",
+    "Шкільне життя та хроніка": "Życie szkoły i kronika",
+    "Всі новини": "Wszystkie aktualności",
+    "Всі новини школи →": "Wszystkie aktualności szkoły →",
+    "Всі новини школи →": "Wszystkie aktualności szkoły →",
+    "Читати повністю →": "Czytaj więcej →",
+    "Читати повністю": "Czytaj więcej",
+    "Назад до новин": "Wróć do aktualności",
+    "Поки що немає новин": "Brak aktualności",
+    "Слідкуйте за оновленнями життя школи!": "Śledź aktualności z życia szkoły!",
+    "Свято": "Uroczystość",
+    "Свята": "Uroczystości",
+    "Екскурсія": "Wycieczka",
+    "Екскурсії": "Wycieczki",
+    "Успіхи": "Sukcesy",
+    "Успіхи учнів": "Sukcesy uczniów",
+    "Оголошення": "Ogłoszenia",
+    "Подія": "Wydarzenie",
+    "Шкільне життя": "Życie szkoły"
+  };
+  for (var nk in NEWS_TRANS) {
+    TRANSLATIONS[nk] = NEWS_TRANS[nk];
+  }
+
   var dynamicTransCache = {};
   try {
     var rawDyn = localStorage.getItem('school_dyn_trans_pl');
@@ -1378,6 +1408,168 @@
     }
   }
   initReviews();
+
+  function initNews() {
+    var grid = document.getElementById('newsGrid');
+    if (!grid) return;
+
+    var DEFAULT_NEWS = [
+      {
+        id: 'news-1',
+        title: 'Урочиста академія до Дня Незалежності Польщі у Дрогобичі',
+        category: 'Свято',
+        date: '11 листопада 2026',
+        photo: 'assets/img/img_45_IMG_6320.jpeg',
+        excerpt: 'Учні нашої школи підготували патріотичний святковий концерт, декламували вірші класиків та спільно виконали гімни України та Польщі.',
+        text: 'У суботній школі ім. Св. Королеви Ядвіги відбулася щорічна урочиста академія з нагоди Дня Незалежності Польщі (Święto Niepodległości).\n\nНаймолодші вихованці виконали патріотичні пісні, учні середніх класів підготували зворушливі виступи з польської поезії, а старшокласники провели інтерактивну історичну вікторину про події 1918 року та відродження польської державності.\n\nДякуємо всім батькам, викладачам та гостям свята за теплу атмосферу та спільне збереження культурної спадщини!'
+      },
+      {
+        id: 'news-2',
+        title: 'Освітня подорож учнів до Кракова: Вавель та Ягеллонський університет',
+        category: 'Екскурсія',
+        date: '28 жовтня 2026',
+        photo: 'assets/img/img_54_viber_image2-4.jpg',
+        excerpt: 'Наші учні вирушили у триденну пізнавальну подорож до королівського Кракова, де відвідали усипальницю покровительки нашої школи — королеви Ядвіги.',
+        text: 'Незабутня поїздка до королівського Кракова об\'єднала понад 40 учнів нашої суботньої школи!\n\nПід час екскурсії діти відвідали Королівський замок на Вавелі та вклонилися саркофагу святої королеви Ядвіги — небесної покровительки нашого навчального закладу. Також школярі побували в найстаріших аудиторіях Ягеллонського університету (Collegium Maius) та на власні очі побачили історичний центр міста.\n\nПодорож стала чудовою можливістю для учнів попрактикувати живу польську мову з носіями та дізнатися більше про багатовікову спільну історію.'
+      },
+      {
+        id: 'news-3',
+        title: 'Успішне складання співбесіди та отримання Карти Поляка нашими випускниками',
+        category: 'Успіхи',
+        date: '15 жовтня 2026',
+        photo: 'assets/img/img_3_IMG_7648.jpeg',
+        excerpt: 'Ще 12 випускників спецкурсу польської мови нашої школи успішно пройшли співбесіду в Генеральному Консульстві Республіки Польща.',
+        text: 'Щиро вітаємо наших старанних учнів із блискучим проходженням офіційної співбесіди на Карту Поляка!\n\nЗавдяки тримісячній інтенсивній підготовці з історії, традицій, географії та культури Польщі, всі кандидати впевнено відповіли на запитання консула та отримали позитивні рішення.\n\nПишаємося вашими здобутками та бажаємо подальших успіхів у навчанні та кар\'єрі!'
+      }
+    ];
+
+    function getAllNews() {
+      var saved = [];
+      try {
+        var raw = localStorage.getItem('school_news_list');
+        if (raw) saved = JSON.parse(raw);
+      } catch(e) {}
+
+      var deleted = [];
+      try {
+        var rawDel = localStorage.getItem('school_deleted_news');
+        if (rawDel) deleted = JSON.parse(rawDel);
+      } catch(e) {}
+
+      var baseList = DEFAULT_NEWS.filter(function(item) {
+        return deleted.indexOf(item.id) === -1;
+      });
+
+      return saved.concat(baseList);
+    }
+
+    var isHomepage = (window.location.pathname.indexOf('novyny') === -1);
+    var currentFilter = 'all';
+
+    function renderNews() {
+      var list = getAllNews();
+      if (!isHomepage && currentFilter !== 'all') {
+        list = list.filter(function(n) { return (n.category || '').toLowerCase() === currentFilter.toLowerCase(); });
+      }
+
+      if (isHomepage && list.length > 3) {
+        list = list.slice(0, 3);
+      }
+
+      if (list.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;background:var(--surface);border-radius:18px;border:1px dashed var(--line);color:var(--ink-soft)"><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Поки що немає новин</div><div>Слідкуйте за оновленнями життя школи!</div></div>';
+        if (document.documentElement.lang === 'pl') applyLanguage('pl');
+        return;
+      }
+
+      var html = '';
+      list.forEach(function(item, idx) {
+        var thumb = item.photo || 'assets/img/img_45_IMG_6320.jpeg';
+        var badge = item.category || 'Подія';
+        var date = item.date || '';
+        var title = item.title || '';
+        var excerpt = item.excerpt || (item.text ? item.text.substring(0, 140) + '...' : '');
+
+        html += '<article class="news-card reveal in" data-news-idx="' + idx + '">' +
+          '<div class="news-thumb-box">' +
+            '<img class="news-thumb" src="' + thumb + '" alt="' + title + '" onerror="this.src=\'assets/icons/school-emblem.jpg\'">' +
+            '<span class="news-badge">' + badge + '</span>' +
+          '</div>' +
+          '<div class="news-body">' +
+            '<div class="news-date">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+              date +
+            '</div>' +
+            '<h3 class="news-title">' + title + '</h3>' +
+            '<p class="news-excerpt">' + excerpt + '</p>' +
+            '<div class="news-link">Читати повністю →</div>' +
+          '</div>' +
+        '</article>';
+      });
+
+      grid.innerHTML = html;
+
+      grid.querySelectorAll('.news-card').forEach(function(card, cIdx) {
+        card.addEventListener('click', function() {
+          var item = list[cIdx];
+          if (!item) return;
+          openNewsModal(item);
+        });
+      });
+
+      if (document.documentElement.lang === 'pl') applyLanguage('pl');
+    }
+
+    var modal = document.getElementById('newsModal');
+    var modalImg = document.getElementById('newsModalImg');
+    var modalBadge = document.getElementById('newsModalBadge');
+    var modalDateText = document.getElementById('newsModalDateText');
+    var modalTitle = document.getElementById('newsModalTitle');
+    var modalText = document.getElementById('newsModalText');
+    var modalClose = document.getElementById('newsModalClose');
+
+    function openNewsModal(item) {
+      if (!modal) return;
+      if (modalImg) modalImg.src = item.photo || 'assets/img/img_45_IMG_6320.jpeg';
+      if (modalBadge) modalBadge.textContent = item.category || 'Подія';
+      if (modalDateText) modalDateText.textContent = item.date || '';
+      if (modalTitle) modalTitle.textContent = item.title || '';
+      if (modalText) modalText.textContent = item.text || item.excerpt || '';
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      if (document.documentElement.lang === 'pl') applyLanguage('pl');
+    }
+
+    function closeNewsModal() {
+      if (!modal) return;
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (modalClose) {
+      modalClose.addEventListener('click', closeNewsModal);
+    }
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeNewsModal();
+      });
+    }
+
+    var filterContainer = document.getElementById('newsFilter');
+    if (filterContainer) {
+      filterContainer.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          filterContainer.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          currentFilter = btn.getAttribute('data-filter') || 'all';
+          renderNews();
+        });
+      });
+    }
+
+    renderNews();
+  }
+  initNews();
 
 
 })();
