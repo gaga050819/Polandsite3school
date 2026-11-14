@@ -511,6 +511,21 @@
 
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      var honeypot = document.getElementById('contactHoneypot');
+      if (honeypot && honeypot.value.trim() !== '') {
+        return;
+      }
+      var captchaCheck = document.getElementById('contactCaptchaCheck');
+      if (captchaCheck && !captchaCheck.checked) {
+        if (formStatus) {
+          formStatus.style.display = 'block';
+          formStatus.style.background = '#fef2f2';
+          formStatus.style.color = 'var(--red)';
+          formStatus.textContent = 'Будь ласка, підтвердіть перевірку "Я не робот".';
+        }
+        return;
+      }
+
       var nameVal = (document.getElementById('name') ? document.getElementById('name').value.trim() : '');
       var phoneVal = (document.getElementById('phone') ? document.getElementById('phone').value.trim() : '');
       var emailVal = (emailInput ? emailInput.value.trim() : '');
@@ -939,5 +954,326 @@
     }
   }
   initDynamicContent();
+
+  function initSmartCaptchas() {
+    document.querySelectorAll('.smart-captcha').forEach(function(sc) {
+      var inp = sc.querySelector('.captcha-input');
+      if (!inp) return;
+      inp.addEventListener('change', function() {
+        if (inp.checked) {
+          sc.classList.add('loading');
+          setTimeout(function() {
+            sc.classList.remove('loading');
+            sc.classList.add('verified');
+          }, 350);
+        } else {
+          sc.classList.remove('verified');
+        }
+      });
+    });
+  }
+  initSmartCaptchas();
+
+  function initReviews() {
+    var grid = document.getElementById('reviewsGrid');
+    if (!grid) return;
+
+    var DEFAULT_REVIEWS = [
+      {
+        id: 'rev_1',
+        name: 'Олена Ковальчук',
+        photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        badge: 'karta',
+        badgeLabel: 'Отримала Карту Поляка',
+        rating: 5,
+        text: 'Щиро дякую викладачам Польської суботньої школи за неймовірну підтримку та підготовку! Успішно пройшла співбесіду з консулом у Львові та отримала Карту Поляка з першого разу. Особливо допомогли уроки історії та традицій Польщі.',
+        date: '14.10.2024'
+      },
+      {
+        id: 'rev_2',
+        name: 'Андрій Мельник',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        badge: 'vnz',
+        badgeLabel: 'Вступ до Краківської Політехніки',
+        rating: 5,
+        text: 'Завдяки інтенсивному курсу за 1,5 роки підняв польську з нуля до впевненого рівня B2. Усі лекції в університеті розумію вільно, сесію склав на відмінно. Рекомендую всім, хто планує навчання в Польщі!',
+        date: '28.09.2024'
+      },
+      {
+        id: 'rev_3',
+        name: 'Тетяна Грицик',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        badge: 'parents',
+        badgeLabel: 'Мама учня 4 класу',
+        rating: 5,
+        text: 'Син ходить до суботньої школи вже другий рік з величезним задоволенням. Уроки проходять цікаво, в ігровій формі, багато свят, екскурсій і подарунків. Дуже тепла сімейна атмосфера!',
+        date: '05.11.2024'
+      },
+      {
+        id: 'rev_4',
+        name: 'Михайло Дмитрів',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        badge: 'adults',
+        badgeLabel: 'Курс для дорослих (A2-B1)',
+        rating: 5,
+        text: 'Займався у вечірній групі для дорослих. Дуже зручний графік, професійні викладачі та жива розмовна практика на кожному уроці. Тепер вільно спілкуюся з польськими колегами.',
+        date: '18.10.2024'
+      }
+    ];
+
+    function getAllApprovedReviews() {
+      var saved = [];
+      try {
+        var raw = localStorage.getItem('school_approved_reviews');
+        if (raw) saved = JSON.parse(raw);
+      } catch (e) {}
+      return DEFAULT_REVIEWS.concat(saved);
+    }
+
+    var currentFilter = 'all';
+
+    function renderReviews() {
+      var list = getAllApprovedReviews();
+      if (currentFilter !== 'all') {
+        list = list.filter(function(r) { return r.badge === currentFilter; });
+      }
+
+      var starSvg = '<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+
+      var html = '';
+      list.forEach(function(item) {
+        var starsHtml = '';
+        var numStars = item.rating || 5;
+        for (var i = 0; i < numStars; i++) {
+          starsHtml += starSvg;
+        }
+
+        var avatarSrc = item.photo || 'assets/icons/school-emblem.jpg';
+
+        html += '<div class="review-card reveal in">' +
+          '<div class="review-top">' +
+            '<img class="review-avatar" src="' + avatarSrc + '" alt="' + item.name + '" onerror="this.src=\'assets/icons/school-emblem.jpg\'">' +
+            '<div class="review-info">' +
+              '<div class="review-name">' + item.name + ' <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+              '<span class="review-badge">' + (item.badgeLabel || 'Випускник школи') + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="review-stars">' + starsHtml + '</div>' +
+          '<p class="review-text">' + item.text + '</p>' +
+          '<div class="review-footer">' +
+            '<span>Підтверджений відгук</span>' +
+            '<time>' + (item.date || '') + '</time>' +
+          '</div>' +
+        '</div>';
+      });
+
+      grid.innerHTML = html;
+    }
+
+    renderReviews();
+
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter') || 'all';
+        renderReviews();
+      });
+    });
+
+    var modal = document.getElementById('reviewModal');
+    var openBtn = document.getElementById('openReviewBtn');
+    var closeBtn = document.getElementById('closeReviewModal');
+    var authStep = document.getElementById('reviewAuthStep');
+    var form = document.getElementById('reviewForm');
+    var currentReviewUser = null;
+
+    if (openBtn && modal) {
+      openBtn.addEventListener('click', function() {
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        initReviewAuth();
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', function() {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.remove('open');
+          modal.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+
+    function initReviewAuth() {
+      var savedUserRaw = sessionStorage.getItem('school_review_user');
+      if (savedUserRaw) {
+        try {
+          currentReviewUser = JSON.parse(savedUserRaw);
+          showReviewForm(currentReviewUser);
+          return;
+        } catch (e) {}
+      }
+
+      if (window.google && window.google.accounts && window.google.accounts.id) {
+        window.google.accounts.id.initialize({
+          client_id: '749327851839-me3jil7t4ecdfgae838k20ljmukcatad.apps.googleusercontent.com',
+          callback: handleGoogleReviewAuth
+        });
+        var container = document.getElementById('reviewGoogleBtn');
+        if (container) {
+          container.innerHTML = '';
+          window.google.accounts.id.renderButton(container, {
+            theme: 'outline',
+            size: 'large',
+            text: 'continue_with',
+            shape: 'pill',
+            locale: 'uk'
+          });
+        }
+      } else {
+        setTimeout(initReviewAuth, 300);
+      }
+    }
+
+    function handleGoogleReviewAuth(res) {
+      try {
+        var base64Url = res.credential.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        var payload = JSON.parse(jsonPayload);
+        currentReviewUser = {
+          name: payload.name || payload.email.split('@')[0],
+          email: payload.email,
+          picture: payload.picture || 'assets/icons/school-emblem.jpg'
+        };
+        sessionStorage.setItem('school_review_user', JSON.stringify(currentReviewUser));
+        showReviewForm(currentReviewUser);
+      } catch (err) {}
+    }
+
+    function showReviewForm(u) {
+      if (authStep) authStep.style.display = 'none';
+      if (form) form.style.display = 'block';
+      var photoEl = document.getElementById('reviewUserPhoto');
+      var nameEl = document.getElementById('reviewUserName');
+      var emailEl = document.getElementById('reviewUserEmail');
+      if (photoEl) photoEl.src = u.picture || 'assets/icons/school-emblem.jpg';
+      if (nameEl) nameEl.textContent = u.name || 'Користувач';
+      if (emailEl) emailEl.textContent = u.email || '';
+    }
+
+    var starContainer = document.getElementById('reviewStarRating');
+    if (starContainer) {
+      var stars = starContainer.querySelectorAll('.star');
+      stars.forEach(function(st) {
+        st.addEventListener('click', function() {
+          var val = parseInt(st.getAttribute('data-val') || '5', 10);
+          starContainer.setAttribute('data-rating', val);
+          stars.forEach(function(s, idx) {
+            if (idx < val) s.classList.add('active');
+            else s.classList.remove('active');
+          });
+        });
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var msg = document.getElementById('reviewMsg');
+        var submitBtn = document.getElementById('reviewSubmitBtn');
+
+        var honeypot = document.getElementById('reviewHoneypot');
+        if (honeypot && honeypot.value.trim() !== '') {
+          return;
+        }
+
+        var captchaCheck = document.getElementById('reviewCaptchaCheck');
+        if (captchaCheck && !captchaCheck.checked) {
+          if (msg) {
+            msg.style.display = 'block';
+            msg.style.background = '#fef2f2';
+            msg.style.color = 'var(--red)';
+            msg.textContent = 'Будь ласка, підтвердіть захист "Я не робот".';
+          }
+          return;
+        }
+
+        var textVal = document.getElementById('reviewText') ? document.getElementById('reviewText').value.trim() : '';
+        if (!textVal) return;
+
+        var rating = parseInt(starContainer ? starContainer.getAttribute('data-rating') || '5' : '5', 10);
+        var badgeSelect = document.getElementById('reviewBadgeSelect');
+        var badge = badgeSelect ? badgeSelect.value : 'school';
+        var badgeLabel = badgeSelect ? badgeSelect.options[badgeSelect.selectedIndex].text : 'Учень школи';
+
+        var newReview = {
+          id: 'rev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          name: currentReviewUser ? currentReviewUser.name : 'Гість',
+          email: currentReviewUser ? currentReviewUser.email : '',
+          photo: currentReviewUser ? currentReviewUser.picture : 'assets/icons/school-emblem.jpg',
+          badge: badge,
+          badgeLabel: badgeLabel,
+          rating: rating,
+          text: textVal,
+          date: new Date().toLocaleDateString('uk-UA'),
+          status: 'pending'
+        };
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Надсилання...';
+        }
+
+        var pendingList = [];
+        try {
+          var pRaw = localStorage.getItem('school_pending_reviews');
+          if (pRaw) pendingList = JSON.parse(pRaw);
+        } catch (err) {}
+        pendingList.push(newReview);
+        localStorage.setItem('school_pending_reviews', JSON.stringify(pendingList));
+
+        var GOOGLE_URL = 'https://script.google.com/macros/s/AKfycbzj_tN-NKOqg_MaFOQvPOKmjKtR1GMg1EDvjwXiu_YCtn8m3BTFABIOuHGK2ip-a_eJlw/exec';
+        fetch(GOOGLE_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            type: 'review',
+            name: newReview.name,
+            email: newReview.email,
+            phone: 'Відгук (' + newReview.badgeLabel + ')',
+            message: 'Оцінка: ' + newReview.rating + '/5\n' + newReview.text,
+            date: newReview.date
+          })
+        }).catch(function() {});
+
+        setTimeout(function() {
+          if (submitBtn) submitBtn.disabled = false;
+          form.reset();
+          if (msg) {
+            msg.style.display = 'block';
+            msg.style.background = '#f0fdf4';
+            msg.style.color = '#16a34a';
+            msg.textContent = 'Дякуємо! Ваш відгук успішно передано на модерацію. Після перевірки адміністратором він з\'явиться на сайті.';
+          }
+          var sc = document.getElementById('reviewCaptcha');
+          if (sc) sc.classList.remove('verified');
+        }, 600);
+      });
+    }
+  }
+  initReviews();
+
 
 })();

@@ -174,6 +174,7 @@ textarea.admin-input{min-height:95px;resize:vertical}
         <button type="button" class="dash-tab-btn" data-tab="tab-announcement"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>Оголошення</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-admins"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Адміністратори</button>
         <button type="button" class="dash-tab-btn" data-tab="tab-sync"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Публікація</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-reviews"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:5px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Відгуки <span id="adminPendingBadge" style="display:none;background:#f59e0b;color:#fff;padding:2px 7px;border-radius:10px;font-size:.72rem;font-weight:700;margin-left:4px">0</span></button>
       </div>
 
       <div class="tab-pane active" id="tab-live-editor">
@@ -460,8 +461,87 @@ textarea.admin-input{min-height:95px;resize:vertical}
         </div>
       </div>
 
+      <div class="tab-pane" id="tab-reviews">
+        <div class="admin-panel-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+            <div>
+              <h3 style="margin:0 0 6px 0;display:flex;align-items:center;gap:8px">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Модерація відгуків учнів та батьків
+              </h3>
+              <p style="margin:0;color:var(--ink-soft);font-size:.9rem">Тільки схвалені вами відгуки відображаються на головній сторінці сайту.</p>
+            </div>
+            <button type="button" class="btn sm" id="adminAddManualReviewBtn" style="display:inline-flex;align-items:center;gap:6px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Додати відгук вручну
+            </button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px">
+            <div style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center">
+              <div style="font-size:1.6rem;font-weight:800;color:var(--ink)" id="statTotalReviews">0</div>
+              <div style="font-size:.82rem;color:var(--ink-soft);font-weight:600">Всього у базі</div>
+            </div>
+            <div style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center">
+              <div style="font-size:1.6rem;font-weight:800;color:#f59e0b" id="statPendingReviews">0</div>
+              <div style="font-size:.82rem;color:var(--ink-soft);font-weight:600">Очікують схвалення</div>
+            </div>
+            <div style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center">
+              <div style="font-size:1.6rem;font-weight:800;color:#16a34a" id="statApprovedReviews">0</div>
+              <div style="font-size:.82rem;color:var(--ink-soft);font-weight:600">Опубліковано на сайті</div>
+            </div>
+          </div>
+
+          <div id="adminReviewsList" style="display:flex;flex-direction:column;gap:14px"></div>
+        </div>
+      </div>
+
     </div>
   </main>
+</div>
+
+<div id="adminManualReviewModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--paper);border:1px solid var(--line);border-radius:20px;max-width:520px;width:100%;box-shadow:var(--shadow-lg);padding:26px;position:relative">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <h3 style="margin:0;font-size:1.15rem;font-weight:700;color:var(--ink)">Додати відгук вручну</h3>
+      <button type="button" id="closeManualReviewModal" style="border:0;background:transparent;cursor:pointer;font-size:1.4rem;color:var(--ink-soft)">&times;</button>
+    </div>
+    <form id="manualReviewForm">
+      <div class="admin-input-group">
+        <label>Ім'я та прізвище *</label>
+        <input type="text" id="manualReviewName" class="admin-input" required placeholder="Наприклад: Олена Ковальчук">
+      </div>
+      <div class="admin-input-group">
+        <label>Категорія / Досягнення *</label>
+        <select id="manualReviewBadge" class="admin-input">
+          <option value="karta">Отримав(ла) Карту Поляка</option>
+          <option value="vnz">Вступ до ВНЗ Польщі</option>
+          <option value="parents">Батьки учня / учениці</option>
+          <option value="adults">Курси для дорослих</option>
+          <option value="school">Учень суботньої школи</option>
+        </select>
+      </div>
+      <div class="admin-input-group">
+        <label>Оцінка</label>
+        <select id="manualReviewRating" class="admin-input">
+          <option value="5">5 зірок (★★★★★)</option>
+          <option value="4">4 зірки (★★★★)</option>
+          <option value="3">3 зірки (★★★)</option>
+        </select>
+      </div>
+      <div class="admin-input-group">
+        <label>Текст відгуку *</label>
+        <textarea id="manualReviewText" class="admin-input" style="min-height:90px" required placeholder="Введіть текст відгуку..."></textarea>
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.9rem;font-weight:600">
+          <input type="checkbox" id="manualReviewPublishDirect" checked>
+          Опублікувати на сайті відразу (без очікування)
+        </label>
+      </div>
+      <button type="submit" class="btn" style="width:100%;justify-content:center">Зберегти відгук</button>
+    </form>
+  </div>
 </div>
 
 <div id="livePhotoModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);z-index:99999;align-items:center;justify-content:center;padding:16px">
@@ -1363,6 +1443,277 @@ textarea.admin-input{min-height:95px;resize:vertical}
     }
     initGoogleBtn();
   }
+  initAdminReviews();
+
+  function initAdminReviews() {
+    var listEl = document.getElementById('adminReviewsList');
+    var badgeEl = document.getElementById('adminPendingBadge');
+    var statTotal = document.getElementById('statTotalReviews');
+    var statPending = document.getElementById('statPendingReviews');
+    var statApproved = document.getElementById('statApprovedReviews');
+    if (!listEl) return;
+
+    var DEFAULT_APPROVED = [
+      {
+        id: 'rev_1',
+        name: 'Олена Ковальчук',
+        photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        badge: 'karta',
+        badgeLabel: 'Отримала Карту Поляка',
+        rating: 5,
+        text: 'Щиро дякую викладачам Польської суботньої школи за неймовірну підтримку та підготовку! Успішно пройшла співбесіду з консулом у Львові та отримала Карту Поляка з першого разу. Особливо допомогли уроки історії та традицій Польщі.',
+        date: '14.10.2024',
+        status: 'approved'
+      },
+      {
+        id: 'rev_2',
+        name: 'Андрій Мельник',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        badge: 'vnz',
+        badgeLabel: 'Вступ до Краківської Політехніки',
+        rating: 5,
+        text: 'Завдяки інтенсивному курсу за 1,5 роки підняв польську з нуля до впевненого рівня B2. Усі лекції в університеті розумію вільно, сесію склав на відмінно. Рекомендую всім, хто планує навчання в Польщі!',
+        date: '28.09.2024',
+        status: 'approved'
+      },
+      {
+        id: 'rev_3',
+        name: 'Тетяна Грицик',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        badge: 'parents',
+        badgeLabel: 'Мама учня 4 класу',
+        rating: 5,
+        text: 'Син ходить до суботньої школи вже другий рік з величезним задоволенням. Уроки проходять цікаво, в ігровій формі, багато свят, екскурсій і подарунків. Дуже тепла сімейна атмосфера!',
+        date: '05.11.2024',
+        status: 'approved'
+      },
+      {
+        id: 'rev_4',
+        name: 'Михайло Дмитрів',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        badge: 'adults',
+        badgeLabel: 'Курс для дорослих (A2-B1)',
+        rating: 5,
+        text: 'Займався у вечірній групі для дорослих. Дуже зручний графік, професійні викладачі та жива розмовна практика на кожному уроці. Тепер вільно спілкуюся з польськими колегами.',
+        date: '18.10.2024',
+        status: 'approved'
+      }
+    ];
+
+    function getPendingReviews() {
+      try {
+        var raw = localStorage.getItem('school_pending_reviews');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [];
+    }
+
+    function getApprovedReviews() {
+      try {
+        var raw = localStorage.getItem('school_approved_reviews');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [];
+    }
+
+    function savePendingReviews(arr) {
+      localStorage.setItem('school_pending_reviews', JSON.stringify(arr));
+    }
+
+    function saveApprovedReviews(arr) {
+      localStorage.setItem('school_approved_reviews', JSON.stringify(arr));
+    }
+
+    function renderAdminReviews() {
+      var pending = getPendingReviews();
+      var customApproved = getApprovedReviews();
+      var allApproved = DEFAULT_APPROVED.concat(customApproved);
+
+      var totalCount = pending.length + allApproved.length;
+      if (statTotal) statTotal.textContent = totalCount;
+      if (statPending) statPending.textContent = pending.length;
+      if (statApproved) statApproved.textContent = allApproved.length;
+
+      if (badgeEl) {
+        if (pending.length > 0) {
+          badgeEl.textContent = pending.length;
+          badgeEl.style.display = 'inline-block';
+        } else {
+          badgeEl.style.display = 'none';
+        }
+      }
+
+      var items = [];
+      pending.forEach(function(r) { r.isPending = true; items.push(r); });
+      customApproved.forEach(function(r) { r.isPending = false; items.push(r); });
+      DEFAULT_APPROVED.forEach(function(r) { r.isPending = false; r.isDefault = true; items.push(r); });
+
+      if (items.length === 0) {
+        listEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-soft)">Немає відгуків для відображення.</div>';
+        return;
+      }
+
+      var html = '';
+      items.forEach(function(r) {
+        var statusBadge = r.isPending
+          ? '<span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:999px;font-size:.74rem;font-weight:700">Очікує модерації</span>'
+          : '<span style="background:#dcfce7;color:#15803d;padding:3px 10px;border-radius:999px;font-size:.74rem;font-weight:700">Опубліковано</span>';
+
+        var stars = '★'.repeat(r.rating || 5);
+        var photoSrc = r.photo || 'assets/icons/school-emblem.jpg';
+
+        var actionBtns = '';
+        if (r.isPending) {
+          actionBtns = '<button type="button" class="btn sm" data-approve="' + r.id + '" style="background:#16a34a;border-color:#16a34a;padding:6px 14px;font-size:.82rem">Схвалити</button>' +
+                       '<button type="button" class="btn sm ghost" data-delete="' + r.id + '" style="color:var(--red);border-color:var(--line);padding:6px 12px;font-size:.82rem">Видалити</button>';
+        } else if (!r.isDefault) {
+          actionBtns = '<button type="button" class="btn sm ghost" data-unapprove="' + r.id + '" style="padding:6px 12px;font-size:.82rem">Приховати</button>' +
+                       '<button type="button" class="btn sm ghost" data-delete-approved="' + r.id + '" style="color:var(--red);border-color:var(--line);padding:6px 12px;font-size:.82rem">Видалити</button>';
+        } else {
+          actionBtns = '<span style="font-size:.76rem;color:var(--ink-soft);opacity:.8">Базовий відгук</span>';
+        }
+
+        html += '<div style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">' +
+            '<div style="display:flex;align-items:center;gap:12px">' +
+              '<img src="' + photoSrc + '" style="width:42px;height:42px;border-radius:50%;object-fit:cover" onerror="this.src=\'assets/icons/school-emblem.jpg\'">' +
+              '<div>' +
+                '<div style="font-weight:700;font-size:.95rem;color:var(--ink)">' + r.name + ' <span style="font-size:.8rem;color:var(--ink-soft);font-weight:400">(' + (r.email || 'без пошти') + ')</span></div>' +
+                '<div style="display:flex;align-items:center;gap:8px;margin-top:2px">' +
+                  '<span style="font-size:.76rem;font-weight:700;color:var(--red)">' + (r.badgeLabel || r.badge || 'Учень') + '</span>' +
+                  '<span style="color:#f59e0b;font-size:.85rem">' + stars + '</span>' +
+                  '<span style="font-size:.74rem;color:var(--ink-soft)">' + (r.date || '') + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px">' + statusBadge + '</div>' +
+          '</div>' +
+          '<div style="font-size:.9rem;line-height:1.5;color:var(--ink);background:var(--surface);padding:12px 14px;border-radius:10px;border:1px solid var(--line)">' + r.text + '</div>' +
+          '<div style="display:flex;justify-content:flex-end;gap:8px">' + actionBtns + '</div>' +
+        '</div>';
+      });
+
+      listEl.innerHTML = html;
+
+      listEl.querySelectorAll('[data-approve]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = btn.getAttribute('data-approve');
+          var pList = getPendingReviews();
+          var item = null;
+          var newP = pList.filter(function(x) {
+            if (x.id === id) { item = x; return false; }
+            return true;
+          });
+          if (item) {
+            item.status = 'approved';
+            var aList = getApprovedReviews();
+            aList.push(item);
+            savePendingReviews(newP);
+            saveApprovedReviews(aList);
+            renderAdminReviews();
+          }
+        });
+      });
+
+      listEl.querySelectorAll('[data-unapprove]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = btn.getAttribute('data-unapprove');
+          var aList = getApprovedReviews();
+          var item = null;
+          var newA = aList.filter(function(x) {
+            if (x.id === id) { item = x; return false; }
+            return true;
+          });
+          if (item) {
+            item.status = 'pending';
+            var pList = getPendingReviews();
+            pList.push(item);
+            savePendingReviews(pList);
+            saveApprovedReviews(newA);
+            renderAdminReviews();
+          }
+        });
+      });
+
+      listEl.querySelectorAll('[data-delete]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (!confirm('Видалити цей відгук?')) return;
+          var id = btn.getAttribute('data-delete');
+          var pList = getPendingReviews();
+          savePendingReviews(pList.filter(function(x) { return x.id !== id; }));
+          renderAdminReviews();
+        });
+      });
+
+      listEl.querySelectorAll('[data-delete-approved]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (!confirm('Видалити цей відгук назавжди?')) return;
+          var id = btn.getAttribute('data-delete-approved');
+          var aList = getApprovedReviews();
+          saveApprovedReviews(aList.filter(function(x) { return x.id !== id; }));
+          renderAdminReviews();
+        });
+      });
+    }
+
+    renderAdminReviews();
+
+    var addBtn = document.getElementById('adminAddManualReviewBtn');
+    var modal = document.getElementById('adminManualReviewModal');
+    var closeM = document.getElementById('closeManualReviewModal');
+    var formM = document.getElementById('manualReviewForm');
+
+    if (addBtn && modal) {
+      addBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+      });
+    }
+    if (closeM && modal) {
+      closeM.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+    }
+    if (formM) {
+      formM.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var name = (document.getElementById('manualReviewName') || {}).value || 'Гість';
+        var badgeSel = document.getElementById('manualReviewBadge');
+        var badge = badgeSel ? badgeSel.value : 'school';
+        var badgeLabel = badgeSel ? badgeSel.options[badgeSel.selectedIndex].text : 'Учень';
+        var rating = parseInt((document.getElementById('manualReviewRating') || {}).value || '5', 10);
+        var text = (document.getElementById('manualReviewText') || {}).value || '';
+        var publishDirect = (document.getElementById('manualReviewPublishDirect') || {}).checked;
+
+        var rev = {
+          id: 'rev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          name: name.trim(),
+          email: 'додано адміністратором',
+          photo: 'assets/icons/school-emblem.jpg',
+          badge: badge,
+          badgeLabel: badgeLabel,
+          rating: rating,
+          text: text.trim(),
+          date: new Date().toLocaleDateString('uk-UA'),
+          status: publishDirect ? 'approved' : 'pending'
+        };
+
+        if (publishDirect) {
+          var aList = getApprovedReviews();
+          aList.unshift(rev);
+          saveApprovedReviews(aList);
+        } else {
+          var pList = getPendingReviews();
+          pList.unshift(rev);
+          savePendingReviews(pList);
+        }
+
+        formM.reset();
+        modal.style.display = 'none';
+        renderAdminReviews();
+      });
+    }
+  }
+
 
   function handleCredentialResponse(response) {
     authAlert.style.display = 'none';
@@ -1688,6 +2039,277 @@ textarea.admin-input{min-height:95px;resize:vertical}
   } else {
     initGoogleBtn();
   }
+  initAdminReviews();
+
+  function initAdminReviews() {
+    var listEl = document.getElementById('adminReviewsList');
+    var badgeEl = document.getElementById('adminPendingBadge');
+    var statTotal = document.getElementById('statTotalReviews');
+    var statPending = document.getElementById('statPendingReviews');
+    var statApproved = document.getElementById('statApprovedReviews');
+    if (!listEl) return;
+
+    var DEFAULT_APPROVED = [
+      {
+        id: 'rev_1',
+        name: 'Олена Ковальчук',
+        photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        badge: 'karta',
+        badgeLabel: 'Отримала Карту Поляка',
+        rating: 5,
+        text: 'Щиро дякую викладачам Польської суботньої школи за неймовірну підтримку та підготовку! Успішно пройшла співбесіду з консулом у Львові та отримала Карту Поляка з першого разу. Особливо допомогли уроки історії та традицій Польщі.',
+        date: '14.10.2024',
+        status: 'approved'
+      },
+      {
+        id: 'rev_2',
+        name: 'Андрій Мельник',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        badge: 'vnz',
+        badgeLabel: 'Вступ до Краківської Політехніки',
+        rating: 5,
+        text: 'Завдяки інтенсивному курсу за 1,5 роки підняв польську з нуля до впевненого рівня B2. Усі лекції в університеті розумію вільно, сесію склав на відмінно. Рекомендую всім, хто планує навчання в Польщі!',
+        date: '28.09.2024',
+        status: 'approved'
+      },
+      {
+        id: 'rev_3',
+        name: 'Тетяна Грицик',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        badge: 'parents',
+        badgeLabel: 'Мама учня 4 класу',
+        rating: 5,
+        text: 'Син ходить до суботньої школи вже другий рік з величезним задоволенням. Уроки проходять цікаво, в ігровій формі, багато свят, екскурсій і подарунків. Дуже тепла сімейна атмосфера!',
+        date: '05.11.2024',
+        status: 'approved'
+      },
+      {
+        id: 'rev_4',
+        name: 'Михайло Дмитрів',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        badge: 'adults',
+        badgeLabel: 'Курс для дорослих (A2-B1)',
+        rating: 5,
+        text: 'Займався у вечірній групі для дорослих. Дуже зручний графік, професійні викладачі та жива розмовна практика на кожному уроці. Тепер вільно спілкуюся з польськими колегами.',
+        date: '18.10.2024',
+        status: 'approved'
+      }
+    ];
+
+    function getPendingReviews() {
+      try {
+        var raw = localStorage.getItem('school_pending_reviews');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [];
+    }
+
+    function getApprovedReviews() {
+      try {
+        var raw = localStorage.getItem('school_approved_reviews');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return [];
+    }
+
+    function savePendingReviews(arr) {
+      localStorage.setItem('school_pending_reviews', JSON.stringify(arr));
+    }
+
+    function saveApprovedReviews(arr) {
+      localStorage.setItem('school_approved_reviews', JSON.stringify(arr));
+    }
+
+    function renderAdminReviews() {
+      var pending = getPendingReviews();
+      var customApproved = getApprovedReviews();
+      var allApproved = DEFAULT_APPROVED.concat(customApproved);
+
+      var totalCount = pending.length + allApproved.length;
+      if (statTotal) statTotal.textContent = totalCount;
+      if (statPending) statPending.textContent = pending.length;
+      if (statApproved) statApproved.textContent = allApproved.length;
+
+      if (badgeEl) {
+        if (pending.length > 0) {
+          badgeEl.textContent = pending.length;
+          badgeEl.style.display = 'inline-block';
+        } else {
+          badgeEl.style.display = 'none';
+        }
+      }
+
+      var items = [];
+      pending.forEach(function(r) { r.isPending = true; items.push(r); });
+      customApproved.forEach(function(r) { r.isPending = false; items.push(r); });
+      DEFAULT_APPROVED.forEach(function(r) { r.isPending = false; r.isDefault = true; items.push(r); });
+
+      if (items.length === 0) {
+        listEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-soft)">Немає відгуків для відображення.</div>';
+        return;
+      }
+
+      var html = '';
+      items.forEach(function(r) {
+        var statusBadge = r.isPending
+          ? '<span style="background:#fef3c7;color:#b45309;padding:3px 10px;border-radius:999px;font-size:.74rem;font-weight:700">Очікує модерації</span>'
+          : '<span style="background:#dcfce7;color:#15803d;padding:3px 10px;border-radius:999px;font-size:.74rem;font-weight:700">Опубліковано</span>';
+
+        var stars = '★'.repeat(r.rating || 5);
+        var photoSrc = r.photo || 'assets/icons/school-emblem.jpg';
+
+        var actionBtns = '';
+        if (r.isPending) {
+          actionBtns = '<button type="button" class="btn sm" data-approve="' + r.id + '" style="background:#16a34a;border-color:#16a34a;padding:6px 14px;font-size:.82rem">Схвалити</button>' +
+                       '<button type="button" class="btn sm ghost" data-delete="' + r.id + '" style="color:var(--red);border-color:var(--line);padding:6px 12px;font-size:.82rem">Видалити</button>';
+        } else if (!r.isDefault) {
+          actionBtns = '<button type="button" class="btn sm ghost" data-unapprove="' + r.id + '" style="padding:6px 12px;font-size:.82rem">Приховати</button>' +
+                       '<button type="button" class="btn sm ghost" data-delete-approved="' + r.id + '" style="color:var(--red);border-color:var(--line);padding:6px 12px;font-size:.82rem">Видалити</button>';
+        } else {
+          actionBtns = '<span style="font-size:.76rem;color:var(--ink-soft);opacity:.8">Базовий відгук</span>';
+        }
+
+        html += '<div style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">' +
+            '<div style="display:flex;align-items:center;gap:12px">' +
+              '<img src="' + photoSrc + '" style="width:42px;height:42px;border-radius:50%;object-fit:cover" onerror="this.src=\'assets/icons/school-emblem.jpg\'">' +
+              '<div>' +
+                '<div style="font-weight:700;font-size:.95rem;color:var(--ink)">' + r.name + ' <span style="font-size:.8rem;color:var(--ink-soft);font-weight:400">(' + (r.email || 'без пошти') + ')</span></div>' +
+                '<div style="display:flex;align-items:center;gap:8px;margin-top:2px">' +
+                  '<span style="font-size:.76rem;font-weight:700;color:var(--red)">' + (r.badgeLabel || r.badge || 'Учень') + '</span>' +
+                  '<span style="color:#f59e0b;font-size:.85rem">' + stars + '</span>' +
+                  '<span style="font-size:.74rem;color:var(--ink-soft)">' + (r.date || '') + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px">' + statusBadge + '</div>' +
+          '</div>' +
+          '<div style="font-size:.9rem;line-height:1.5;color:var(--ink);background:var(--surface);padding:12px 14px;border-radius:10px;border:1px solid var(--line)">' + r.text + '</div>' +
+          '<div style="display:flex;justify-content:flex-end;gap:8px">' + actionBtns + '</div>' +
+        '</div>';
+      });
+
+      listEl.innerHTML = html;
+
+      listEl.querySelectorAll('[data-approve]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = btn.getAttribute('data-approve');
+          var pList = getPendingReviews();
+          var item = null;
+          var newP = pList.filter(function(x) {
+            if (x.id === id) { item = x; return false; }
+            return true;
+          });
+          if (item) {
+            item.status = 'approved';
+            var aList = getApprovedReviews();
+            aList.push(item);
+            savePendingReviews(newP);
+            saveApprovedReviews(aList);
+            renderAdminReviews();
+          }
+        });
+      });
+
+      listEl.querySelectorAll('[data-unapprove]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = btn.getAttribute('data-unapprove');
+          var aList = getApprovedReviews();
+          var item = null;
+          var newA = aList.filter(function(x) {
+            if (x.id === id) { item = x; return false; }
+            return true;
+          });
+          if (item) {
+            item.status = 'pending';
+            var pList = getPendingReviews();
+            pList.push(item);
+            savePendingReviews(pList);
+            saveApprovedReviews(newA);
+            renderAdminReviews();
+          }
+        });
+      });
+
+      listEl.querySelectorAll('[data-delete]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (!confirm('Видалити цей відгук?')) return;
+          var id = btn.getAttribute('data-delete');
+          var pList = getPendingReviews();
+          savePendingReviews(pList.filter(function(x) { return x.id !== id; }));
+          renderAdminReviews();
+        });
+      });
+
+      listEl.querySelectorAll('[data-delete-approved]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (!confirm('Видалити цей відгук назавжди?')) return;
+          var id = btn.getAttribute('data-delete-approved');
+          var aList = getApprovedReviews();
+          saveApprovedReviews(aList.filter(function(x) { return x.id !== id; }));
+          renderAdminReviews();
+        });
+      });
+    }
+
+    renderAdminReviews();
+
+    var addBtn = document.getElementById('adminAddManualReviewBtn');
+    var modal = document.getElementById('adminManualReviewModal');
+    var closeM = document.getElementById('closeManualReviewModal');
+    var formM = document.getElementById('manualReviewForm');
+
+    if (addBtn && modal) {
+      addBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+      });
+    }
+    if (closeM && modal) {
+      closeM.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+    }
+    if (formM) {
+      formM.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var name = (document.getElementById('manualReviewName') || {}).value || 'Гість';
+        var badgeSel = document.getElementById('manualReviewBadge');
+        var badge = badgeSel ? badgeSel.value : 'school';
+        var badgeLabel = badgeSel ? badgeSel.options[badgeSel.selectedIndex].text : 'Учень';
+        var rating = parseInt((document.getElementById('manualReviewRating') || {}).value || '5', 10);
+        var text = (document.getElementById('manualReviewText') || {}).value || '';
+        var publishDirect = (document.getElementById('manualReviewPublishDirect') || {}).checked;
+
+        var rev = {
+          id: 'rev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          name: name.trim(),
+          email: 'додано адміністратором',
+          photo: 'assets/icons/school-emblem.jpg',
+          badge: badge,
+          badgeLabel: badgeLabel,
+          rating: rating,
+          text: text.trim(),
+          date: new Date().toLocaleDateString('uk-UA'),
+          status: publishDirect ? 'approved' : 'pending'
+        };
+
+        if (publishDirect) {
+          var aList = getApprovedReviews();
+          aList.unshift(rev);
+          saveApprovedReviews(aList);
+        } else {
+          var pList = getPendingReviews();
+          pList.unshift(rev);
+          savePendingReviews(pList);
+        }
+
+        formM.reset();
+        modal.style.display = 'none';
+        renderAdminReviews();
+      });
+    }
+  }
+
 })();
 </script>
 </body>
