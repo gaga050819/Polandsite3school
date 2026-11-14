@@ -978,50 +978,9 @@
     var grid = document.getElementById('reviewsGrid');
     if (!grid) return;
 
-    var DEFAULT_REVIEWS = [
-      {
-        id: 'rev_1',
-        name: 'Олена Ковальчук',
-        photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
-        badge: 'karta',
-        badgeLabel: 'Отримала Карту Поляка',
-        rating: 5,
-        text: 'Щиро дякую викладачам Польської суботньої школи за неймовірну підтримку та підготовку! Успішно пройшла співбесіду з консулом у Львові та отримала Карту Поляка з першого разу. Особливо допомогли уроки історії та традицій Польщі.',
-        date: '14.10.2024'
-      },
-      {
-        id: 'rev_2',
-        name: 'Андрій Мельник',
-        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        badge: 'vnz',
-        badgeLabel: 'Вступ до Краківської Політехніки',
-        rating: 5,
-        text: 'Завдяки інтенсивному курсу за 1,5 роки підняв польську з нуля до впевненого рівня B2. Усі лекції в університеті розумію вільно, сесію склав на відмінно. Рекомендую всім, хто планує навчання в Польщі!',
-        date: '28.09.2024'
-      },
-      {
-        id: 'rev_3',
-        name: 'Тетяна Грицик',
-        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        badge: 'parents',
-        badgeLabel: 'Мама учня 4 класу',
-        rating: 5,
-        text: 'Син ходить до суботньої школи вже другий рік з величезним задоволенням. Уроки проходять цікаво, в ігровій формі, багато свят, екскурсій і подарунків. Дуже тепла сімейна атмосфера!',
-        date: '05.11.2024'
-      },
-      {
-        id: 'rev_4',
-        name: 'Михайло Дмитрів',
-        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-        badge: 'adults',
-        badgeLabel: 'Курс для дорослих (A2-B1)',
-        rating: 5,
-        text: 'Займався у вечірній групі для дорослих. Дуже зручний графік, професійні викладачі та жива розмовна практика на кожному уроці. Тепер вільно спілкуюся з польськими колегами.',
-        date: '18.10.2024'
-      }
-    ];
+    var DEFAULT_REVIEWS = [];
 
-    function getAllApprovedReviews() {
+        function getAllApprovedReviews() {
       var saved = [];
       try {
         var raw = localStorage.getItem('school_approved_reviews');
@@ -1036,6 +995,11 @@
       var list = getAllApprovedReviews();
       if (currentFilter !== 'all') {
         list = list.filter(function(r) { return r.badge === currentFilter; });
+      }
+
+      if (list.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 20px;background:var(--surface);border-radius:18px;border:1px dashed var(--line);color:var(--ink-soft)"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin:0 auto 12px;opacity:.5;display:block"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div style="font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px">Поки що немає відгуків</div><div style="font-size:.9rem">Будьте першим, хто поділиться своїм досвідом навчання у школі!</div></div>';
+        return;
       }
 
       var starSvg = '<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
