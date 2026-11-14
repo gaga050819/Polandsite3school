@@ -72,6 +72,7 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .brand-sub{font-size:.74rem;font-weight:600;opacity:.7;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 
 .nav{display:flex;align-items:center;gap:2px}
+.header-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:auto}
 .nav a{position:relative;padding:8px 11px;font-size:.88rem;font-weight:600;white-space:nowrap;transition:color .25s var(--ease)}
 .nav a::after{content:"";position:absolute;left:11px;right:11px;bottom:2px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
 .nav a:hover::after,.nav a.active::after{transform:scaleX(1)}
@@ -347,7 +348,7 @@ textarea.form-control{resize:vertical;min-height:120px}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 .reveal.in{opacity:1;transform:none}
 
-@media (max-width:1180px){.nav{display:none}.nav-toggle{display:block}}
+@media (max-width:1180px){.nav{display:none;flex:none}.nav-toggle{display:block}.header-actions{margin-left:auto}}
 @media (max-width:1024px){
   .grid-3{grid-template-columns:repeat(2,1fr);gap:22px}
   .grid-2{grid-template-columns:1fr 1fr;gap:24px}
