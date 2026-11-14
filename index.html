@@ -32,6 +32,7 @@
     <a href="prajs-list.html">Курси</a>
     <a href="ekskursiji-wycieczki.html">Екскурсії</a>
     <a href="uroczystosci.html">Свята</a>
+    <a href="#reviews">Відгуки</a>
     <a href="kontakti.html">Контакти</a>
   </nav>
   <div class="header-actions">  <button class="theme-toggle" id="themeToggle" aria-label="Перемкнути тему"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -64,6 +65,7 @@
     <li><a href="prajs-list.html">Курси</a></li>
     <li><a href="ekskursiji-wycieczki.html">Екскурсії</a></li>
     <li><a href="uroczystosci.html">Свята</a></li>
+    <li><a href="#reviews">Відгуки</a></li>
     <li><a href="kontakti.html">Контакти</a></li>
   </ul>
   <div class="overlay-contacts">
@@ -93,7 +95,11 @@
         <a class="btn" href="kontakti.html">Зв'яжіться з нами
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a class="btn ghost" href="#about">Дізнатись більше</a>
+        <a class="btn ghost" href="#reviews" style="display:inline-flex;align-items:center;gap:6px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Відгуки
+        </a>
+        <a class="btn ghost" href="#about">Про школу</a>
       </div>
     </div>
     <div class="dots" id="dots"></div>
@@ -183,6 +189,30 @@
     </div>
   </section>
 
+    <section class="section reviews-section" id="reviews">
+    <div class="reviews-head reveal">
+      <div>
+        <span class="section-tag">Відгуки та результати</span>
+        <h2 style="font-family:'Lora',serif;font-size:clamp(1.8rem,3vw,2.4rem);margin-top:6px">Що кажуть наші учні та батьки</h2>
+        <p style="color:var(--ink-soft);max-width:620px;margin-top:8px">Справжні історії успіху: отримання Карти Поляка, вступ до престижних університетів Польщі та радість дітей від занять.</p>
+      </div>
+      <button type="button" class="btn" id="openReviewBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Залишити відгук
+      </button>
+    </div>
+
+    <div class="reviews-filter reveal">
+      <button type="button" class="filter-btn active" data-filter="all">Всі відгуки</button>
+      <button type="button" class="filter-btn" data-filter="karta">Карта Поляка</button>
+      <button type="button" class="filter-btn" data-filter="vnz">Вступ до ВНЗ</button>
+      <button type="button" class="filter-btn" data-filter="parents">Батьки учнів</button>
+      <button type="button" class="filter-btn" data-filter="adults">Курси для дорослих</button>
+    </div>
+
+    <div class="reviews-grid" id="reviewsGrid"></div>
+  </section>
+
   <section class="section" style="padding-top:0">
     <div class="section-head reveal">
       <span class="section-tag">Шкільне життя</span>
@@ -267,31 +297,6 @@
         </div>
       </div>
     </div>
-  </section>
-
-  
-  <section class="section reviews-section" id="reviews">
-    <div class="reviews-head reveal">
-      <div>
-        <span class="section-tag">Відгуки та результати</span>
-        <h2 style="font-family:'Lora',serif;font-size:clamp(1.8rem,3vw,2.4rem);margin-top:6px">Що кажуть наші учні та батьки</h2>
-        <p style="color:var(--ink-soft);max-width:620px;margin-top:8px">Справжні історії успіху: отримання Карти Поляка, вступ до престижних університетів Польщі та радість дітей від занять.</p>
-      </div>
-      <button type="button" class="btn" id="openReviewBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        Залишити відгук
-      </button>
-    </div>
-
-    <div class="reviews-filter reveal">
-      <button type="button" class="filter-btn active" data-filter="all">Всі відгуки</button>
-      <button type="button" class="filter-btn" data-filter="karta">Карта Поляка</button>
-      <button type="button" class="filter-btn" data-filter="vnz">Вступ до ВНЗ</button>
-      <button type="button" class="filter-btn" data-filter="parents">Батьки учнів</button>
-      <button type="button" class="filter-btn" data-filter="adults">Курси для дорослих</button>
-    </div>
-
-    <div class="reviews-grid" id="reviewsGrid"></div>
   </section>
 
   <section class="strip">

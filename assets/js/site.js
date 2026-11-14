@@ -33,9 +33,27 @@
     } catch(e) {}
 
     if (savedHtml) {
+      if (filename === 'index.html' && savedHtml.indexOf('id="reviews"') === -1) {
+        try {
+          localStorage.removeItem('school_page_main_index.html');
+        } catch(e) {}
+        savedHtml = null;
+      }
+    }
+
+    if (savedHtml) {
       var mainEl = document.querySelector('main');
       if (mainEl) {
+        var reviewsEl = mainEl.querySelector('#reviews');
         mainEl.innerHTML = savedHtml;
+        if (reviewsEl && !mainEl.querySelector('#reviews')) {
+          var targetEl = mainEl.querySelector('#faq') || mainEl.querySelector('.strip');
+          if (targetEl) {
+            mainEl.insertBefore(reviewsEl, targetEl);
+          } else {
+            mainEl.appendChild(reviewsEl);
+          }
+        }
       }
     }
     if (savedFooter) {
