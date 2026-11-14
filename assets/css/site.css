@@ -336,6 +336,9 @@ textarea.form-control{resize:vertical;min-height:120px}
 .back-to-top:hover,.back-to-top:active{background:var(--red-deep);transform:translateY(-3px);box-shadow:0 6px 20px rgba(200,16,46,.55)}
 .back-to-top svg{width:22px;height:22px;pointer-events:none}
 
+.site-announcement{background:linear-gradient(90deg,var(--red),var(--red-deep));color:#ffffff;text-align:center;padding:11px 18px;font-size:.92rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 2px 8px rgba(200,16,46,.25);position:relative;z-index:99}
+.site-announcement a{color:#ffffff;text-decoration:underline;font-weight:700}
+
 .footer{background:var(--paper);border-top:1px solid var(--line)}
 .footer-inner{max-width:1240px;margin:0 auto;padding:40px clamp(20px,5vw,56px) calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:20px 48px;justify-content:space-between;align-items:center;color:var(--ink-soft)}
 .footer a{color:var(--ink);font-weight:600;transition:color .25s}

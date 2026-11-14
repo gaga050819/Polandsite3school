@@ -210,6 +210,7 @@
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
+  window.openLightboxWithSrc = openCustom;
 
   function openCustom(src) {
     if (!lightboxImg) return;
@@ -220,6 +221,7 @@
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
+  window.openLightboxWithSrc = openCustom;
 
   function nextImage() {
     if (galleryImages.length > 1) {
@@ -764,5 +766,107 @@
     });
   }
   initFAQ();
+
+  function applyDynamicContent(data) {
+    if (!data) return;
+    if (data.contacts) {
+      if (data.contacts.phone1) {
+        document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+          el.href = 'tel:' + data.contacts.phone1;
+          el.textContent = data.contacts.phone1_display || data.contacts.phone1;
+        });
+      }
+      if (data.contacts.email) {
+        document.querySelectorAll('a[href^="mailto:"]').forEach(function(el) {
+          el.href = 'mailto:' + data.contacts.email;
+          el.textContent = data.contacts.email;
+        });
+      }
+    }
+
+    if (data.announcement && data.announcement.enabled && data.announcement.text) {
+      if (!document.getElementById('siteAnnouncement')) {
+        var bar = document.createElement('div');
+        bar.id = 'siteAnnouncement';
+        bar.className = 'site-announcement';
+        bar.innerHTML = '<span>' + data.announcement.text + '</span>';
+        var mainEl = document.querySelector('main');
+        if (mainEl && mainEl.parentNode) {
+          mainEl.parentNode.insertBefore(bar, mainEl);
+        }
+      }
+    }
+
+    var path = window.location.pathname.toLowerCase();
+    var pageKey = 'index';
+    if (path.indexOf('pro-mene') !== -1) pageKey = 'pro_mene';
+    else if (path.indexOf('prajs-list') !== -1) pageKey = 'prajs_list';
+    else if (path.indexOf('fotogalereya') !== -1) pageKey = 'fotogalereya';
+    else if (path.indexOf('ekskursiji') !== -1) pageKey = 'ekskursiji';
+    else if (path.indexOf('uroczystosci') !== -1) pageKey = 'uroczystosci';
+    else if (path.indexOf('kontakti') !== -1) pageKey = 'kontakti';
+
+    if (data.pages && data.pages[pageKey]) {
+      var pData = data.pages[pageKey];
+      var heroH1 = document.querySelector('.page-hero h1, .hero h1');
+      var heroP = document.querySelector('.page-hero p, .hero p');
+      if (heroH1 && pData.hero_title) heroH1.textContent = pData.hero_title;
+      if (heroP && pData.hero_subtitle) heroP.textContent = pData.hero_subtitle;
+    }
+
+    if (path.indexOf('fotogalereya') !== -1 && data.gallery) {
+      var grid = document.querySelector('.gallery-grid');
+      if (grid) {
+        if (data.gallery.deleted && data.gallery.deleted.length) {
+          var cards = grid.querySelectorAll('.gallery-card');
+          cards.forEach(function(card) {
+            var img = card.querySelector('img');
+            if (img) {
+              var s = img.getAttribute('src') || img.src || '';
+              data.gallery.deleted.forEach(function(delSrc) {
+                if (s.indexOf(delSrc) !== -1) {
+                  card.style.display = 'none';
+                }
+              });
+            }
+          });
+        }
+        if (data.gallery.added && data.gallery.added.length) {
+          data.gallery.added.forEach(function(item, idx) {
+            var card = document.createElement('div');
+            card.className = 'gallery-card reveal in';
+            card.setAttribute('data-lightbox', '');
+            card.innerHTML = '<img src="' + item.src + '" alt="' + (item.title || 'Фото') + '"><span class="gallery-badge">' + (item.title || ('Світлина +' + (idx + 1))) + '</span>';
+            grid.insertBefore(card, grid.firstChild);
+            card.addEventListener('click', function() {
+              if (window.openLightboxWithSrc) {
+                window.openLightboxWithSrc(item.src);
+              }
+            });
+          });
+        }
+      }
+    }
+  }
+
+  function initDynamicContent() {
+    var localRaw = null;
+    try {
+      localRaw = localStorage.getItem('school_site_content');
+    } catch(e) {}
+    if (localRaw) {
+      try {
+        applyDynamicContent(JSON.parse(localRaw));
+      } catch(e) {}
+    } else {
+      fetch('assets/data/site-content.json')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          applyDynamicContent(data);
+        })
+        .catch(function() {});
+    }
+  }
+  initDynamicContent();
 
 })();

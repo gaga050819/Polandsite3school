@@ -22,7 +22,7 @@
 .admin-wrap::before{content:"";position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;background:radial-gradient(circle at 50% 25%,rgba(200,16,46,.08) 0%,transparent 65%),radial-gradient(circle at 80% 80%,rgba(24,134,75,.05) 0%,transparent 55%);z-index:0}
 [data-theme="dark"] .admin-wrap::before{background:radial-gradient(circle at 50% 25%,rgba(200,16,46,.15) 0%,transparent 70%),radial-gradient(circle at 85% 85%,rgba(24,134,75,.08) 0%,transparent 60%)}
 
-.admin-main{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:calc(var(--header) + 36px) clamp(16px,4vw,32px) 48px;position:relative;z-index:1}
+.admin-main{flex:1;max-width:1160px;width:100%;margin:0 auto;padding:calc(var(--header) + 32px) clamp(16px,4vw,32px) 48px;position:relative;z-index:1}
 
 .admin-auth-card{max-width:480px;margin:36px auto;background:rgba(255,255,255,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(220,225,235,.8);border-radius:24px;padding:clamp(36px,5vw,48px) clamp(24px,5vw,40px);box-shadow:0 24px 60px rgba(16,24,40,.09),0 6px 18px rgba(16,24,40,.04);text-align:center;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .4s ease,box-shadow .4s ease;animation:cardEntrance .65s cubic-bezier(.16,1,.3,1) both}
 [data-theme="dark"] .admin-auth-card{background:rgba(24,27,37,.88);border-color:rgba(255,255,255,.09);box-shadow:0 24px 60px rgba(0,0,0,.45)}
@@ -34,62 +34,82 @@
 .admin-auth-icon.error{animation:iconShake .65s cubic-bezier(.36,.07,.19,.97) both;background:linear-gradient(135deg,rgba(220,38,38,.25),rgba(220,38,38,.1));border-color:rgba(220,38,38,.6);color:#dc2626;box-shadow:0 0 30px rgba(220,38,38,.45)}
 .admin-auth-icon.success{animation:iconSuccess .55s cubic-bezier(.16,1,.3,1) both;background:linear-gradient(135deg,rgba(24,134,75,.25),rgba(24,134,75,.1));border-color:rgba(24,134,75,.6);color:#18864b;box-shadow:0 0 30px rgba(24,134,75,.45)}
 
-.admin-auth-card h1{font-family:'Lora',serif;font-size:1.65rem;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em}
+.admin-auth-card h1{font-family:'Lora',serif;font-size:1.65rem;font-weight:700;color:var(--ink);margin-bottom:10px}
 .admin-auth-card p{color:var(--ink-soft);font-size:.94rem;margin-bottom:24px;line-height:1.55}
 
-.admin-alert{padding:14px 16px;border-radius:14px;font-size:.92rem;font-weight:600;margin-bottom:20px;display:none;text-align:left;position:relative;line-height:1.5}
+.admin-alert{padding:14px 16px;border-radius:14px;font-size:.92rem;font-weight:600;margin-bottom:20px;display:none;text-align:left;line-height:1.5}
 .admin-alert.error{display:flex;align-items:flex-start;gap:12px;background:rgba(220,38,38,.1);color:#dc2626;border:1px solid rgba(220,38,38,.3);border-left:5px solid #dc2626;animation:alertBounce .45s cubic-bezier(.16,1,.3,1) both}
 .admin-alert.success{display:flex;align-items:flex-start;gap:12px;background:rgba(24,134,75,.1);color:#18864b;border:1px solid rgba(24,134,75,.3);border-left:5px solid #18864b;animation:alertBounce .45s cubic-bezier(.16,1,.3,1) both}
 .admin-alert svg{width:22px;height:22px;flex-shrink:0;margin-top:2px}
 
-.google-box{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:16px 0 8px;min-height:56px;transition:transform .2s ease}
-.google-box:hover{transform:translateY(-2px)}
+.google-box{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:16px 0 8px;min-height:56px}
 
 .admin-dash{display:none}
 .admin-dash.active{display:block;animation:dashFade .65s cubic-bezier(.16,1,.3,1) both}
 
-.dash-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:18px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.dash-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:18px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
 .dash-title{display:flex;align-items:center;gap:18px}
-.dash-avatar{width:62px;height:62px;border-radius:50%;border:3px solid var(--red);object-fit:cover;box-shadow:0 8px 24px rgba(200,16,46,.25);transition:transform .3s ease}
-.dash-avatar:hover{transform:scale(1.06)}
+.dash-avatar{width:62px;height:62px;border-radius:50%;border:3px solid var(--red);object-fit:cover;box-shadow:0 8px 24px rgba(200,16,46,.25)}
 .dash-title h2{font-family:'Lora',serif;font-size:clamp(1.45rem,3.2vw,2rem);font-weight:700;color:var(--ink);margin:0}
 .dash-title p{color:var(--ink-soft);font-size:.94rem;margin:5px 0 0}
-.dash-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:999px;background:rgba(24,134,75,.14);color:#18864b;font-size:.84rem;font-weight:700;margin-top:8px;box-shadow:0 2px 8px rgba(24,134,75,.15)}
+.dash-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:999px;background:rgba(24,134,75,.14);color:#18864b;font-size:.84rem;font-weight:700;margin-top:8px}
 .dash-badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#18864b;box-shadow:0 0 8px #18864b}
 
-.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-bottom:32px}
-.dash-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease,border-color .3s ease}
-.dash-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(200,16,46,.3)}
-.dash-card-icon{width:50px;height:50px;border-radius:14px;background:rgba(200,16,46,.08);color:var(--red);display:grid;place-items:center;margin-bottom:16px;transition:transform .3s ease}
-.dash-card:hover .dash-card-icon{transform:scale(1.1) rotate(4deg)}
+.dash-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:28px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.dash-tabs::-webkit-scrollbar{display:none}
+.dash-tab-btn{padding:12px 20px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:inherit;font-size:.94rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .25s var(--ease);display:inline-flex;align-items:center;gap:8px}
+.dash-tab-btn:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px)}
+.dash-tab-btn.active{background:var(--red);color:#ffffff;border-color:var(--red);box-shadow:0 6px 18px rgba(200,16,46,.35)}
+
+.tab-pane{display:none}
+.tab-pane.active{display:block;animation:dashFade .45s cubic-bezier(.16,1,.3,1) both}
+
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-bottom:28px}
+.dash-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.dash-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.dash-card-icon{width:50px;height:50px;border-radius:14px;background:rgba(200,16,46,.08);color:var(--red);display:grid;place-items:center;margin-bottom:16px}
 .dash-card-icon svg{width:24px;height:24px}
 .dash-card-val{font-family:'Lora',serif;font-size:2rem;font-weight:700;color:var(--ink);line-height:1}
 .dash-card-lbl{font-size:.9rem;color:var(--ink-soft);margin-top:6px;font-weight:600}
 
-.admin-panel-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,4vw,34px);box-shadow:var(--shadow);margin-bottom:26px;transition:border-color .3s ease,box-shadow .3s ease}
-.admin-panel-card:hover{box-shadow:var(--shadow-lg)}
+.admin-panel-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,4vw,32px);box-shadow:var(--shadow);margin-bottom:24px}
 .admin-panel-card h3{font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:8px}
-.admin-panel-card p{color:var(--ink-soft);font-size:.94rem;margin-bottom:22px}
+.admin-panel-card p{color:var(--ink-soft);font-size:.94rem;margin-bottom:20px}
 
-.emails-list{list-style:none;display:grid;gap:12px;margin-bottom:22px}
-.email-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:var(--paper);border:1px solid var(--line);border-radius:12px;transition:transform .2s ease,border-color .2s ease}
-.email-row:hover{transform:translateX(4px);border-color:rgba(200,16,46,.3)}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.admin-input-group{margin-bottom:16px}
+.admin-input-group label{display:block;font-size:.88rem;font-weight:700;margin-bottom:6px;color:var(--ink)}
+.admin-input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);font-family:inherit;font-size:15px;color:var(--ink);background:var(--paper);outline:none;transition:border-color .25s,box-shadow .25s}
+.admin-input:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(200,16,46,.18);background:var(--surface)}
+[data-theme="dark"] .admin-input{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--ink)}
+textarea.admin-input{min-height:95px;resize:vertical}
+
+.sheet-box{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px}
+[data-theme="dark"] .sheet-box{background:rgba(255,255,255,.02)}
+.sheet-url-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.sheet-link-btn{display:inline-flex;align-items:center;gap:12px;padding:14px 24px;border-radius:14px;background:#18864b;color:#ffffff;font-weight:700;font-size:.96rem;transition:background .2s,transform .2s}
+.sheet-link-btn:hover{background:#136d3d;transform:translateY(-2px);color:#ffffff}
+.sheet-link-btn svg{width:20px;height:20px}
+
+.admin-photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-top:20px}
+.admin-photo-card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.admin-photo-thumb{width:100%;aspect-ratio:4/3;object-fit:cover;background:#e5e7eb}
+.admin-photo-info{padding:10px 12px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.admin-photo-name{font-size:.85rem;font-weight:600;color:var(--ink);word-break:break-all;line-height:1.3;margin-bottom:8px}
+.admin-photo-del{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(220,38,38,.4);background:rgba(220,38,38,.08);color:#dc2626;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s}
+.admin-photo-del:hover{background:#dc2626;color:#ffffff}
+
+.upload-dropzone{border:2px dashed var(--line);border-radius:16px;padding:32px 20px;text-align:center;background:var(--paper);cursor:pointer;transition:border-color .25s,background .25s}
+.upload-dropzone:hover{border-color:var(--red);background:rgba(200,16,46,.04)}
+.upload-dropzone svg{width:42px;height:42px;color:var(--red);margin-bottom:10px}
+
+.emails-list{list-style:none;display:grid;gap:10px;margin-bottom:20px}
+.email-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
 [data-theme="dark"] .email-row{background:rgba(255,255,255,.03)}
-.email-name{font-weight:600;font-size:.96rem;color:var(--ink);display:flex;align-items:center;gap:12px;word-break:break-all}
-.email-name svg{flex-shrink:0}
-.email-del-btn{border:0;background:transparent;color:var(--red);cursor:pointer;padding:8px 12px;border-radius:8px;font-weight:600;font-size:.86rem;transition:background .2s,color .2s}
-.email-del-btn:hover{background:rgba(200,16,46,.12);color:var(--red-deep)}
-
-.email-add-form{display:flex;gap:12px;flex-wrap:wrap}
-.email-add-input{flex:1 1 250px;padding:13px 18px;border-radius:12px;border:1px solid var(--line);font-family:inherit;font-size:.95rem;color:var(--ink);background:var(--paper)}
-[data-theme="dark"] .email-add-input{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--ink)}
-.email-add-btn{padding:13px 26px;border-radius:12px;border:0;background:var(--red);color:#ffffff;font-weight:700;font-size:.94rem;cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s}
-.email-add-btn:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 6px 18px rgba(200,16,46,.35)}
-
-.links-row{display:flex;gap:14px;flex-wrap:wrap}
-.sheet-link-btn{display:inline-flex;align-items:center;gap:12px;padding:15px 26px;border-radius:14px;background:#18864b;color:#ffffff;font-weight:700;font-size:.98rem;transition:background .2s,transform .2s,box-shadow .2s}
-.sheet-link-btn:hover{background:#136d3d;transform:translateY(-3px);box-shadow:0 8px 24px rgba(24,134,75,.35);color:#ffffff}
-.sheet-link-btn svg{width:22px;height:22px}
+.email-name{font-weight:600;font-size:.95rem;color:var(--ink);display:flex;align-items:center;gap:10px;word-break:break-all}
+.email-del-btn{border:0;background:transparent;color:var(--red);cursor:pointer;padding:6px 12px;border-radius:8px;font-weight:600;font-size:.86rem;transition:background .2s}
+.email-del-btn:hover{background:rgba(200,16,46,.12)}
+.email-add-form{display:flex;gap:10px;flex-wrap:wrap}
 
 #confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999}
 </style>
@@ -146,73 +166,248 @@
         </div>
       </div>
 
-      <div class="dash-grid">
-        <div class="dash-card">
-          <div class="dash-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <div class="dash-tabs">
+        <button type="button" class="dash-tab-btn active" data-tab="tab-overview">📊 Заявки та стан</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-content">📝 Редактор текстів</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-photos">🖼️ Керування фото</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-announcement">📢 Оголошення</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-admins">👥 Адміністратори</button>
+        <button type="button" class="dash-tab-btn" data-tab="tab-sync">🚀 Публікація</button>
+      </div>
+
+      <div class="tab-pane active" id="tab-overview">
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="dash-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="dash-card-val">10</div>
+            <div class="dash-card-lbl">Активних сторінок сайту</div>
           </div>
-          <div class="dash-card-val">10</div>
-          <div class="dash-card-lbl">Активних сторінок сайту</div>
+          <div class="dash-card">
+            <div class="dash-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="dash-card-val" id="totalPhotosCount">102</div>
+            <div class="dash-card-lbl">Світлин у фотогалереї</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-icon" style="color:#18864b;background:rgba(24,134,75,.12)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="dash-card-val" style="color:#18864b">Онлайн</div>
+            <div class="dash-card-lbl">Хостинг GitHub Pages</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-icon" style="color:var(--blue);background:rgba(14,165,233,.12)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="dash-card-val">UA / PL</div>
+            <div class="dash-card-lbl">Двомовний перекладач</div>
+          </div>
         </div>
-        <div class="dash-card">
-          <div class="dash-card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+
+        <div class="admin-panel-card">
+          <h3>Заявки на навчання (Google Таблиця)</h3>
+          <p>Всі заявки від учнів та батьків передаються через Google Apps Script у вашу персональну Google Таблицю.</p>
+          
+          <div class="sheet-box">
+            <label for="customSheetUrl" style="display:block;font-size:.88rem;font-weight:700;margin-bottom:8px">Пряме посилання на вашу Google Таблицю:</label>
+            <div class="sheet-url-row">
+              <input type="url" id="customSheetUrl" class="admin-input" placeholder="https://docs.google.com/spreadsheets/d/ВАШ_ID/edit" style="flex:1 1 320px">
+              <button type="button" class="btn sm" id="saveSheetUrlBtn">Зберегти посилання</button>
+            </div>
+            <div id="sheetUrlAlert" class="admin-alert" style="margin-top:10px"></div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <a href="#" target="_blank" rel="noopener noreferrer" class="sheet-link-btn" id="openSheetBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Відкрити Google Таблицю
+              </a>
+              <a href="https://docs.google.com/spreadsheets/u/0/" target="_blank" rel="noopener noreferrer" class="btn sm ghost" style="color:var(--ink);border-color:var(--line)">
+                Знайти на Google Диску
+              </a>
+              <button type="button" class="btn sm" id="testFormBtn">Надіслати тестову заявку</button>
+            </div>
+            <div class="admin-alert" id="testAlert" style="margin-top:14px"></div>
           </div>
-          <div class="dash-card-val">102</div>
-          <div class="dash-card-lbl">Світлин у фотогалереї</div>
         </div>
-        <div class="dash-card">
-          <div class="dash-card-icon" style="color:#18864b;background:rgba(24,134,75,.12)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <div class="dash-card-val" style="color:#18864b">Онлайн</div>
-          <div class="dash-card-lbl">Хостинг GitHub Pages</div>
-        </div>
-        <div class="dash-card">
-          <div class="dash-card-icon" style="color:var(--blue);background:rgba(14,165,233,.12)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </div>
-          <div class="dash-card-val">UA / PL</div>
-          <div class="dash-card-lbl">Двомовний перекладач</div>
+
+        <div class="admin-panel-card">
+          <h3>Поточні контакти школи</h3>
+          <ul style="list-style:none;display:grid;gap:10px;color:var(--ink-soft);font-size:.94rem">
+            <li><strong>Адреси:</strong> м. Дрогобич, вул. Завалля 12 та вул. Трускавецька 9</li>
+            <li><strong>Телефони:</strong> 096 9539 065, +38 093 498 5678</li>
+            <li><strong>Email:</strong> polska.school@gmail.com</li>
+            <li><strong>Керівництво:</strong> Хлопек Адам Броніславович (Директор), Качмар Ірина Іванівна (Віце-директор)</li>
+          </ul>
         </div>
       </div>
 
-      <div class="admin-panel-card">
-        <h3>Заявки на навчання (Google Таблиця)</h3>
-        <p>Усі онлайн-заявки з сайту школи автоматично записуються в підключену Google Таблицю.</p>
-        <div class="links-row">
-          <a href="https://docs.google.com/spreadsheets/d/1X5031-G4qU0N7P-fM6d4zSgQW1f6rK0hI2b_wV9f1g/edit" target="_blank" rel="noopener noreferrer" class="sheet-link-btn" id="openSheetBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            Відкрити Google Таблицю із заявками
-          </a>
-          <button type="button" class="btn sm" id="testFormBtn">Надіслати тестову заявку</button>
+      <div class="tab-pane" id="tab-content">
+        <div class="admin-panel-card">
+          <h3>Редагування текстів на сторінках</h3>
+          <p>Оберіть потрібну сторінку, змініть заголовок або опис та натисніть «Зберегти зміни».</p>
+
+          <div class="admin-input-group" style="max-width:400px;margin-bottom:24px">
+            <label for="pageSelect">Оберіть сторінку сайту:</label>
+            <select id="pageSelect" class="admin-input" style="cursor:pointer;font-weight:700">
+              <option value="index">Головна сторінка (index.html)</option>
+              <option value="pro_mene">Про нас (pro-mene.html)</option>
+              <option value="prajs_list">Курси та ціни (prajs-list.html)</option>
+              <option value="fotogalereya">Фотогалерея (fotogalereya.html)</option>
+              <option value="ekskursiji">Екскурсії (ekskursiji-wycieczki.html)</option>
+              <option value="uroczystosci">Шкільні свята (uroczystosci.html)</option>
+              <option value="kontakti">Контакти (kontakti.html)</option>
+            </select>
+          </div>
+
+          <div class="form-grid">
+            <div class="admin-input-group">
+              <label for="pageHeroTitle">Головний заголовок сторінки (H1):</label>
+              <input type="text" id="pageHeroTitle" class="admin-input">
+            </div>
+            <div class="admin-input-group">
+              <label for="pageHeroSubtitle">Опис під заголовком:</label>
+              <textarea id="pageHeroSubtitle" class="admin-input"></textarea>
+            </div>
+          </div>
+
+          <h4 style="margin:28px 0 14px;font-family:'Lora',serif;font-size:1.15rem;color:var(--ink)">Загальні контакти школи (змінюються одразу всюди):</h4>
+          <div class="form-grid">
+            <div class="admin-input-group">
+              <label for="contactPhone1">Основний телефон:</label>
+              <input type="text" id="contactPhone1" class="admin-input" placeholder="096 9539 065">
+            </div>
+            <div class="admin-input-group">
+              <label for="contactEmail">Email школи:</label>
+              <input type="email" id="contactEmail" class="admin-input" placeholder="polska.school@gmail.com">
+            </div>
+            <div class="admin-input-group">
+              <label for="contactAddress1">Локація 1:</label>
+              <input type="text" id="contactAddress1" class="admin-input" placeholder="м. Дрогобич, вул. Завалля 12">
+            </div>
+            <div class="admin-input-group">
+              <label for="contactAddress2">Локація 2:</label>
+              <input type="text" id="contactAddress2" class="admin-input" placeholder="вул. Трускавецька 9">
+            </div>
+            <div class="admin-input-group">
+              <label for="contactDirector">Директор школи:</label>
+              <input type="text" id="contactDirector" class="admin-input" placeholder="Хлопек Адам Броніславович">
+            </div>
+            <div class="admin-input-group">
+              <label for="contactViceDirector">Віце-директор школи:</label>
+              <input type="text" id="contactViceDirector" class="admin-input" placeholder="Качмар Ірина Іванівна">
+            </div>
+          </div>
+
+          <button type="button" class="btn" id="saveContentBtn" style="margin-top:12px">Зберегти зміни текстів</button>
+          <div id="contentAlert" class="admin-alert" style="margin-top:16px"></div>
         </div>
-        <div class="admin-alert" id="testAlert" style="margin-top:14px"></div>
       </div>
 
-      <div class="admin-panel-card">
-        <h3>Дозволені Google-акаунти адміністрації</h3>
-        <p>Лише користувачі з цими підтвердженими Google-поштами можуть увійти до панелі керування. Ви можете додавати нових адміністраторів або вчителів.</p>
-        
-        <ul class="emails-list" id="emailsList"></ul>
+      <div class="tab-pane" id="tab-photos">
+        <div class="admin-panel-card">
+          <h3>Додати нову світлину до сайту</h3>
+          <p>Виберіть фотографію з комп'ютера або вкажіть пряме посилання, щоб вона з'явилася у галереї.</p>
 
-        <form class="email-add-form" id="addEmailForm">
-          <input type="email" id="newEmailInput" class="email-add-input" placeholder="Введіть новий Google-email (наприклад: name@gmail.com)..." required>
-          <button type="submit" class="email-add-btn">+ Додати email</button>
-        </form>
+          <div class="upload-dropzone" id="photoDropzone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div style="font-weight:700;font-size:1.05rem;color:var(--ink);margin-bottom:6px">Натисніть для вибору фотографії з пристрою</div>
+            <div style="font-size:.85rem;color:var(--ink-soft)">Підтримуються формати JPG, PNG, WEBP</div>
+            <input type="file" id="photoFileInput" accept="image/*" style="display:none">
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;margin:18px 0">
+            <hr style="flex:1;border:0;border-top:1px solid var(--line)">
+            <span style="font-size:.84rem;color:var(--ink-soft);font-weight:700">АБО ЗА ПОСИЛАННЯМ</span>
+            <hr style="flex:1;border:0;border-top:1px solid var(--line)">
+          </div>
+
+          <div class="form-grid">
+            <div class="admin-input-group">
+              <label for="photoUrlInput">Пряме посилання на фото (URL):</label>
+              <input type="url" id="photoUrlInput" class="admin-input" placeholder="https://example.com/photo.jpg">
+            </div>
+            <div class="admin-input-group">
+              <label for="photoTitleInput">Підпис до світлини:</label>
+              <input type="text" id="photoTitleInput" class="admin-input" placeholder="Наприклад: Святковий виступ учнів у Дрогобичі">
+            </div>
+          </div>
+
+          <div id="photoPreviewBox" style="display:none;margin-bottom:16px;text-align:center">
+            <img id="photoPreviewImg" src="" alt="Попередній перегляд" style="max-height:220px;border-radius:12px;box-shadow:var(--shadow)">
+          </div>
+
+          <button type="button" class="btn" id="addPhotoBtn">+ Додати світлину до галереї</button>
+          <div id="photoAlert" class="admin-alert" style="margin-top:16px"></div>
+        </div>
+
+        <div class="admin-panel-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+            <h3>Світлини фотогалереї</h3>
+            <button type="button" class="btn sm ghost" id="resetDeletedPhotosBtn" style="color:var(--red);border-color:var(--line)">Відновити всі видалені</button>
+          </div>
+          <p>Ви можете видалити будь-яку світлину з сайту в 1 клік.</p>
+          <div class="admin-photos-grid" id="adminPhotosGrid"></div>
+        </div>
       </div>
 
-      <div class="admin-panel-card">
-        <h3>Контакти школи для перевірки</h3>
-        <p>Поточні контактні дані, що відображаються на сайті:</p>
-        <ul style="list-style:none;display:grid;gap:10px;color:var(--ink-soft);font-size:.94rem">
-          <li><strong>Адреси:</strong> м. Дрогобич, вул. Завалля 12 та вул. Трускавецька 9</li>
-          <li><strong>Телефони:</strong> +38 096 953 9065, +38 093 498 5678</li>
-          <li><strong>Email:</strong> polska.school@gmail.com</li>
-          <li><strong>Директор:</strong> Хлопек Адам Броніславович</li>
-          <li><strong>Віце-директор:</strong> Качмар Ірина Іванівна</li>
-        </ul>
+      <div class="tab-pane" id="tab-announcement">
+        <div class="admin-panel-card">
+          <h3>Термінове оголошення на сайті</h3>
+          <p>Увімкніть оголошення, якщо потрібно повідомити учнів та батьків про перенесення уроків, канікули, набір у нові групи або святкові заходи.</p>
+
+          <div class="admin-input-group" style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <input type="checkbox" id="announcementEnabled" style="width:20px;height:20px;accent-color:var(--red);cursor:pointer">
+            <label for="announcementEnabled" style="margin:0;cursor:pointer;font-size:1rem">Показувати червону плашку оголошення вгорі сайту</label>
+          </div>
+
+          <div class="admin-input-group">
+            <label for="announcementText">Текст оголошення:</label>
+            <textarea id="announcementText" class="admin-input" placeholder="Наприклад: Увага! Розпочато набір у суботні групи для початківців. Запис за телефоном: 096 9539 065."></textarea>
+          </div>
+
+          <button type="button" class="btn" id="saveAnnouncementBtn">Зберегти оголошення</button>
+          <div id="announcementAlert" class="admin-alert" style="margin-top:16px"></div>
+        </div>
       </div>
+
+      <div class="tab-pane" id="tab-admins">
+        <div class="admin-panel-card">
+          <h3>Дозволені Google-акаунти адміністрації</h3>
+          <p>Лише вказані підтверджені Google-пошти мають доступ до цієї панелі. Ви можете додавати або видаляти адреси вчителів і керівників.</p>
+          
+          <ul class="emails-list" id="emailsList"></ul>
+
+          <form class="email-add-form" id="addEmailForm">
+            <input type="email" id="newEmailInput" class="admin-input" style="flex:1 1 250px" placeholder="Введіть новий Google-email..." required>
+            <button type="submit" class="btn">+ Додати email</button>
+          </form>
+          <div id="emailAlert" class="admin-alert" style="margin-top:16px"></div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tab-sync">
+        <div class="admin-panel-card">
+          <h3>Публікація змін та синхронізація з GitHub</h3>
+          <p>Всі ваші правки (тексти, фотографії, оголошення) зберігаються миттєво в системі сайту. Щоб опублікувати їх у вихідний репозиторій GitHub для всіх користувачів в один клік, скористайтеся формою нижче:</p>
+
+          <div class="sheet-box">
+            <div class="admin-input-group">
+              <label for="githubPatInput">GitHub Personal Access Token (опціонально для прямої публікації):</label>
+              <input type="password" id="githubPatInput" class="admin-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+              <div style="font-size:.82rem;color:var(--ink-soft);margin-top:6px">Токен зберігається лише у вашому браузері і дозволяє безпечно записувати файл контенту безпосередньо в репозиторій.</div>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button type="button" class="btn" id="publishToGithubBtn">🚀 Опублікувати на GitHub</button>
+              <button type="button" class="btn sm ghost" id="downloadBackupBtn" style="color:var(--ink);border-color:var(--line)">Завантажити файл контенту (JSON)</button>
+              <button type="button" class="btn sm ghost" id="resetAllBtn" style="color:var(--red);border-color:var(--line)">Скинути до стандартних</button>
+            </div>
+            <div id="syncAlert" class="admin-alert" style="margin-top:16px"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 </div>
@@ -227,6 +422,58 @@
 
   var CLIENT_ID = '749327851839-me3jil7t4ecdfgae838k20ljmukcatad.apps.googleusercontent.com';
 
+  var DEFAULT_SITE_CONTENT = {
+    contacts: {
+      phone1: '+380969539065',
+      phone1_display: '096 9539 065',
+      phone2: '+380934985678',
+      phone2_display: '+38 093 498 5678',
+      email: 'polska.school@gmail.com',
+      address1: 'м. Дрогобич, вул. Завалля 12',
+      address2: 'вул. Трускавецька 9',
+      director: 'Хлопек Адам Броніславович',
+      vicedirector: 'Качмар Ірина Іванівна'
+    },
+    announcement: {
+      enabled: false,
+      text: 'Триває набір учнів на новий навчальний рік! Запис за телефоном: 096 9539 065.'
+    },
+    pages: {
+      index: {
+        hero_title: 'Почніть шлях до вивчення польської мови',
+        hero_subtitle: 'Цікаве та якісне вивчення польської мови, культури та традицій для дітей та дорослих у Дрогобичі.'
+      },
+      pro_mene: {
+        hero_title: 'Про нашу школу',
+        hero_subtitle: 'Понад 25 років якісної освіти, польської культури та традицій у Дрогобичі.'
+      },
+      prajs_list: {
+        hero_title: 'Курси польської мови',
+        hero_subtitle: 'Ефективні групові та індивідуальні програми для дітей і дорослих. Офіційний сертифікат після завершення навчання.'
+      },
+      fotogalereya: {
+        hero_title: 'Фотогалерея',
+        hero_subtitle: 'Світлини з уроків, шкільних свят, концертів, подорожей та визначних подій нашої школи.'
+      },
+      ekskursiji: {
+        hero_title: 'Пізнавальні екскурсії',
+        hero_subtitle: 'Пізнавальні екскурсії польською мовою по Дрогобичу та подорожі до міст Польщі.'
+      },
+      uroczystosci: {
+        hero_title: 'Шкільні свята',
+        hero_subtitle: 'Традиції, святкові академії, концерти та урочисті заходи Польської суботньої школи.'
+      },
+      kontakti: {
+        hero_title: 'Контакти',
+        hero_subtitle: 'Зв\'яжіться з нами, щоб дізнатися подробиці щодо запису на курси, розкладу занять та навчання.'
+      }
+    },
+    gallery: {
+      deleted: [],
+      added: []
+    }
+  };
+
   function getEmails() {
     try {
       var raw = localStorage.getItem('school_admin_emails');
@@ -238,6 +485,37 @@
   function saveEmails(arr) {
     try {
       localStorage.setItem('school_admin_emails', JSON.stringify(arr));
+    } catch(e) {}
+  }
+
+  function getSheetUrl() {
+    try {
+      return (localStorage.getItem('school_sheet_url') || '').trim();
+    } catch(e) {
+      return '';
+    }
+  }
+
+  function saveSheetUrl(url) {
+    try {
+      localStorage.setItem('school_sheet_url', (url || '').trim());
+    } catch(e) {}
+  }
+
+  function getSiteContent() {
+    try {
+      var raw = localStorage.getItem('school_site_content');
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        return Object.assign({}, DEFAULT_SITE_CONTENT, parsed);
+      }
+    } catch(e) {}
+    return JSON.parse(JSON.stringify(DEFAULT_SITE_CONTENT));
+  }
+
+  function saveSiteContent(obj) {
+    try {
+      localStorage.setItem('school_site_content', JSON.stringify(obj));
     } catch(e) {}
   }
 
@@ -254,10 +532,48 @@
   var emailsList = document.getElementById('emailsList');
   var addEmailForm = document.getElementById('addEmailForm');
   var newEmailInput = document.getElementById('newEmailInput');
+  var emailAlert = document.getElementById('emailAlert');
   var testFormBtn = document.getElementById('testFormBtn');
   var testAlert = document.getElementById('testAlert');
   var googleBtnContainer = document.getElementById('googleBtnContainer');
   var confettiCanvas = document.getElementById('confettiCanvas');
+  var customSheetUrl = document.getElementById('customSheetUrl');
+  var saveSheetUrlBtn = document.getElementById('saveSheetUrlBtn');
+  var sheetUrlAlert = document.getElementById('sheetUrlAlert');
+  var openSheetBtn = document.getElementById('openSheetBtn');
+  var totalPhotosCount = document.getElementById('totalPhotosCount');
+  var pageSelect = document.getElementById('pageSelect');
+  var pageHeroTitle = document.getElementById('pageHeroTitle');
+  var pageHeroSubtitle = document.getElementById('pageHeroSubtitle');
+  var contactPhone1 = document.getElementById('contactPhone1');
+  var contactEmail = document.getElementById('contactEmail');
+  var contactAddress1 = document.getElementById('contactAddress1');
+  var contactAddress2 = document.getElementById('contactAddress2');
+  var contactDirector = document.getElementById('contactDirector');
+  var contactViceDirector = document.getElementById('contactViceDirector');
+  var saveContentBtn = document.getElementById('saveContentBtn');
+  var contentAlert = document.getElementById('contentAlert');
+  var photoDropzone = document.getElementById('photoDropzone');
+  var photoFileInput = document.getElementById('photoFileInput');
+  var photoUrlInput = document.getElementById('photoUrlInput');
+  var photoTitleInput = document.getElementById('photoTitleInput');
+  var photoPreviewBox = document.getElementById('photoPreviewBox');
+  var photoPreviewImg = document.getElementById('photoPreviewImg');
+  var addPhotoBtn = document.getElementById('addPhotoBtn');
+  var photoAlert = document.getElementById('photoAlert');
+  var adminPhotosGrid = document.getElementById('adminPhotosGrid');
+  var resetDeletedPhotosBtn = document.getElementById('resetDeletedPhotosBtn');
+  var announcementEnabled = document.getElementById('announcementEnabled');
+  var announcementText = document.getElementById('announcementText');
+  var saveAnnouncementBtn = document.getElementById('saveAnnouncementBtn');
+  var announcementAlert = document.getElementById('announcementAlert');
+  var githubPatInput = document.getElementById('githubPatInput');
+  var publishToGithubBtn = document.getElementById('publishToGithubBtn');
+  var downloadBackupBtn = document.getElementById('downloadBackupBtn');
+  var resetAllBtn = document.getElementById('resetAllBtn');
+  var syncAlert = document.getElementById('syncAlert');
+
+  var currentNewPhotoData = '';
 
   function launchConfetti() {
     if (!confettiCanvas) return;
@@ -347,6 +663,96 @@
     return JSON.parse(jsonPayload);
   }
 
+  function updateSheetLinkUI() {
+    var savedUrl = getSheetUrl();
+    if (savedUrl) {
+      openSheetBtn.href = savedUrl;
+      customSheetUrl.value = savedUrl;
+    } else {
+      openSheetBtn.href = 'https://docs.google.com/spreadsheets/u/0/';
+      customSheetUrl.value = '';
+    }
+  }
+
+  function populateContentFields() {
+    var c = getSiteContent();
+    var pKey = pageSelect.value;
+    if (c.pages && c.pages[pKey]) {
+      pageHeroTitle.value = c.pages[pKey].hero_title || '';
+      pageHeroSubtitle.value = c.pages[pKey].hero_subtitle || '';
+    } else {
+      pageHeroTitle.value = '';
+      pageHeroSubtitle.value = '';
+    }
+
+    if (c.contacts) {
+      contactPhone1.value = c.contacts.phone1_display || c.contacts.phone1 || '';
+      contactEmail.value = c.contacts.email || '';
+      contactAddress1.value = c.contacts.address1 || '';
+      contactAddress2.value = c.contacts.address2 || '';
+      contactDirector.value = c.contacts.director || '';
+      contactViceDirector.value = c.contacts.vicedirector || '';
+    }
+
+    if (c.announcement) {
+      announcementEnabled.checked = !!c.announcement.enabled;
+      announcementText.value = c.announcement.text || '';
+    }
+
+    renderPhotosList();
+  }
+
+  var SAMPLE_GALLERY_PHOTOS = [
+    { src: 'assets/img/img_54_viber_image2-4.jpg', title: 'Світлина 1' },
+    { src: 'assets/img/img_64_viber_image5_-_______-______-7.jpg', title: 'Світлина 2' },
+    { src: 'assets/img/img_76_611DDE80-A139-4166-9CD3-06B0FB924C34.jpeg', title: 'Світлина 3' },
+    { src: 'assets/img/img_88_4F9A35B3-61D5-4EED-AEAC-263EDE0D0337.jpeg', title: 'Світлина 4' },
+    { src: 'assets/img/img_100_9A028132-F328-4202-8F97-DDBC80853691.jpeg', title: 'Світлина 5' },
+    { src: 'assets/img/img_112_D2436A37-B290-4159-9CDC-1DA1E65EFC73.jpeg', title: 'Світлина 6' },
+    { src: 'assets/img/img_124_E572BA62-58A2-4014-9AE8-958B943A1259.jpeg', title: 'Світлина 7' },
+    { src: 'assets/img/img_136_97DE4C8A-0DBA-45AE-88CE-2E31D8D27C8F.jpeg', title: 'Світлина 8' }
+  ];
+
+  function renderPhotosList() {
+    var c = getSiteContent();
+    adminPhotosGrid.innerHTML = '';
+    var delList = (c.gallery && c.gallery.deleted) || [];
+    var addedList = (c.gallery && c.gallery.added) || [];
+
+    var allList = [];
+    addedList.forEach(function(item, idx) {
+      allList.push({ src: item.src, title: item.title || ('Додане фото ' + (idx + 1)), isAdded: true, idx: idx });
+    });
+    SAMPLE_GALLERY_PHOTOS.forEach(function(item) {
+      if (delList.indexOf(item.src) === -1) {
+        allList.push({ src: item.src, title: item.title, isAdded: false });
+      }
+    });
+
+    totalPhotosCount.textContent = (102 - delList.length + addedList.length);
+
+    allList.forEach(function(photo) {
+      var card = document.createElement('div');
+      card.className = 'admin-photo-card';
+      card.innerHTML = '<img class="admin-photo-thumb" src="' + photo.src + '" alt="' + photo.title + '"><div class="admin-photo-info"><div class="admin-photo-name">' + photo.title + '</div><button type="button" class="admin-photo-del">Видалити з сайту</button></div>';
+      
+      var delBtn = card.querySelector('.admin-photo-del');
+      delBtn.addEventListener('click', function() {
+        if (!confirm('Ви дійсно бажаєте видалити цю світлину з сайту?')) return;
+        var updated = getSiteContent();
+        if (photo.isAdded) {
+          updated.gallery.added = updated.gallery.added.filter(function(_, i) { return i !== photo.idx; });
+        } else {
+          if (!updated.gallery.deleted) updated.gallery.deleted = [];
+          updated.gallery.deleted.push(photo.src);
+        }
+        saveSiteContent(updated);
+        renderPhotosList();
+      });
+      adminPhotosGrid.appendChild(card);
+    });
+  }
+
   function renderEmails() {
     var list = getEmails();
     emailsList.innerHTML = '';
@@ -386,6 +792,8 @@
     currentBadge.textContent = 'Підтверджено Google ✓';
     currentBadge.style.color = '#18864b';
     renderEmails();
+    updateSheetLinkUI();
+    populateContentFields();
     try {
       sessionStorage.setItem('admin_session', JSON.stringify(userData));
     } catch(e) {}
@@ -456,8 +864,127 @@
     }
   }
 
-  logoutBtn.addEventListener('click', function() {
-    showAuth();
+  document.querySelectorAll('.dash-tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.dash-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var targetId = btn.getAttribute('data-tab');
+      var targetPane = document.getElementById(targetId);
+      if (targetPane) targetPane.classList.add('active');
+    });
+  });
+
+  pageSelect.addEventListener('change', function() {
+    populateContentFields();
+  });
+
+  saveSheetUrlBtn.addEventListener('click', function() {
+    var val = (customSheetUrl.value || '').trim();
+    saveSheetUrl(val);
+    updateSheetLinkUI();
+    sheetUrlAlert.className = 'admin-alert success';
+    sheetUrlAlert.style.display = 'flex';
+    sheetUrlAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Посилання на Google Таблицю успішно збережено!</div>';
+    setTimeout(function() { sheetUrlAlert.style.display = 'none'; }, 4000);
+  });
+
+  saveContentBtn.addEventListener('click', function() {
+    var c = getSiteContent();
+    var pKey = pageSelect.value;
+    if (!c.pages) c.pages = {};
+    if (!c.pages[pKey]) c.pages[pKey] = {};
+    c.pages[pKey].hero_title = pageHeroTitle.value.trim();
+    c.pages[pKey].hero_subtitle = pageHeroSubtitle.value.trim();
+
+    if (!c.contacts) c.contacts = {};
+    c.contacts.phone1_display = contactPhone1.value.trim();
+    c.contacts.phone1 = contactPhone1.value.replace(/[^0-9+]/g, '');
+    c.contacts.email = contactEmail.value.trim();
+    c.contacts.address1 = contactAddress1.value.trim();
+    c.contacts.address2 = contactAddress2.value.trim();
+    c.contacts.director = contactDirector.value.trim();
+    c.contacts.vicedirector = contactViceDirector.value.trim();
+
+    saveSiteContent(c);
+    contentAlert.className = 'admin-alert success';
+    contentAlert.style.display = 'flex';
+    contentAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Зміни текстів успішно збережено та застосовано до сайту!</div>';
+    setTimeout(function() { contentAlert.style.display = 'none'; }, 4500);
+  });
+
+  photoDropzone.addEventListener('click', function() {
+    photoFileInput.click();
+  });
+
+  photoFileInput.addEventListener('change', function(e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+      currentNewPhotoData = evt.target.result;
+      photoPreviewImg.src = currentNewPhotoData;
+      photoPreviewBox.style.display = 'block';
+      if (!photoTitleInput.value) {
+        photoTitleInput.value = file.name.replace(/\.[^/.]+$/, '');
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  photoUrlInput.addEventListener('input', function() {
+    var url = photoUrlInput.value.trim();
+    if (url) {
+      currentNewPhotoData = url;
+      photoPreviewImg.src = url;
+      photoPreviewBox.style.display = 'block';
+    }
+  });
+
+  addPhotoBtn.addEventListener('click', function() {
+    if (!currentNewPhotoData) {
+      alert('Будь ласка, оберіть фотографію або вставте посилання на неї.');
+      return;
+    }
+    var title = photoTitleInput.value.trim() || 'Нова світлина';
+    var c = getSiteContent();
+    if (!c.gallery) c.gallery = {};
+    if (!c.gallery.added) c.gallery.added = [];
+    c.gallery.added.push({ src: currentNewPhotoData, title: title });
+    saveSiteContent(c);
+
+    photoFileInput.value = '';
+    photoUrlInput.value = '';
+    photoTitleInput.value = '';
+    photoPreviewBox.style.display = 'none';
+    currentNewPhotoData = '';
+
+    photoAlert.className = 'admin-alert success';
+    photoAlert.style.display = 'flex';
+    photoAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Світлину успішно додано до сайту!</div>';
+    setTimeout(function() { photoAlert.style.display = 'none'; }, 4000);
+    renderPhotosList();
+  });
+
+  resetDeletedPhotosBtn.addEventListener('click', function() {
+    if (!confirm('Відновити всі раніше видалені фотографії?')) return;
+    var c = getSiteContent();
+    if (c.gallery) c.gallery.deleted = [];
+    saveSiteContent(c);
+    renderPhotosList();
+  });
+
+  saveAnnouncementBtn.addEventListener('click', function() {
+    var c = getSiteContent();
+    if (!c.announcement) c.announcement = {};
+    c.announcement.enabled = announcementEnabled.checked;
+    c.announcement.text = announcementText.value.trim();
+    saveSiteContent(c);
+
+    announcementAlert.className = 'admin-alert success';
+    announcementAlert.style.display = 'flex';
+    announcementAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Налаштування оголошення збережено!</div>';
+    setTimeout(function() { announcementAlert.style.display = 'none'; }, 4000);
   });
 
   addEmailForm.addEventListener('submit', function(e) {
@@ -473,11 +1000,93 @@
     saveEmails(list);
     renderEmails();
     newEmailInput.value = '';
+    emailAlert.className = 'admin-alert success';
+    emailAlert.style.display = 'flex';
+    emailAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Адміністратора успішно додано!</div>';
+    setTimeout(function() { emailAlert.style.display = 'none'; }, 3500);
+  });
+
+  publishToGithubBtn.addEventListener('click', function() {
+    var pat = (githubPatInput.value || '').trim();
+    if (!pat) {
+      alert('Будь ласка, введіть ваш GitHub Personal Access Token (PAT) для прямої публікації в репозиторій.');
+      return;
+    }
+    syncAlert.className = 'admin-alert';
+    syncAlert.style.display = 'flex';
+    syncAlert.innerHTML = '<div>Підключаюся до GitHub API та публікую зміни...</div>';
+
+    var c = getSiteContent();
+    var contentStr = JSON.stringify(c, null, 2);
+    var contentBase64 = btoa(unescape(encodeURIComponent(contentStr)));
+
+    var url = 'https://api.github.com/repos/gaga050819/Polandsite3school/contents/assets/data/site-content.json';
+
+    fetch(url, {
+      headers: {
+        'Authorization': 'token ' + pat,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    }).then(function(res) {
+      if (res.ok) {
+        return res.json().then(function(data) { return data.sha; });
+      }
+      return null;
+    }).then(function(sha) {
+      var bodyData = {
+        message: 'Оновлення вмісту сайту з адмін-панелі',
+        content: contentBase64,
+        branch: 'main'
+      };
+      if (sha) bodyData.sha = sha;
+
+      return fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'token ' + pat,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+      });
+    }).then(function(putRes) {
+      if (putRes.ok) {
+        syncAlert.className = 'admin-alert success';
+        syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Зміни успішно завантажено на GitHub! За 30 секунд вони будуть активні для всіх відвідувачів.</div>';
+      } else {
+        return putRes.json().then(function(err) {
+          throw new Error(err.message || 'Помилка GitHub API');
+        });
+      }
+    }).catch(function(err) {
+      syncAlert.className = 'admin-alert error';
+      syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Помилка публікації: ' + err.message + '</div>';
+    });
+  });
+
+  downloadBackupBtn.addEventListener('click', function() {
+    var c = getSiteContent();
+    var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(c, null, 2));
+    var a = document.createElement('a');
+    a.setAttribute('href', dataStr);
+    a.setAttribute('download', 'site-content.json');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+
+  resetAllBtn.addEventListener('click', function() {
+    if (!confirm('Скинути всі тексти, фотографії та налаштування сайту до початкового стану?')) return;
+    localStorage.removeItem('school_site_content');
+    populateContentFields();
+    syncAlert.className = 'admin-alert success';
+    syncAlert.style.display = 'flex';
+    syncAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div>Всі налаштування успішно скинуто!</div>';
   });
 
   testFormBtn.addEventListener('click', function() {
     testAlert.className = 'admin-alert';
-    testAlert.style.display = 'block';
+    testAlert.style.display = 'flex';
     testAlert.textContent = 'Надсилаю тестову заявку до Google Таблиці...';
 
     var scriptUrl = 'https://script.google.com/macros/s/AKfycbzj_tN-NKOqg_MaFOQvPOKmjKtR1GMg1EDvjwXiu_YCtn8m3BTFABIOuHGK2ip-a_eJlw/exec';
@@ -503,6 +1112,10 @@
       testAlert.style.display = 'flex';
       testAlert.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Помилка надсилання: ' + err.message + '</div>';
     });
+  });
+
+  logoutBtn.addEventListener('click', function() {
+    showAuth();
   });
 
   var savedSession = null;
