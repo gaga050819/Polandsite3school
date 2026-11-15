@@ -553,6 +553,27 @@
         formStatus.style.display = 'none';
       }
 
+      if (nameVal.length < 2 || nameVal.length > 60) {
+        if (formStatus) {
+          formStatus.style.display = 'block';
+          formStatus.style.background = '#fef2f2';
+          formStatus.style.color = 'var(--red)';
+          formStatus.textContent = 'Будь ласка, введіть коректне ім\'я (від 2 до 60 символів).';
+        }
+        return;
+      }
+
+      var digits = phoneVal.replace(/\D/g, '');
+      if (digits.length < 10) {
+        if (formStatus) {
+          formStatus.style.display = 'block';
+          formStatus.style.background = '#fef2f2';
+          formStatus.style.color = 'var(--red)';
+          formStatus.textContent = 'Будь ласка, введіть повний номер телефону.';
+        }
+        return;
+      }
+
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Перевірка пошти...';
@@ -589,11 +610,14 @@
         var safePhone = phoneVal;
 
         var payload = {
+          type: 'contact',
           name: nameVal,
           phone: safePhone,
           email: emailVal,
-          message: messageVal,
-          date: new Date().toLocaleString('uk-UA')
+          message: messageVal.substring(0, 2000),
+          date: new Date().toLocaleString('uk-UA'),
+          token: 'PSS_DROHOBYCZ_2026_SECURE',
+          honeypot: (honeypot ? honeypot.value : '')
         };
 
         function onDone(success) {
@@ -1379,6 +1403,9 @@
         pendingList.push(newReview);
         localStorage.setItem('school_pending_reviews', JSON.stringify(pendingList));
 
+        var rHoneypot = document.getElementById('reviewHoneypot');
+        var rHpVal = rHoneypot ? rHoneypot.value : '';
+
         var GOOGLE_URL = 'https://script.google.com/macros/s/AKfycbzj_tN-NKOqg_MaFOQvPOKmjKtR1GMg1EDvjwXiu_YCtn8m3BTFABIOuHGK2ip-a_eJlw/exec';
         fetch(GOOGLE_URL, {
           method: 'POST',
@@ -1390,7 +1417,9 @@
             email: newReview.email,
             phone: 'Відгук (' + newReview.badgeLabel + ')',
             message: 'Оцінка: ' + newReview.rating + '/5\n' + newReview.text,
-            date: newReview.date
+            date: newReview.date,
+            token: 'PSS_DROHOBYCZ_2026_SECURE',
+            honeypot: rHpVal
           })
         }).catch(function() {});
 
