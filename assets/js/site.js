@@ -365,7 +365,7 @@
 
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
-    var GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzj_tN-NKOqg_MaFOQvPOKmjKtR1GMg1EDvjwXiu_YCtn8m3BTFABIOuHGK2ip-a_eJlw/exec';
+    var GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz2jZP8Ab1ufSVX2M9_-3bcNmv6pbe4eaECdSX7qTmAHgQSmf7k3sbX84Z0xjv-E4lOyg/exec';
     var emailInput = document.getElementById('email');
     var emailError = document.getElementById('emailError');
     var formStatus = document.getElementById('formStatus');
@@ -1406,7 +1406,7 @@
         var rHoneypot = document.getElementById('reviewHoneypot');
         var rHpVal = rHoneypot ? rHoneypot.value : '';
 
-        var GOOGLE_URL = 'https://script.google.com/macros/s/AKfycbzj_tN-NKOqg_MaFOQvPOKmjKtR1GMg1EDvjwXiu_YCtn8m3BTFABIOuHGK2ip-a_eJlw/exec';
+        var GOOGLE_URL = 'https://script.google.com/macros/s/AKfycbz2jZP8Ab1ufSVX2M9_-3bcNmv6pbe4eaECdSX7qTmAHgQSmf7k3sbX84Z0xjv-E4lOyg/exec';
         fetch(GOOGLE_URL, {
           method: 'POST',
           mode: 'no-cors',
