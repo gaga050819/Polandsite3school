@@ -1400,6 +1400,40 @@ textarea.admin-input{min-height:95px;resize:vertical}
     initGoogleBtn();
   }
 
+  function handleCredentialResponse(response) {
+    authAlert.style.display = 'none';
+    try {
+      var payload = decodeJwt(response.credential);
+      var email = (payload.email || '').trim().toLowerCase();
+      var list = getEmails().map(function(s) { return s.trim().toLowerCase(); });
+
+      if (!payload.email_verified) {
+        authAlert.className = 'admin-alert error';
+        authAlert.style.display = 'flex';
+        authAlert.textContent = 'Помилка: Google-акаунт ' + email + ' не має підтвердженої адреси.';
+        return;
+      }
+
+      if (list.indexOf(email) === -1) {
+        authAlert.className = 'admin-alert error';
+        authAlert.style.display = 'flex';
+        authAlert.textContent = 'Доступ заборонено: Google-пошту ' + email + ' не знайдено у списку дозволених адміністраторів школи.';
+        return;
+      }
+
+      showDashboard({
+        email: email,
+        name: payload.name || email,
+        picture: payload.picture || 'assets/icons/school-emblem.jpg',
+        authType: 'google'
+      });
+    } catch(err) {
+      authAlert.className = 'admin-alert error';
+      authAlert.style.display = 'flex';
+      authAlert.textContent = 'Помилка розпізнавання Google-авторизації: ' + err.message;
+    }
+  }
+
   function initGoogleBtn() {
     googleBtnContainer.innerHTML = '';
     if (window.google && window.google.accounts && window.google.accounts.id) {
